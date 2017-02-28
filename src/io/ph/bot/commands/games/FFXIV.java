@@ -51,10 +51,10 @@ public class FFXIV extends Command {
 				.setColor(Color.GREEN)
 				.setThumbnail(xiv.getJobImageLink());
 				StringBuilder sb = new StringBuilder();
-				sb.append("**" + xiv.getGender() + " " + xiv.getRace() + "** | **" + xiv.getFaction() + "**\n");
-				sb.append("**Nameday**: " + xiv.getNameday() + " | **Guardian**: " + xiv.getGuardian() + "\n");
-				sb.append("**Grand Company**: " + xiv.getGrandCompany() + "\n");
-				sb.append("**Free Company**: " + xiv.getFreeCompany());
+				sb.append("**" + xiv.getGender() + " " + xiv.getRace() + "** | **" + xiv.getFaction() + "**\n")
+				.append("**Nameday**: " + xiv.getNameday() + " | **Guardian**: " + xiv.getGuardian() + "\n")
+				.append("**Grand Company**: " + xiv.getGrandCompany() + "\n")
+				.append("**Free Company**: " + xiv.getFreeCompany());
 				em.setDescription(sb.toString())
 				.setImage(xiv.getImageLink());
 
@@ -74,7 +74,7 @@ public class FFXIV extends Command {
 				msg.getChannel().sendMessage(em.build()).queue();
 			} finally {
 				try {
-					message.delete();
+					message.delete().queue();
 				} catch (Exception e2) { }
 			}
 		});
