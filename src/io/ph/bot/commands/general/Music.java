@@ -24,8 +24,10 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 		defaultSyntax = "music",
 		aliases = {"play"},
 		permission = Permission.NONE,
-		description = "Play or get information on the music playlist\n",
+		description = "Play or get information on the music playlist\n"
+				+ "You can also play your guild's music playlist",
 		example = "https://youtu.be/dQw4w9WgXcQ\n"
+				+ "playlist (plays your guild's playlist)\n"
 				+ "now\n"
 				+ "next\n"
 				+ "skip (kick+ force skips)\n"
@@ -227,6 +229,29 @@ public class Music extends Command {
 			msg.getChannel().sendMessage(em.build()).queue();
 			g.getMusicManager().getAudioPlayer().setVolume(input);
 			return;
+		} else if (contents.startsWith("playlist")) {
+			// Just queue up all the songs I guess
+			if (!g.getSpecialChannels().getMusicVoice().isEmpty() 
+					&& Bot.getInstance()
+					.getBot().getVoiceChannelById(g.getSpecialChannels().getMusicVoice()) != null) {
+				audio.openAudioConnection(Bot.getInstance()
+						.getBot().getVoiceChannelById(g.getSpecialChannels().getMusicVoice()));
+			} else if (!audio.isConnected() && !audio.isAttemptingToConnect()) {
+				if ((opt = msg.getGuild().getVoiceChannels().stream()
+						.filter(v -> v.getMembers().contains(msg.getGuild().getMember(msg.getAuthor())))
+						.findAny()).isPresent()) {
+					// User is in a channel, calling the play method
+					audio.openAudioConnection(opt.get());
+				} else {
+					// User isn't in a channel, yell at them
+					em.setTitle("Error", null)
+					.setColor(Color.RED)
+					.setDescription("You must be in a voice channel so I know where to go!");
+					msg.getChannel().sendMessage(em.build()).queue();
+					return;
+				}
+			}
+			GuildMusicManager.loadGuildPlaylist(msg.getTextChannel(), msg.getGuild().getMember(msg.getAuthor()));	
 		} else if (Util.isInteger(contents)) {
 			int index = Integer.parseInt(contents);
 			if ((index) > g.getHistoricalSearches().getHistoricalMusic().size() || index < 1) {
@@ -245,6 +270,6 @@ public class Music extends Command {
 		}
 		contents = contents.replaceAll("^<|>$", "");
 		GuildMusicManager.loadAndPlay(msg.getTextChannel(), 
-				contents, titleOverride, msg.getGuild().getMember(msg.getAuthor()));
+				contents, titleOverride, msg.getGuild().getMember(msg.getAuthor()), true);
 	}
 }

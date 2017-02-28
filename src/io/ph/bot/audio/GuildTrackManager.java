@@ -61,20 +61,20 @@ public class GuildTrackManager extends AudioEventAdapter {
 	@Override
 	public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
 		Guild guild = Bot.getInstance().getBot().getGuildById(this.guildId);
-		GuildObject gObject = GuildObject.guildMap.get(this.guildId);
-		gObject.getMusicManager().getSkipVoters().clear();
+		GuildObject g = GuildObject.guildMap.get(this.guildId);
+		g.getMusicManager().getSkipVoters().clear();
 		if (!queue.isEmpty()) {
 			// Kill queue and leave channel if no one is in
 			if (guild.getAudioManager().getConnectedChannel().getMembers().size() == 1) {
 				guild.getAudioManager().closeAudioConnection();
-				gObject.getMusicManager().reset();
+				g.getMusicManager().reset();
 				return;
 			}
 			nextTrack();
 		} else {
 			TextChannel ch;
 			if(this.currentSong != null && (ch = Bot.getInstance().getBot()
-					.getTextChannelById(gObject.getSpecialChannels().getMusic())) != null) {
+					.getTextChannelById(g.getSpecialChannels().getMusic())) != null) {
 				EmbedBuilder em = new EmbedBuilder();
 				em.setTitle("Queue finished!", null)
 				.setColor(Color.MAGENTA)

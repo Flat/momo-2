@@ -21,8 +21,12 @@ import net.dv8tion.jda.core.entities.Message;
 		defaultSyntax = "playlist",
 		aliases = {},
 		permission = Permission.KICK,
-		description = "Create and manage the guild's idle playlist",
-		example = "" // TODO: examples/documentation
+		description = "Create and manage the guild's playlist\n"
+				+ "Each server gets a playlist unique to it which you can add or remove songs to. "
+				+ "Sources can range from direct URLs to Youtube to Soundcloud",
+				example = "add link title-of-song (add a song with given link)\n"
+						+ "list (list your playlist)\n"
+						+ "remove # (remove a song from your playlist at given index)"
 		)
 public class Playlist extends Command {
 
@@ -59,7 +63,7 @@ public class Playlist extends Command {
 				.setColor(Color.RED)
 				.setDescription("You need to specify a number to delete from your playlist.\n`"
 						+ g.getConfig().getCommandPrefix() + "playlist list` will show you your songs");
-			} else if ((index = Integer.parseInt(split[1])) > g.getMusicPlaylist().size() || index < 1) {
+			} else if ((index = Integer.parseInt(split[1]) - 1) >= g.getMusicPlaylist().size() || index < 0) {
 				em.setTitle("Error", null)
 				.setColor(Color.RED)
 				.setDescription("Given input is out of bounds of 1 - " + g.getMusicPlaylist().size());
@@ -73,15 +77,14 @@ public class Playlist extends Command {
 		} else if (param.equals("list")) {
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < g.getMusicPlaylist().size(); i++) {
-				sb.append((i + 1) + ": " + g.getMusicPlaylist().get(i).getTitle() + "\n");
+				sb.append(String.format("**(%d)** %s\n", i + 1, g.getMusicPlaylist().get(i).getTitle()));
 			}
 			em.setTitle("Playlist", null)
 			.setColor(Color.MAGENTA)
 			.setDescription(sb.toString());
+		}
+		if (!em.isEmpty()) {
 			msg.getChannel().sendMessage(em.build()).queue();
-		} else if (param.equals("play")) {
-			// Just queue up all the songs I guess
-			// TODO: this and test
 		}
 
 	}

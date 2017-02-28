@@ -44,7 +44,6 @@ public class TwitterFeed extends ProceduralCommand {
 	@Override
 	public void executeCommand(Message msg) {		
 		if(TwitterEventListener.twitterClient == null) {
-			//message
 			return;
 		}
 

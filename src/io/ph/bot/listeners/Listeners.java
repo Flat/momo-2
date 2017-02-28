@@ -151,7 +151,6 @@ public class Listeners extends ListenerAdapter {
 
 	@Override
 	public void onGuildMessageReceived(GuildMessageReceivedEvent e) {
-		// TODO: this
 		//log.info("{}: {}", e.getAuthor().getName(), e.getMessage().getContent());
 		GuildObject g = GuildObject.guildMap.get(e.getGuild().getId());
 
@@ -178,6 +177,9 @@ public class Listeners extends ListenerAdapter {
 		}
 		// Jump to command
 		if (e.getMessage().getContent().startsWith(g.getConfig().getCommandPrefix())) {
+			if (!e.getChannel().canTalk()) {
+				return;
+			}
 			CommandHandler.processCommand(e.getMessage());
 			return;
 		}
@@ -205,6 +207,10 @@ public class Listeners extends ListenerAdapter {
 
 	@Override
 	public void onPrivateMessageReceived(PrivateMessageReceivedEvent e) {
+		if (e.getAuthor().equals(Bot.getInstance().getBot().getSelfUser())) {
+			return;
+		}
+		
 		EmbedBuilder em = new EmbedBuilder();
 		Command c;
 		if((c = CommandHandler.getCommand(e.getMessage().getContent().toLowerCase())) == null) {

@@ -120,7 +120,7 @@ public class GuildObject {
 		String s = gson.toJson(this.musicPlaylist);
 		try {
 			FileUtils.writeStringToFile(new File("resources/guilds/" + guildId
-					+ "/IdlePlaylist.json"), s, "UTF-9");
+					+ "/IdlePlaylist.json"), s, "UTF-8");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -332,6 +332,16 @@ public class GuildObject {
 
 	public List<PlaylistEntity> getMusicPlaylist() {
 		return musicPlaylist;
+	}
+	
+	/**
+	 * Pop off the top and queue it up again
+	 * @return Next song in the playlist
+	 */
+	public PlaylistEntity getNextPlaylistSong() {
+		PlaylistEntity toReturn = musicPlaylist.remove(0);
+		musicPlaylist.add(toReturn);
+		return toReturn;
 	}
 
 
