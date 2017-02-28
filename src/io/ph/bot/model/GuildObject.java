@@ -1,7 +1,11 @@
 package io.ph.bot.model;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -13,9 +17,14 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.io.FileUtils;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import io.ph.bot.audio.AudioManager;
 import io.ph.bot.audio.GuildMusicManager;
+import io.ph.bot.audio.PlaylistEntity;
 import io.ph.bot.commands.Command;
 import io.ph.bot.commands.CommandHandler;
 import io.ph.bot.exception.IllegalArgumentException;
@@ -29,7 +38,7 @@ import net.jodah.expiringmap.ExpiringMap;
  *
  */
 public class GuildObject {
-	public static HashMap<String, GuildObject> guildMap = new HashMap<String, GuildObject>();
+	public static Map<String, GuildObject> guildMap = new HashMap<>();
 
 	private Map<String, Integer> userTimerMap = ExpiringMap.builder()
 			.expiration(15, TimeUnit.SECONDS)
@@ -40,10 +49,10 @@ public class GuildObject {
 	private HistoricalSearches historicalSearches;
 	private ServerConfiguration serverConfiguration;
 	private GuildMusicManager musicManager;
-	
-	
-	private Set<String> joinableRoles = new HashSet<String>();
-	private HashMap<String, Boolean> commandStatus = new HashMap<String, Boolean>();
+
+	private List<PlaylistEntity> musicPlaylist = new ArrayList<>();
+	private Set<String> joinableRoles = new HashSet<>();
+	private HashMap<String, Boolean> commandStatus = new HashMap<>();
 
 	/**
 	 * Initialize this guild and add it to the guildMap
@@ -85,7 +94,36 @@ public class GuildObject {
 		for(String s : disabledCommands) {
 			this.commandStatus.put(s, false);
 		}
-		
+
+		// Load up guild playlist
+		try {
+			Gson gson = new Gson();
+			String input = FileUtils
+					.readFileToString(new File("resources/guilds/" + g.getId() 
+					+ "/IdlePlaylist.json"), "UTF-8");
+			if (!input.isEmpty()) {
+				Type collectionType = new TypeToken<Collection<PlaylistEntity>>(){}.getType();
+				Collection<PlaylistEntity> playlist = gson.fromJson(input, collectionType);
+				this.musicPlaylist.addAll(playlist);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Save this guild's music playlist to file
+	 */
+	public void saveMusicPlaylist(String guildId) {
+		Gson gson = new Gson();
+		String s = gson.toJson(this.musicPlaylist);
+		try {
+			FileUtils.writeStringToFile(new File("resources/guilds/" + guildId
+					+ "/IdlePlaylist.json"), s, "UTF-9");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -122,7 +160,7 @@ public class GuildObject {
 	public boolean isJoinableRole(String roleId) {
 		return this.joinableRoles.contains(roleId) ? true : false;
 	}
-	
+
 	/**
 	 * Get the set of joinable roles
 	 * @return
@@ -186,7 +224,7 @@ public class GuildObject {
 		config.setProperty("DisabledCommands", disabled);
 		return true;
 	}
-	
+
 	/**
 	 * Get the status (enabled/disabled) of a command
 	 * @param input Command to check for
@@ -198,7 +236,7 @@ public class GuildObject {
 			return false;
 		return this.commandStatus.get(input);
 	}
-	
+
 	/**
 	 * Check if the command exists
 	 * @param s Command to check
@@ -211,20 +249,24 @@ public class GuildObject {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Enable all commands
 	 */
 	public void enableAllCommands() {
 		commandStatus.replaceAll((key, value) -> true);
+		config.setProperty("EnabledCommands", commandStatus.keySet());
+		config.setProperty("DisabledCommands", new ArrayList<String>());
 	}
 	/**
 	 * Disable all commands
 	 */
 	public void disableAllCommands() {
 		commandStatus.replaceAll((key, value) -> false);
+		config.setProperty("DisabledCommands", commandStatus.keySet());
+		config.setProperty("EnabledCommands", new ArrayList<String>());
 	}
-	
+
 	/**
 	 * Expiring map of user ID -> message counts
 	 * @return User timer map
@@ -254,7 +296,7 @@ public class GuildObject {
 	public GuildMusicManager getMusicManager() {
 		return this.musicManager;
 	}
-	
+
 	/**
 	 * Get status of commands map
 	 * @return CommandStatus map
@@ -262,7 +304,7 @@ public class GuildObject {
 	public Map<String, Boolean> getCommandStatus() {
 		return this.commandStatus;
 	}
-	
+
 	/**
 	 * Get special designated channels for this guild
 	 * @return Special channels object
@@ -278,13 +320,18 @@ public class GuildObject {
 	public HistoricalSearches getHistoricalSearches() {
 		return historicalSearches;
 	}
-	
+
 	/**
 	 * Get general configuration for this guild
 	 * @return Server configuration object
 	 */
 	public ServerConfiguration getConfig() {
 		return this.serverConfiguration;
+	}
+
+
+	public List<PlaylistEntity> getMusicPlaylist() {
+		return musicPlaylist;
 	}
 
 
@@ -435,7 +482,7 @@ public class GuildObject {
 			this.historicalMusic.clear();
 		}
 	}
-	
+
 	public class SpecialChannels {
 		private String welcome;
 		private String music;
@@ -475,11 +522,11 @@ public class GuildObject {
 			this.log = log;
 			config.setProperty("LogChannelId", log);
 		}
-		
+
 		public String getMusicVoice() {
 			return this.musicVoice;
 		}
-		
+
 		public void setMusicVoice(String musicVoice) {
 			this.musicVoice = musicVoice;
 			config.setProperty("MusicVoiceChannelId", musicVoice);

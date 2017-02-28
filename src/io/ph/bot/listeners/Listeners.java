@@ -60,13 +60,19 @@ public class Listeners extends ListenerAdapter {
 	public void onGuildJoin(GuildJoinEvent e) {
 		checkFiles(e.getGuild());
 		// TODO: Message this
-		e.getGuild().getPublicChannel().sendMessage("Hi, I'm Momo! You are my "
-				+ Util.ordinal(Bot.getInstance().getBot().getGuilds().size()) + " server.\n"
-				+ "If you want a list of commands, use `$help`. If you want some tutorials on my features, "
-				+ "do `$howto` - I suggest doing `$howto setup` immediately.\n"
-				+ "I also feature a web dashboard for my configuration! "
-				+ "Access it here: <https://momobot.io/dash>").queue();
+		GuildObject g = new GuildObject(e.getGuild());
+		if (g.getConfig().isFirstTime()) {
+			e.getGuild().getPublicChannel().sendMessage("Hi, I'm Momo! You are my "
+					+ Util.ordinal(Bot.getInstance().getBot().getGuilds().size()) + " server.\n"
+					+ "If you want a list of commands, use `$help`. If you want some tutorials on my features, "
+					+ "do `$howto` - I suggest doing `$howto setup` immediately.\n"
+					+ "I also feature a web dashboard for my configuration! "
+					+ "Access it here: <https://momobot.io/dash>").queue();
+			g.getConfig().setFirstTime(false);
+		}
+		GuildObject.guildMap.put(e.getGuild().getId(), g);
 		log.info("Guild joined: {}", e.getGuild().getName());
+
 	}
 
 	@Override
@@ -219,7 +225,7 @@ public class Listeners extends ListenerAdapter {
 		em.addField("Permissions", c.getPermission().toString(), true)
 		.addField("Description", c.getDescription(), false)
 		.addField("Example", c.getDefaultCommand() + " " 
-		+ c.getExample().replaceAll("\n", "\n" + c.getDefaultCommand() + " "), false);
+				+ c.getExample().replaceAll("\n", "\n" + c.getDefaultCommand() + " "), false);
 		e.getChannel().sendMessage(em.build()).queue();
 		return;
 	}

@@ -122,6 +122,7 @@ public class Util {
 		}
 		return toReturn;
 	}
+	
 	/**
 	 * Remove the first item from a String array
 	 * @param arr String array to manipulate
