@@ -23,6 +23,5 @@ public class Ping extends Command {
 		.setDescription("Pong!")
 		.setColor(Color.MAGENTA);
 		msg.getChannel().sendMessage(em.build()).queue();
-		System.out.println(this.getCommandCount());
 	}
 }

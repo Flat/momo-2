@@ -96,7 +96,7 @@ public class CommandHandler {
 						|| Util.memberHasPermission(msg.getGuild().getMember(msg.getAuthor()), Permission.KICK)) {
 					Command c = getCommand(cmd);
 					c.incrementCommandCount();
-					c.executeCommand(msg);
+					Util.setTimeout(() -> c.executeCommand(msg), 0, true);
 				}
 			}
 		} else {
@@ -109,7 +109,7 @@ public class CommandHandler {
 						|| Util.memberHasPermission(msg.getGuild().getMember(msg.getAuthor()), Permission.KICK)) {
 					Command c = getCommand(cmd);
 					c.incrementCommandCount();
-					c.executeCommand(msg);
+					Util.setTimeout(() -> c.executeCommand(msg), 0, true);
 				}
 			}
 		}
