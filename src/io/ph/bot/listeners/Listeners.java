@@ -4,12 +4,14 @@ import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Arrays;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.ph.bot.Bot;
+import io.ph.bot.commands.Command;
 import io.ph.bot.commands.CommandHandler;
 import io.ph.bot.feed.TwitterEventListener;
 import io.ph.bot.model.GuildObject;
@@ -31,6 +33,7 @@ import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberNickChangeEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 /**
@@ -57,9 +60,15 @@ public class Listeners extends ListenerAdapter {
 	public void onGuildJoin(GuildJoinEvent e) {
 		checkFiles(e.getGuild());
 		// TODO: Message this
+		e.getGuild().getPublicChannel().sendMessage("Hi, I'm Momo! You are my "
+				+ Util.ordinal(Bot.getInstance().getBot().getGuilds().size()) + " server.\n"
+				+ "If you want a list of commands, use `$help`. If you want some tutorials on my features, "
+				+ "do `$howto` - I suggest doing `$howto setup` immediately.\n"
+				+ "I also feature a web dashboard for my configuration! "
+				+ "Access it here: <https://momobot.io/dash>").queue();
 		log.info("Guild joined: {}", e.getGuild().getName());
 	}
-	
+
 	@Override
 	public void onGuildAvailable(GuildAvailableEvent e) {
 		checkFiles(e.getGuild());
@@ -76,7 +85,7 @@ public class Listeners extends ListenerAdapter {
 			e1.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void onGuildMemberJoin(GuildMemberJoinEvent e) {
 		GuildObject g = GuildObject.guildMap.get(e.getGuild().getId());
@@ -98,7 +107,7 @@ public class Listeners extends ListenerAdapter {
 				MessageUtils.sendPrivateMessage(e.getMember().getUser().getId(), msg);
 		}
 	}
-	
+
 	@Override
 	public void onGuildMemberLeave(GuildMemberLeaveEvent e) {
 		if (e.getMember().getUser().getId().equals(Bot.getInstance().getBot().getSelfUser().getId()))
@@ -112,14 +121,14 @@ public class Listeners extends ListenerAdapter {
 			MessageUtils.sendMessage(g.getSpecialChannels().getLog(), em.build());
 		}
 	}
-	
+
 	@Override
 	public void onGuildMemberNickChange(GuildMemberNickChangeEvent e) {
 		GuildObject g = GuildObject.guildMap.get(e.getGuild().getId());
 		EmbedBuilder em = new EmbedBuilder();
 		em.setColor(Color.CYAN)
 		.setTimestamp(Instant.now());
-		
+
 		if (!g.getSpecialChannels().getLog().equals("")) {
 			if (e.getPrevNick() != null && e.getNewNick() != null) {
 				em.setDescription("**" + e.getPrevNick() + "** to **" + e.getNewNick() + "**");
@@ -139,7 +148,7 @@ public class Listeners extends ListenerAdapter {
 		// TODO: this
 		//log.info("{}: {}", e.getAuthor().getName(), e.getMessage().getContent());
 		GuildObject g = GuildObject.guildMap.get(e.getGuild().getId());
-		
+
 		// Delete invites
 		if (g.getConfig().isDisableInvites()
 				&& !Util.memberHasPermission(e.getMember(), Permission.KICK)) {
@@ -152,6 +161,15 @@ public class Listeners extends ListenerAdapter {
 		// Bot check
 		if (e.getAuthor().isBot())
 			return;
+		// Requesting prefix
+		if (!e.getMessage().mentionsEveryone()
+				&& e.getMessage().isMentioned(Bot.getInstance().getBot().getSelfUser())) {
+			if (e.getMessage().getContent().contains("prefix")) {
+				e.getAuthor().getPrivateChannel().sendMessage(GuildObject
+						.guildMap.get(e.getGuild().getId()).getConfig().getCommandPrefix()).queue();
+				return;
+			}
+		}
 		// Jump to command
 		if (e.getMessage().getContent().startsWith(g.getConfig().getCommandPrefix())) {
 			CommandHandler.processCommand(e.getMessage());
@@ -178,7 +196,34 @@ public class Listeners extends ListenerAdapter {
 		}
 		ProceduralListener.getInstance().update(e.getMessage());
 	}
-	
+
+	@Override
+	public void onPrivateMessageReceived(PrivateMessageReceivedEvent e) {
+		EmbedBuilder em = new EmbedBuilder();
+		Command c;
+		if((c = CommandHandler.getCommand(e.getMessage().getContent().toLowerCase())) == null) {
+			em.setTitle("Invalid command", null)
+			.setColor(Color.RED)
+			.setDescription(e.getMessage().getContent() + " is not a valid command");
+			e.getChannel().sendMessage(em.build()).queue();
+			return;
+		}
+		em.setTitle(e.getMessage().getContent(), null)
+		.setColor(Color.CYAN)
+		.addField("Primary Command", c.getDefaultCommand(), true);
+		String[] aliases = c.getAliases();
+		if(aliases.length > 0) {
+			em.addField("Aliases", 
+					Arrays.toString(aliases).substring(1, Arrays.toString(aliases).length() - 1) + "\n", true);
+		}
+		em.addField("Permissions", c.getPermission().toString(), true)
+		.addField("Description", c.getDescription(), false)
+		.addField("Example", c.getDefaultCommand() + " " 
+		+ c.getExample().replaceAll("\n", "\n" + c.getDefaultCommand() + " "), false);
+		e.getChannel().sendMessage(em.build()).queue();
+		return;
+	}
+
 	@Override
 	public void onTextChannelCreate(TextChannelCreateEvent e) {
 		GuildObject g = GuildObject.guildMap.get(e.getGuild().getId());
@@ -191,7 +236,7 @@ public class Listeners extends ListenerAdapter {
 			});
 		}
 	}
-	
+
 	@Override
 	public void onVoiceChannelCreate(VoiceChannelCreateEvent e) {
 		GuildObject g = GuildObject.guildMap.get(e.getGuild().getId());
@@ -203,7 +248,7 @@ public class Listeners extends ListenerAdapter {
 			});
 		}
 	}
-	
+
 	private static void checkFiles(Guild g) {
 		File f;
 		if (!(f = new File("resources/guilds/" + g.getId() +"/")).exists()) {

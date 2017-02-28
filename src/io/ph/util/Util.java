@@ -78,7 +78,7 @@ public class Util {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Get the contents of a command, if it has arguments
 	 * Returns everything except the command and its prefix (split among a space)
@@ -150,7 +150,7 @@ public class Util {
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Get the first parameter of a command based on a space split
 	 * @param msg {@link Message} to parse
@@ -167,7 +167,7 @@ public class Util {
 	public static String getParam(String str) {
 		return removeFirstArrayEntry(str.split(" "))[0];
 	}
-	
+
 	/**
 	 * Returns json value for given String url
 	 * @param url url to connect to
@@ -176,7 +176,7 @@ public class Util {
 	public static JsonValue jsonFromUrl(String url) throws IOException {
 		return Json.parse(stringFromUrl(url));
 	}
-	
+
 	/**
 	 * Returns string for given String url
 	 * @param url url to connect to
@@ -207,7 +207,7 @@ public class Util {
 		}
 		return sb.toString();
 	}
-	
+
 	/**
 	 * Convert milliseconds to mm:ss format
 	 * @param milli long of milliseconds (not expecting Long values)
@@ -220,7 +220,7 @@ public class Util {
 			return min+":0"+sec;
 		return min+":"+sec;
 	}
-	
+
 	/**
 	 * Check if String input is a valid integer through {@link Integer#parseInt(String)}
 	 * @param input String input
@@ -247,7 +247,7 @@ public class Util {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Similar implementation to JavaScript setTimeout
 	 * @param runnable Runnable to run
@@ -275,7 +275,7 @@ public class Util {
 			}
 		}
 	}
-	
+
 	/**
 	 * Save a URL to a file with a user-agent header
 	 * @param url URL of file
@@ -312,7 +312,7 @@ public class Util {
 				out.close();
 		}
 	}
-	
+
 	/**
 	 * Get a MIME type from a URL
 	 * @param url URL to check
@@ -340,7 +340,7 @@ public class Util {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Use Apache Tika to detect MIME type
 	 * @param f File to detect
@@ -351,7 +351,26 @@ public class Util {
 		final Tika tika = new Tika();
 		return tika.detect(f);
 	}
-	
+
+	/**
+	 * Return ordinal number (number + st, nd, rd, th)
+	 * @param i Number to ordinalize (is that a word?)
+	 * @return Ordinal String
+	 */
+	public static String ordinal(int i) {
+		int mod100 = i % 100;
+		int mod10 = i % 10;
+		if(mod10 == 1 && mod100 != 11) {
+			return i + "st";
+		} else if(mod10 == 2 && mod100 != 12) {
+			return i + "nd";
+		} else if(mod10 == 3 && mod100 != 13) {
+			return i + "rd";
+		} else {
+			return i + "th";
+		}
+	}
+
 	/**
 	 * Return a future instant from a string formatted #w#d#h#m
 	 * @param string String to resolve from
