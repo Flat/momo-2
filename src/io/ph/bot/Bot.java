@@ -58,6 +58,7 @@ public class Bot {
 		State.changeBotAvatar(new File("resources/avatar/" + Bot.getInstance().getConfig().getAvatar()));
 		State.changeBotPresence(OnlineStatus.ONLINE);
 		State.changeBotStatus("www.momobot.io");
+		isReady = true;
 	}
 
 

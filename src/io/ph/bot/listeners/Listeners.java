@@ -54,7 +54,6 @@ public class Listeners extends ListenerAdapter {
 			GuildObject.guildMap.put(g.getId(), new GuildObject(g));
 		});
 		log.info("Bot is now logged on: {} guilds", e.getJDA().getGuilds().size());
-		Bot.isReady = true;
 	}
 
 	@Override 
