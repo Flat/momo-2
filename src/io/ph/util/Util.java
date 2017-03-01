@@ -122,7 +122,7 @@ public class Util {
 		}
 		return toReturn;
 	}
-	
+
 	/**
 	 * Remove the first item from a String array
 	 * @param arr String array to manipulate
@@ -147,8 +147,9 @@ public class Util {
 				&& member.getUser().getId().equals(Bot.getInstance().getConfig().getBotOwnerId())) {
 			return true;
 		}
-		if (member.isOwner() || member.hasPermission(permission.getJdaPerm()))
+		if (permission.getJdaPerm() != null && member.hasPermission(permission.getJdaPerm())) {
 			return true;
+		}
 		return false;
 	}
 
