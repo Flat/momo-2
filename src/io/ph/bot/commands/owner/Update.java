@@ -21,7 +21,7 @@ public class Update extends Command {
 	public void executeCommand(Message msg) {
 		try {
 			StatusChangeJob.commenceUpdateCountdown(Integer.parseInt(Util.getCommandContents(msg)));
-			msg.getChannel().sendMessage("Set a timer for " + Util.getCommandContents(msg));
+			msg.getChannel().sendMessage("Set a timer for " + Util.getCommandContents(msg)).queue();
 		} catch(NumberFormatException e) {
 			msg.getChannel().sendMessage(Util.getCommandContents(msg) + " is not a valid integer");
 		}
