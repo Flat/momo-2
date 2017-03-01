@@ -38,7 +38,7 @@ public class Roll extends Command {
 			if(split.length == 2 && Util.isInteger(split[0]) && Util.isInteger(split[1])) {
 				int max = Integer.parseInt(split[0]) * Integer.parseInt(split[1]);
 				int roll = ThreadLocalRandom.current().nextInt(Integer.parseInt(split[0]), max + 1);
-				em.setTitle(msg.getGuild().getMember(msg.getAuthor()) + " rolled " 
+				em.setTitle(msg.getGuild().getMember(msg.getAuthor()).getEffectiveName() + " rolled " 
 						+ roll + " with a " + split[0] + "d" + split[1], null)
 				.setColor(Color.GREEN);
 				
@@ -46,7 +46,7 @@ public class Roll extends Command {
 		} else {
 			if(Util.isInteger(contents)) {
 				em.setColor(Color.GREEN)
-				.setTitle(msg.getGuild().getMember(msg.getAuthor()) + " rolled "
+				.setTitle(msg.getGuild().getMember(msg.getAuthor()).getEffectiveName() + " rolled "
 						+ (ThreadLocalRandom.current().nextInt(Integer.parseInt(contents)) + 1) 
 						+ " out of " + Integer.parseInt(contents), null);
 			} else {
