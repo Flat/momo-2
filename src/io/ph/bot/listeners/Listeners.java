@@ -54,12 +54,12 @@ public class Listeners extends ListenerAdapter {
 			GuildObject.guildMap.put(g.getId(), new GuildObject(g));
 		});
 		log.info("Bot is now logged on: {} guilds", e.getJDA().getGuilds().size());
+		Bot.isReady = true;
 	}
 
 	@Override 
 	public void onGuildJoin(GuildJoinEvent e) {
 		checkFiles(e.getGuild());
-		// TODO: Message this
 		GuildObject g = new GuildObject(e.getGuild());
 		if (g.getConfig().isFirstTime()) {
 			e.getGuild().getPublicChannel().sendMessage("Hi, I'm Momo! You are my "
@@ -83,6 +83,8 @@ public class Listeners extends ListenerAdapter {
 
 	@Override
 	public void onGuildLeave(GuildLeaveEvent e) {
+		if (!Bot.isReady)
+			return;
 		try {
 			FileUtils.deleteDirectory(new File("resources/guilds/" + e.getGuild().getId() + "/"));
 			GuildObject.guildMap.remove(e.getGuild().getId());
@@ -94,6 +96,8 @@ public class Listeners extends ListenerAdapter {
 
 	@Override
 	public void onGuildMemberJoin(GuildMemberJoinEvent e) {
+		if (!Bot.isReady)
+			return;
 		GuildObject g = GuildObject.guildMap.get(e.getGuild().getId());
 		if (!g.getSpecialChannels().getLog().equals("")) {
 			EmbedBuilder em = new EmbedBuilder().setAuthor(e.getMember().getUser().getName() + " has joined the server", 
@@ -116,6 +120,8 @@ public class Listeners extends ListenerAdapter {
 
 	@Override
 	public void onGuildMemberLeave(GuildMemberLeaveEvent e) {
+		if (!Bot.isReady)
+			return;
 		if (e.getMember().getUser().getId().equals(Bot.getInstance().getBot().getSelfUser().getId()))
 			return;
 		GuildObject g = GuildObject.guildMap.get(e.getGuild().getId());
@@ -130,6 +136,8 @@ public class Listeners extends ListenerAdapter {
 
 	@Override
 	public void onGuildMemberNickChange(GuildMemberNickChangeEvent e) {
+		if (!Bot.isReady)
+			return;
 		GuildObject g = GuildObject.guildMap.get(e.getGuild().getId());
 		EmbedBuilder em = new EmbedBuilder();
 		em.setColor(Color.CYAN)
@@ -151,6 +159,8 @@ public class Listeners extends ListenerAdapter {
 
 	@Override
 	public void onGuildMessageReceived(GuildMessageReceivedEvent e) {
+		if (!Bot.isReady)
+			return;
 		//log.info("{}: {}", e.getAuthor().getName(), e.getMessage().getContent());
 		GuildObject g = GuildObject.guildMap.get(e.getGuild().getId());
 
@@ -207,6 +217,8 @@ public class Listeners extends ListenerAdapter {
 
 	@Override
 	public void onPrivateMessageReceived(PrivateMessageReceivedEvent e) {
+		if (!Bot.isReady)
+			return;
 		if (e.getAuthor().equals(Bot.getInstance().getBot().getSelfUser())) {
 			return;
 		}
@@ -238,6 +250,8 @@ public class Listeners extends ListenerAdapter {
 
 	@Override
 	public void onTextChannelCreate(TextChannelCreateEvent e) {
+		if (!Bot.isReady)
+			return;
 		GuildObject g = GuildObject.guildMap.get(e.getGuild().getId());
 		Role r;
 		if (!g.getConfig().getMutedRoleId().isEmpty() 
@@ -251,6 +265,8 @@ public class Listeners extends ListenerAdapter {
 
 	@Override
 	public void onVoiceChannelCreate(VoiceChannelCreateEvent e) {
+		if (!Bot.isReady)
+			return;
 		GuildObject g = GuildObject.guildMap.get(e.getGuild().getId());
 		Role r;
 		if (!g.getConfig().getMutedRoleId().isEmpty() 

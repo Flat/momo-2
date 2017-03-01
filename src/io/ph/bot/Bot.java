@@ -37,7 +37,8 @@ public class Bot {
 	
 	// Set to true if you want various debug statements
 	public static final boolean DEBUG = true;
-	public static final String BOT_VERSION = "2.0.alpha";
+	public static final String BOT_VERSION = "2.0";
+	public static boolean isReady = false;
 	
 	private APIKeys apiKeys = new APIKeys();
 	private BotConfiguration botConfig = new BotConfiguration();
