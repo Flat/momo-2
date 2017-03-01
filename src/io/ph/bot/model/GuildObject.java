@@ -79,7 +79,7 @@ public class GuildObject {
 				config.getInt("MessagesPerFifteenSeconds", 0),
 				config.getInt("CommandCooldown", 0), 
 				welcomeMessage,
-				config.getString("MutedRoleID", ""),
+				config.getString("MutedRoleId", ""),
 				config.getBoolean("LimitToOneRole", false),
 				config.getBoolean("FirstTime", true),
 				config.getBoolean("DisableInvites", false),
