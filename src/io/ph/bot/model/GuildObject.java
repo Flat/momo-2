@@ -96,6 +96,15 @@ public class GuildObject {
 			if (CommandHandler.getCommand(s) != null)
 				this.commandStatus.put(s, false);
 		}
+		// Load up joinable roles
+		String[] joinableRolesP = config.getStringArray("JoinableRoles");
+		for(String s : joinableRolesP) {
+			if(s.equals(""))
+				continue;
+			if(g.getRoleById(s) == null)
+				continue;
+			this.joinableRoles.add(s);
+		}
 
 		// Load up guild playlist
 		try {
@@ -335,7 +344,7 @@ public class GuildObject {
 	public List<PlaylistEntity> getMusicPlaylist() {
 		return musicPlaylist;
 	}
-	
+
 	/**
 	 * Pop off the top and queue it up again
 	 * @return Next song in the playlist
