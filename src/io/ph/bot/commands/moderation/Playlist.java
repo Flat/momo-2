@@ -26,7 +26,8 @@ import net.dv8tion.jda.core.entities.Message;
 				+ "Sources can range from direct URLs to Youtube to Soundcloud",
 				example = "add link title-of-song (add a song with given link)\n"
 						+ "list (list your playlist)\n"
-						+ "remove # (remove a song from your playlist at given index)"
+						+ "remove # (remove a song from your playlist at given index)\n"
+						+ "remove all (remove all songs from playlist)"
 		)
 public class Playlist extends Command {
 
@@ -59,10 +60,18 @@ public class Playlist extends Command {
 		} else if (param.equals("delete") || param.equals("remove")) {
 			int index;
 			if (!Util.isInteger(split[1])) {
-				em.setTitle("Error", null)
-				.setColor(Color.RED)
-				.setDescription("You need to specify a number to delete from your playlist.\n`"
-						+ g.getConfig().getCommandPrefix() + "playlist list` will show you your songs");
+				if (split[1].equalsIgnoreCase("all")) {
+					em.setTitle("Success", null)
+					.setColor(Color.GREEN)
+					.setDescription("Cleared your playlist");
+					g.getMusicPlaylist().clear();
+					g.saveMusicPlaylist(msg.getGuild().getId());
+				} else {
+					em.setTitle("Error", null)
+					.setColor(Color.RED)
+					.setDescription("You need to specify a number to delete from your playlist.\n`"
+							+ g.getConfig().getCommandPrefix() + "playlist list` will show you your songs");
+				}
 			} else if ((index = Integer.parseInt(split[1]) - 1) >= g.getMusicPlaylist().size() || index < 0) {
 				em.setTitle("Error", null)
 				.setColor(Color.RED)

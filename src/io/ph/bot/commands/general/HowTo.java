@@ -116,8 +116,8 @@ public class HowTo extends Command {
 	private void setupMusic(String prefix) {
 		em.setTitle("Music usage", null)
 		.setDescription(String.format("This is a quick tutorial on how to use my music features. "
-				+ "To play music, you need to have setup the music voice channel. "
-				+ "If you haven't yet, do `%ssetupmusic`", prefix))
+				+ "If you did not do %ssetupmusic, I will join whatever channel you're in. "
+				+ "If you did do %<ssetupmusic, I will join only that channel", prefix))
 		.addField("Supported sources", "I currently support the following sources: "
 				+ "YouTube videos & playlists, direct links, attachments sent through discord, "
 				+ ".webm files (such as the music on Themes.moe), Soundcloud, Bandcamp, and more!", false)
@@ -149,10 +149,14 @@ public class HowTo extends Command {
 		.addField("Basic configuration", String.format("I feature a web-dashboard you can use to configure me. "
 				+ "Access it at <https://momobot.io/dash> - it's self explanatory and very simple!",
 				prefix), false)
-		.addField("Music", String.format("Last, but not least, is music. To set this up, do `%ssetupmusic`. "
+		.addField("Music", String.format("Last, but not least, is music. You have two options for how the music "
+				+ "system should work. \n**1)** Have the bot join whatever channel you're in to play music: No action required\n"
+				+ "**2)** Specify a single channel the bot should go to: Do `%ssetupmusic`\n"
 				+ "Then, if you want music announcements for when a new song is playing, do `%<smusicchannel` in a "
 				+ "designated channel.", 
-				prefix), false);
+				prefix), false)
+		.addField("Support", String.format("If you need help with the bot, feel free to join my support server at %s",
+				"https://momobot.io/join"), false);
 	}
 	private void defaultMessage(String prefix, TextChannel channel) {
 		em.setTitle("How To options", null)
