@@ -57,12 +57,14 @@ public class HowTo extends Command {
 			return;
 		}
 		em.setFooter(String.format("Current version: %s", Bot.BOT_VERSION), null);
-		msg.getAuthor().getPrivateChannel().sendMessage(em.build()).queue();
-		em = new EmbedBuilder();
-		em.setTitle("Success", null)
+		msg.getAuthor().openPrivateChannel().queue(ch -> {
+			ch.sendMessage(em.build()).queue();
+		});
+		EmbedBuilder em2 = new EmbedBuilder();
+		em2.setTitle("Success", null)
 		.setColor(Color.GREEN)
 		.setDescription("Check your PMs!");
-		msg.getChannel().sendMessage(em.build()).queue();
+		msg.getChannel().sendMessage(em2.build()).queue();
 	}
 
 	private void setupRoleManagement(String prefix) {

@@ -163,7 +163,7 @@ public class Listeners extends ListenerAdapter {
 			return;
 		//log.info("{}: {}", e.getAuthor().getName(), e.getMessage().getContent());
 		GuildObject g = GuildObject.guildMap.get(e.getGuild().getId());
-
+		
 		// Delete invites
 		if (g.getConfig().isDisableInvites()
 				&& !Util.memberHasPermission(e.getMember(), Permission.KICK)) {
@@ -180,8 +180,10 @@ public class Listeners extends ListenerAdapter {
 		if (!e.getMessage().mentionsEveryone()
 				&& e.getMessage().isMentioned(Bot.getInstance().getBot().getSelfUser())) {
 			if (e.getMessage().getContent().contains("prefix")) {
-				e.getAuthor().getPrivateChannel().sendMessage(GuildObject
-						.guildMap.get(e.getGuild().getId()).getConfig().getCommandPrefix()).queue();
+				e.getAuthor().openPrivateChannel().queue(ch -> {
+					ch.sendMessage(GuildObject
+							.guildMap.get(e.getGuild().getId()).getConfig().getCommandPrefix()).queue();
+				});
 				return;
 			}
 		}
@@ -206,7 +208,9 @@ public class Listeners extends ListenerAdapter {
 					em.setColor(Color.RED)
 					.setTitle("Error", null)
 					.setDescription("Whoa, slow down there! You're sending too many messages");
-					e.getAuthor().getPrivateChannel().sendMessage(em.build()).queue();
+					e.getAuthor().openPrivateChannel().queue(ch -> {
+						ch.sendMessage(em.build()).queue();
+					});
 				});
 			} else {
 				g.getUserTimerMap().put(e.getAuthor().getId(), counter);
