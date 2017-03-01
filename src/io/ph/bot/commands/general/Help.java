@@ -72,11 +72,12 @@ public class Help extends Command {
 				}
 				sb.append(c.getDefaultCommand() + "\n");
 			}
-			em.setTitle("Command list", null)
-			.setColor(Color.CYAN)
-			.addField(prevPermissions, sb.toString(), false)
-			.setFooter("PM me a command name to get more information", null);
+			final String prev = prevPermissions;
 			msg.getAuthor().openPrivateChannel().queue(success -> {
+				em.setTitle("Command list", null)
+				.setColor(Color.CYAN)
+				.addField(prev, sb.toString(), false)
+				.setFooter("PM me a command name to get more information", null);
 				msg.getAuthor().getPrivateChannel().sendMessage(em.build()).queue();
 			});
 			em.clearFields();
