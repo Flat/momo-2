@@ -33,7 +33,7 @@ public class TwitterFeedObserver implements Serializable {
 			return false;
 		}
 		if ((status.isRetweet() && !showRetweets)
-				|| (status.getInReplyToScreenName() == null && !showReplies)) {
+				|| (status.getInReplyToScreenName() != null && !showReplies)) {
 			return true;
 		}
 		EmbedBuilder em = new EmbedBuilder();
@@ -77,5 +77,10 @@ public class TwitterFeedObserver implements Serializable {
 
 	public String getTwitterHandle() {
 		return twitterHandle;
+	}
+	
+	public void test() {
+		this.showReplies = true;
+		this.showRetweets = true;
 	}
 }

@@ -56,6 +56,11 @@ public class Setup extends Command {
 					channel.createPermissionOverride(role).queue(or -> {
 						or.getManager().deny(Permission.MESSAGE_WRITE, 
 								Permission.VOICE_SPEAK, Permission.MESSAGE_ADD_REACTION).queue();
+					}, failure -> {
+						em.setTitle("Error", null)
+						.setColor(Color.RED)
+						.setDescription(failure.getMessage());
+						msg.getChannel().sendMessage(em.build()).queue();
 					});
 				}
 			});

@@ -152,6 +152,10 @@ public class Listeners extends ListenerAdapter {
 				em.setDescription("**" + e.getPrevNick() + "** to **" + e.getMember().getUser().getName() + "**");
 				em.setAuthor(e.getMember().getUser().getName() + " removed their nickname",
 						null, e.getMember().getUser().getAvatarUrl());
+			} else {
+				em.setDescription("**" + e.getMember().getUser().getName() + "** to **" + e.getNewNick() + "**");
+				em.setAuthor(e.getMember().getUser().getName() + " added a nickname", null, 
+						e.getMember().getUser().getAvatarUrl());
 			}
 			MessageUtils.sendMessage(g.getSpecialChannels().getLog(), em.build());
 		}
