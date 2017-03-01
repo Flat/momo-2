@@ -89,11 +89,11 @@ public class GuildObject {
 		String[] enabledCommands = config.getStringArray("EnabledCommands");
 		String[] disabledCommands = config.getStringArray("DisabledCommands");
 		for(String s : enabledCommands) {
-			if (validCommandToEdit(s))
+			if (CommandHandler.getCommand(s) != null)
 				this.commandStatus.put(s, true);
 		}
 		for(String s : disabledCommands) {
-			if (validCommandToEdit(s))
+			if (CommandHandler.getCommand(s) != null)
 				this.commandStatus.put(s, false);
 		}
 
