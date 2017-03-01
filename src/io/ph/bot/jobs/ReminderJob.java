@@ -44,7 +44,7 @@ public class ReminderJob implements Job {
 				Instant dueDate = Instant.parse(rs.getString(4));
 				if(start.isBefore(dueDate))
 					continue;
-				
+
 				String userId = rs.getString(1);
 				String guildName = rs.getString(2);
 				String reminder = rs.getString(3);
@@ -53,7 +53,11 @@ public class ReminderJob implements Job {
 				.setColor(Color.CYAN)
 				.setDescription(reminder)
 				.setTimestamp(Instant.now());
-				Bot.getInstance().getBot().getUserById(userId).getPrivateChannel().sendMessage(em.build()).queue();
+				try {
+					Bot.getInstance().getBot().getUserById(userId).openPrivateChannel().queue(ch -> {
+						ch.sendMessage(em.build()).queue();
+					});
+				} catch (NullPointerException e) { }
 				String sql = "DELETE FROM `global_reminders` WHERE user_id = ? AND remind_time = ?";
 				prep = conn.prepareStatement(sql);
 				prep.setString(1, userId);
