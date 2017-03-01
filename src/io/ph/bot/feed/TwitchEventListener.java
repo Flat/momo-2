@@ -43,7 +43,7 @@ public class TwitchEventListener implements Job {
 	private static Map<String, Boolean> twitchOnlineStatus = new HashMap<>();
 
 	private static boolean firstStartup = true;
-	
+
 	public static final String ENDPOINT = "https://api.twitch.tv/kraken/";
 
 	/**
@@ -109,7 +109,7 @@ public class TwitchEventListener implements Job {
 				boolean currentStatus = !json.getBody().getObject().isNull("stream");
 				if (entry.getValue() != currentStatus) {
 					if (!firstStartup) {
-					twitchFeed.get(entry.getKey())
+						twitchFeed.get(entry.getKey())
 						.removeIf(observer -> !observer.trigger(entry.getKey(), json.getBody().getObject()));
 					} else {
 						firstStartup = false;
@@ -181,7 +181,7 @@ public class TwitchEventListener implements Job {
 	public static Map<String, List<TwitchFeedObserver>> getRedditFeed() {
 		return twitchFeed;
 	}
-	
+
 	/**
 	 * Resolve a Twitch.tv User ID from a Username
 	 * @param username Username to check for

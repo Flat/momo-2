@@ -89,10 +89,12 @@ public class GuildObject {
 		String[] enabledCommands = config.getStringArray("EnabledCommands");
 		String[] disabledCommands = config.getStringArray("DisabledCommands");
 		for(String s : enabledCommands) {
-			this.commandStatus.put(s, true);
+			if (validCommandToEdit(s))
+				this.commandStatus.put(s, true);
 		}
 		for(String s : disabledCommands) {
-			this.commandStatus.put(s, false);
+			if (validCommandToEdit(s))
+				this.commandStatus.put(s, false);
 		}
 
 		// Load up guild playlist
