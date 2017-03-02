@@ -55,6 +55,11 @@ public class MessageUtils {
 		
 	}
 	
+	/**
+	 * Generic error message for misuse of command
+	 * @param msg Message in which command was used incorrectly
+	 * @param cmd Instance of command that was used incorrectly
+	 */
 	public static void sendIncorrectCommandUsage(Message msg, Command cmd) {
 		EmbedBuilder em = new EmbedBuilder();
 		em.setTitle("Incorrect usage", null)
@@ -63,5 +68,18 @@ public class MessageUtils {
 				GuildObject.guildMap.get(msg.getGuild().getId()).getConfig().getCommandPrefix(), 
 				cmd.getDefaultCommand()));
 		msg.getChannel().sendMessage(em.build()).queue();
+	}
+	
+	/**
+	 * Generic response to failure in restaction
+	 * @param throwable Throwable failure
+	 * @return MessageEmbed formatted correctly
+	 */
+	public static MessageEmbed handleFailure(Throwable throwable) {
+		EmbedBuilder em = new EmbedBuilder();
+		em.setTitle("Error", null)
+		.setColor(Color.RED)
+		.setDescription(throwable.getMessage());
+		return em.build();
 	}
 }
