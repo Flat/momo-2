@@ -266,6 +266,7 @@ public class Music extends Command {
 			contents = historicalResult[1];
 		} else if (!Util.isValidUrl(contents)) {
 			contents = "ytsearch: " + contents;
+			titleOverride = contents;
 		}
 		if (!msg.getAttachments().isEmpty()) {
 			contents = msg.getAttachments().get(0).getUrl();

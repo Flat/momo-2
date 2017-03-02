@@ -80,8 +80,8 @@ public class GuildTrackManager extends AudioEventAdapter {
 				.setColor(Color.MAGENTA)
 				.setDescription("Your queue is all dried up");
 				ch.sendMessage(em.build()).queue();
-				guild.getAudioManager().closeAudioConnection();
 			}
+			guild.getAudioManager().closeAudioConnection();
 			currentSong = null;
 		}
 	}

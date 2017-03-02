@@ -66,7 +66,8 @@ public class GuildMusicManager {
 					em.setTitle("Music queued", null)
 					.setColor(Color.GREEN)
 					.setDescription(String.format("%s was queued by %s",  
-							titleOverride == null ? track.getInfo().title : titleOverride,
+							(titleOverride == null || titleOverride.startsWith("ytsearch"))
+							? track.getInfo().title : titleOverride,
 									member.getEffectiveName()))
 					.setFooter(String.format("Place in queue: %d | Time until play: %s",
 							AudioManager.getGuildManager(channel.getGuild())
