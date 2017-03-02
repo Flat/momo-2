@@ -83,7 +83,6 @@ public class Bot {
 				}
 			}
 			StatusChangeJob.statuses = config.getStringArray("StatusRotation");
-			System.out.println(StatusChangeJob.statuses);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
