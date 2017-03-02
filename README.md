@@ -1,5 +1,5 @@
 # Momo, your new Discord bot
-[![license](https://img.shields.io/github/license/paul-io/momo-2.svg)](https://github.com/paul-io/momo-2/blob/master/LICENSE) [![Dependencies](https://app.updateimpact.com/badge/809606116261629952/Momo%20Discord%20Bot.svg?config=test)](https://app.updateimpact.com/latest/809606116261629952/Momo%20Discord%20Bot) [![Dependency Status](https://www.versioneye.com/user/projects/58677499e78d7d00471b7787/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/58677499e78d7d00471b7787) [![GitHub release](https://img.shields.io/github/release/paul-io/momo-2.svg)](https://github.com/paul-io/momo-2/releases) [![join the Momo discord server](https://img.shields.io/badge/discord-join%20now-74a2ed.svg)](https://discord.gg/uM3pyW8) 
+[![license](https://img.shields.io/github/license/paul-io/momo-2.svg)](https://github.com/paul-io/momo-2/blob/master/LICENSE) [![Dependencies](https://app.updateimpact.com/badge/809606116261629952/Momo%20Discord%20Bot.svg?config=test)](https://app.updateimpact.com/latest/809606116261629952/Momo%20Discord%20Bot) [![Dependency Status](https://www.versioneye.com/user/projects/58677499e78d7d00471b7787/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/58677499e78d7d00471b7787) [![GitHub release](https://img.shields.io/github/release/paul-io/momo-2.svg)](https://github.com/paul-io/momo-2/releases) [![join the Momo discord server](https://discordapp.com/api/guilds/259125580744753153/embed.png)](https://discord.gg/uM3pyW8) 
 
 Join the discord server linked above to get support, see upcoming features, or to test the bot! Also, check out the website for a command list & bot status [here](https://momobot.io)
 
@@ -14,10 +14,10 @@ Send the command `$help` or visit the website at [this link](https://momobot.io/
 Introduced in update 1.2, Momo features a [web dashboard](https://momobot.io/dash) to configure various aspects of the bot, such as welcome prefix, enabled commands, and Twitter/Reddit feeds. You don't have to be the server owner, either - configuration starts from moderators with the `kick` permission. Everything that can be done through the dashboard can also be done through commands.
 ### Features? Gimme some info!
 * Reddit, Twitter, & Twitch.tv feeds - Get updates directly to your channel of choice with image/preview configuration
-* Play music in a music channel. Can play off direct Youtube searches with `$youtube`
+* Play music in a music channel. Can play off direct Youtube searches, too!
 * Web dashboard. Configure your server settings from the ease of your browser from the [dashboard](https://momobot.io/dash)
 * Role management: Set roles as *joinable* and allow users to join/leave at their whim
-* Bring up character for various video games: FFXIV, WoW *(LoL & osu! coming soon)*
+* Bring up character for various video games: FFXIV, WoW, osu! *(LoL & Overwatch coming soon!)*
 * Commands to ban, kick, and prune messages
 * Create a strawpoll from discord & directly link it to your users
 * Log channel for user join/leaves, bans, kicks, and nickname changes
