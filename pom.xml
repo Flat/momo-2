@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Momo-2</groupId>
 	<artifactId>Momo-2</artifactId>
-	<version>2.0</version>
+	<version>2.0.1</version>
 	<name>Momo-2</name>
 	<description>Momo bot version 2</description>
 	<properties>
