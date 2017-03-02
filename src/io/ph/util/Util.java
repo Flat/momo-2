@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -246,6 +247,20 @@ public class Util {
 			Double.parseDouble(input);
 			return true;
 		} catch(Exception e) {
+			return false;
+		}
+	}
+	
+	/**
+	 * Check if String input is a valid URL
+	 * @param input String input
+	 * @return True if URL, false if not
+	 */
+	public static boolean isValidUrl(String input) {
+		try {
+			new URL(input);
+			return true;
+		} catch (MalformedURLException e) {
 			return false;
 		}
 	}

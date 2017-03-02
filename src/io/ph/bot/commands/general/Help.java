@@ -51,8 +51,12 @@ public class Help extends Command {
 			em.addField("Permissions", c.getPermission().toString(), true).addField("Description", c.getDescription(), false);
 			// Pretty up multiple line examples
 			String prefix = GuildObject.guildMap.get(msg.getGuild().getId()).getConfig().getCommandPrefix();
+			StringBuilder escapedPrefix = new StringBuilder();
+			for (char cha : prefix.toCharArray()) {
+				escapedPrefix.append("\\" + cha);
+			}
 			em.addField("Example", prefix + c.getDefaultCommand()
-				+ " " + c.getExample().replaceAll("\n", "\n" + prefix + c.getDefaultCommand() + " "), false);
+				+ " " + c.getExample().replaceAll("\n", "\n" + escapedPrefix.toString() + c.getDefaultCommand() + " "), false);
 			msg.getChannel().sendMessage(em.build()).queue();
 		} else {			
 			List<Command> coll = (List<Command>) CommandHandler.getAllCommands();

@@ -264,6 +264,8 @@ public class Music extends Command {
 					.getHistoricalSearches().getHistoricalMusic().get(index);
 			titleOverride = historicalResult[0];
 			contents = historicalResult[1];
+		} else if (!Util.isValidUrl(contents)) {
+			contents = "ytsearch: " + contents;
 		}
 		if (!msg.getAttachments().isEmpty()) {
 			contents = msg.getAttachments().get(0).getUrl();

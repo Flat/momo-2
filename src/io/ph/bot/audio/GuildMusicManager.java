@@ -84,10 +84,13 @@ public class GuildMusicManager {
 			@Override
 			public void playlistLoaded(AudioPlaylist playlist) {
 				AudioTrack firstTrack = playlist.getSelectedTrack();
-
+				if (playlist.isSearchResult()) {
+					trackLoaded(playlist.getTracks().get(0));
+					return;
+				}
 				if (firstTrack == null) {
 					firstTrack = playlist.getTracks().get(0);
-				} else  {
+				} else {
 					trackLoaded(firstTrack);
 					return;
 				}
