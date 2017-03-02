@@ -60,18 +60,20 @@ public class Listeners extends ListenerAdapter {
 	public void onGuildJoin(GuildJoinEvent e) {
 		checkFiles(e.getGuild());
 		GuildObject g = new GuildObject(e.getGuild());
+		GuildObject.guildMap.put(e.getGuild().getId(), g);
+		log.info("Guild joined: {}", e.getGuild().getName());
 		if (g.getConfig().isFirstTime()) {
 			e.getGuild().getPublicChannel().sendMessage("Hi, I'm Momo! You are my "
 					+ Util.ordinal(Bot.getInstance().getBot().getGuilds().size()) + " server.\n"
 					+ "If you want a list of commands, use `$help`. If you want some tutorials on my features, "
 					+ "do `$howto` - I suggest doing `$howto setup` immediately.\n"
 					+ "I also feature a web dashboard for my configuration! "
-					+ "Access it here: <https://momobot.io/dash>").queue();
-			g.getConfig().setFirstTime(false);
+					+ "Access it here: <https://momobot.io/dash>").queue(success -> {
+						g.getConfig().setFirstTime(false);
+					}, failure -> {
+						g.getConfig().setFirstTime(false);
+					});
 		}
-		GuildObject.guildMap.put(e.getGuild().getId(), g);
-		log.info("Guild joined: {}", e.getGuild().getName());
-
 	}
 
 	@Override

@@ -15,6 +15,8 @@ import io.ph.bot.commands.Command;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.feed.RedditEventListener;
 import io.ph.bot.feed.RedditFeedObserver;
+import io.ph.bot.feed.TwitchEventListener;
+import io.ph.bot.feed.TwitchFeedObserver;
 import io.ph.bot.feed.TwitterEventListener;
 import io.ph.bot.feed.TwitterFeedObserver;
 import io.ph.bot.model.GuildObject;
@@ -56,6 +58,7 @@ public class Diagnostics extends Command {
 		em.addField("Threads", Thread.activeCount() + "", true);
 		em.addField("Subreddit Feed Count", getSubredditFeedCount() + "", true);
 		em.addField("Twitter Feed Count", getTwitterFeedCount() + "", true);
+		em.addField("Twitch Feed Count", getTwitchFeedCount() + "", true);
 		em.addField("Playing music", String.format("%d/%d",
 				playingMusic(), Bot.getInstance().getBot().getGuilds().size()), true);
 		em.addField("Response count", Bot.getInstance().getBot().getResponseTotal() + "", true);
@@ -74,6 +77,13 @@ public class Diagnostics extends Command {
 	private static int getTwitterFeedCount() {
 		int counter = 0;
 		for(List<TwitterFeedObserver> list : TwitterEventListener.getFeed().values()) {
+			counter += list.size();
+		}
+		return counter;
+	}
+	private static int getTwitchFeedCount() {
+		int counter = 0;
+		for(List<TwitchFeedObserver> list : TwitchEventListener.getFeed().values()) {
 			counter += list.size();
 		}
 		return counter;
