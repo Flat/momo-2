@@ -7,7 +7,9 @@ import java.util.List;
 
 import io.ph.bot.commands.Command;
 import io.ph.bot.commands.CommandData;
+import io.ph.bot.model.GenericContainer;
 import io.ph.bot.model.Permission;
+import io.ph.util.MessageUtils;
 import io.ph.util.Util;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
@@ -35,54 +37,86 @@ public class Prune extends Command {
 		String t = Util.getCommandContents(msg);
 		int i = 0;
 		Member target = null;
-
 		if (t.length() == 0) {
 			// Prune the default amount
-			msg.getTextChannel().deleteMessages(msg.getTextChannel()
-					.getHistory().retrievePast(DEFAULT_PRUNE + 1).complete());
-			em.setTitle("Success", null)
-			.setColor(Color.GREEN)
-			.setDescription("Pruned " + DEFAULT_PRUNE + " messages");
+			
+			msg.getTextChannel().getHistory().retrievePast(DEFAULT_PRUNE + 1).queue(list -> {
+				msg.getTextChannel().deleteMessages(list).queue(success -> {
+					em.setTitle("Success", null)
+					.setColor(Color.GREEN)
+					.setDescription("Pruned " + DEFAULT_PRUNE + " messages");
+					msg.getChannel().sendMessage(em.build()).queue();
+				}, failure -> {
+					msg.getChannel().sendMessage(MessageUtils.handleFailure(failure)).queue();
+				});
+			}, failure -> {
+				msg.getChannel().sendMessage(MessageUtils.handleFailure(failure)).queue();
+			});
+			
 		} else if (Util.isInteger(Util.getParam(msg))) {
 			// User specified a number as the first parameter
 			int num = Integer.parseInt(Util.getParam(msg)) > MAX_PRUNE ? MAX_PRUNE : Integer.parseInt(Util.getParam(msg));
 			num = num < 1 ? 1 : num;
 			if (t.split(" ").length > 1) {
 				// User specified a target after the #
-				if (msg.getMentionedUsers().size() == 0)
+				if (msg.getMentionedUsers().size() == 0) {
 					target = Util.resolveMemberFromMessage(t.substring(t.indexOf(" ") + 1), msg.getGuild());
-				else
+				} else {
 					target = msg.getGuild().getMember(msg.getMentionedUsers().get(0));
+				}
 				if (target == null) {
 					em.setTitle("Error", null)
 					.setColor(Color.RED)
 					.setDescription("User " + t.substring(t.indexOf(" ") + 1) + " does not exist");
+					msg.getChannel().sendMessage(em.build()).queue();
 				}
 			}
 			if (target == null) {
 				// User didn't specify a target, just prune the #
-				msg.getTextChannel().deleteMessages(msg.getTextChannel()
-						.getHistory().retrievePast(num + 1).complete());
-				em.setTitle("Success", null)
-				.setColor(Color.GREEN)
-				.setDescription("Pruned " + (i - 2) + " messages");
+				final int i2 = num;
+				msg.getTextChannel().getHistory().retrievePast(num + 2).queue(msgs -> {
+					msg.getTextChannel().deleteMessages(msgs).queue(success -> {
+						em.setTitle("Success", null)
+						.setColor(Color.GREEN)
+						.setDescription("Pruned " + (i2) + " messages");
+						msg.getChannel().sendMessage(em.build()).queue();
+					}, failure -> {
+						msg.getChannel().sendMessage(MessageUtils.handleFailure(failure)).queue();
+					});
+				}, failure -> {
+					msg.getChannel().sendMessage(MessageUtils.handleFailure(failure)).queue();
+				});
+				
 			} else {
 				// Target specified, only their messages
-				int targetCounter = 0;
-				List<Message> toPrune = new ArrayList<>();
-				for (Message m : msg.getTextChannel().getHistory().retrievePast(MAX_PRUNE).complete()) {
-					if (i++ == MAX_PRUNE || targetCounter == num)
-						break;
-					if (m.getAuthor().equals(target.getUser())) {
-						targetCounter++;
-						toPrune.add(m);
+				GenericContainer<Integer> num2 = new GenericContainer<>(num);
+				final Member target2 = target;
+				msg.getTextChannel().getHistory().retrievePast(MAX_PRUNE).queue(list -> {
+					List<Message> toPrune = new ArrayList<>();
+					GenericContainer<Integer> tCounter = new GenericContainer<>(0);
+					int i2 = 0;
+					for (Message m : list) {
+						if (i2++ == MAX_PRUNE || tCounter.getVal() == num2.getVal())
+							break;
+						if (m.getAuthor().equals(target2.getUser())) {
+							tCounter.setVal(tCounter.getVal() + 1);
+							toPrune.add(m);
+						}
 					}
-				}
-				msg.getTextChannel().deleteMessages(toPrune);
-				em.setTitle("Success", null)
-				.setColor(Color.GREEN)
-				.setDescription("Pruned " + targetCounter + " of **" 
-						+ target.getEffectiveName() + "**'s messages");
+					msg.getTextChannel().deleteMessages(toPrune).queue(success -> {
+						em.setTitle("Success", null)
+						.setColor(Color.GREEN)
+						.setDescription("Pruned " + tCounter.getVal() + " of **" 
+								+ target2.getEffectiveName() + "**'s messages");
+						msg.getChannel().sendMessage(em.build()).queue();
+					}, failure -> {
+						msg.getChannel().sendMessage(MessageUtils.handleFailure(failure)).queue();
+					});
+				}, failure -> {
+					msg.getChannel().sendMessage(MessageUtils.handleFailure(failure)).queue();
+				});
+				
+				
 			}
 		} else if ((target = Util.resolveMemberFromMessage(msg)) != null) {
 			// User only specified a target
@@ -96,10 +130,18 @@ public class Prune extends Command {
 					toPrune.add(m);
 				}
 			}
-			em.setTitle("Success", null)
-			.setColor(Color.GREEN)
-			.setDescription("Pruned " + targetCounter + " of **" 
-					+ target.getEffectiveName() + "**'s messages");
+			final int targetCounter2 = targetCounter;
+			final Member target2 = target;
+			msg.getTextChannel().deleteMessages(toPrune).queue(success -> {
+				em.setTitle("Success", null)
+				.setColor(Color.GREEN)
+				.setDescription("Pruned " + targetCounter2 + " of **" 
+						+ target2.getEffectiveName() + "**'s messages");
+				msg.getChannel().sendMessage(em.build()).queue();
+			}, failure -> {
+				msg.getChannel().sendMessage(MessageUtils.handleFailure(failure)).queue();;
+			});
+			
 		} else if (Util.isInteger(msg.getContent().split(" ")[msg.getContent().split(" ").length - 1])) {
 			// There's a possibility they did $prune username #
 			String targ = Util.combineStringArray(Util.removeLastArrayEntry(Util.getCommandContents(msg).split(" ")));
@@ -122,13 +164,19 @@ public class Prune extends Command {
 						toPrune.add(m);
 					}
 				}
-				em.setTitle("Success", null)
-				.setColor(Color.GREEN)
-				.setDescription("Pruned " + targetCounter + " of **" 
-						+ target.getEffectiveName() + "**'s messages");
+				final int targetCounter2 = targetCounter;
+				final Member target2 = target;
+				msg.getTextChannel().deleteMessages(toPrune).queue(success -> {
+					em.setTitle("Success", null)
+					.setColor(Color.GREEN)
+					.setDescription("Pruned " + targetCounter2 + " of **" 
+							+ target2.getEffectiveName() + "**'s messages");
+					msg.getChannel().sendMessage(em.build()).queue();
+				}, failure -> {
+					msg.getChannel().sendMessage(MessageUtils.handleFailure(failure)).queue();;
+				});
 			}
 		}
-		msg.getChannel().sendMessage(em.build()).queue();
 	}
 
 }
