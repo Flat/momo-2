@@ -71,7 +71,7 @@ public class Bot {
 			botConfig.setBotInviteLink(config.getString("InviteLink"));
 			botConfig.setMaxSongLength(config.getInt("MaxSongLength", 15));
 			
-			//StatusChangeJob.statuses = config.getStringArray("StatusRotation");
+
 			Configuration subset = config.subset("apikey");
 			Iterator<String> iter = subset.getKeys();
 			while(iter.hasNext()) {

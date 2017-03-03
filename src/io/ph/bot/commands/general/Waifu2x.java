@@ -111,9 +111,8 @@ public class Waifu2x extends Command {
 	 * @param f Image file to upload
 	 * @return InputStream of image
 	 * @throws IOException Something bad happened en route, check that stacktrace
-	 * @throws InvalidMIMEException 
 	 */
-	private static InputStream waifu2x(File f) throws IOException {
+	public static InputStream waifu2x(File f) throws IOException {
 		final String WAIFU2X_API = "http://waifu2x.udp.jp/api";
 		HttpURLConnection conn = (HttpURLConnection) (new URL(WAIFU2X_API)).openConnection();
 		String bound = Long.toHexString(System.currentTimeMillis());
