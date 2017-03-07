@@ -28,6 +28,7 @@ import net.dv8tion.jda.core.entities.Message;
 
 /**
  * Slice up an emoji into a 7x7 grid for Nitro purposes
+ * A foray into meme territory
  * @author Paul
  *
  */
@@ -37,7 +38,7 @@ import net.dv8tion.jda.core.entities.Message;
 		permission = Permission.NONE,
 		description = "Slice up an Emoji into a 7x7 grid for Nitro purposes\n"
 				+ "Takes in one emoji and a single, no space name after",
-				example = ":thinking:"
+				example = ":thinking: nameOfEmote"
 		)
 public class Slice extends Command {
 
