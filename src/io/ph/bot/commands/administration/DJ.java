@@ -52,7 +52,7 @@ public class DJ extends Command {
 		} else {
 			msg.getGuild().getController().createRole().queue(role -> {
 				role.getManagerUpdatable()
-				.getNameField().setValue("muted").update().queue(success -> {
+				.getNameField().setValue(roleName).update().queue(success -> {
 					g.getConfig().setDjRoleId(role.getId());
 					em.setTitle("Success", null)
 					.setColor(Color.GREEN)
@@ -62,7 +62,7 @@ public class DJ extends Command {
 				}, failure -> {
 					em.setTitle("Error", null)
 					.setColor(Color.RED)
-					.setDescription("I need permissions to create a role!");
+					.setDescription(failure.getMessage());
 					msg.getChannel().sendMessage(em.build()).queue();
 				});
 			});
