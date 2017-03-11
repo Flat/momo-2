@@ -45,7 +45,9 @@ public class Music extends Command {
 		GuildObject g = GuildObject.guildMap.get(msg.getGuild().getId());
 		net.dv8tion.jda.core.managers.AudioManager audio = msg.getGuild().getAudioManager();
 		boolean djSet = !g.getConfig().getDjRoleId().isEmpty();
-		if (djSet && !Util.memberHasPermission(msg.getGuild().getMember(msg.getAuthor()), Permission.KICK)
+		if ((djSet && !msg.getGuild().getMember(msg.getAuthor())
+				.getRoles().contains(msg.getGuild().getRoleById(g.getConfig().getDjRoleId())))
+				&& !Util.memberHasPermission(msg.getGuild().getMember(msg.getAuthor()), Permission.KICK)
 				&& !(contents.startsWith("now") || contents.startsWith("next")
 						|| contents.startsWith("list"))) {
 			// Opting to fail silently here
