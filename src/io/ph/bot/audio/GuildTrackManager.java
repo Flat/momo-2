@@ -93,14 +93,11 @@ public class GuildTrackManager extends AudioEventAdapter {
 				.getTextChannelById(GuildObject.guildMap.get(this.guildId)
 						.getSpecialChannels().getMusic())) != null) {
 			EmbedBuilder em = new EmbedBuilder();
-			em.setTitle("New track: " + this.getCurrentSong().getTitle() == null ? 
-					track.getInfo().title :
-						this.getCurrentSong().getTitle(), this.getCurrentSong().getUrl())
+			em.setTitle("New track: " + track.getInfo().title, track.getInfo().uri)
 			.setColor(Color.MAGENTA)
 			.setDescription(String.format("%s, **%s** is now playing\n"
 					+ "%s", this.currentSong.getQueuer().getAsMention(),
-					this.getCurrentSong().getTitle() == null ? track.getInfo().title : this.getCurrentSong().getTitle(),
-							this.currentSong.getUrl()));
+					track.getInfo().title, this.currentSong.getUrl()));
 			ch.sendMessage(em.build()).queue();
 		}
 	}
