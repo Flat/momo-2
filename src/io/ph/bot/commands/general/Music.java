@@ -27,14 +27,14 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 		description = "Play or get information on the music playlist\n"
 				+ "You can also play your guild's music playlist\n"
 				+ "If your server has a DJ role, this command is restricted to those in that role or mod+",
-		example = "https://youtu.be/dQw4w9WgXcQ\n"
-				+ "playlist (plays your guild's playlist)\n"
-				+ "now\n"
-				+ "next\n"
-				+ "skip (kick+ force skips)\n"
-				+ "volume (requires kick+)\n"
-				+ "shuffle (requires kick+)\n"
-				+ "stop (requires kick+)"
+				example = "https://youtu.be/dQw4w9WgXcQ\n"
+						+ "playlist (plays your guild's playlist)\n"
+						+ "now\n"
+						+ "next\n"
+						+ "skip (kick+ force skips)\n"
+						+ "volume (requires kick+)\n"
+						+ "shuffle (requires kick+)\n"
+						+ "stop (requires kick+)"
 		)
 public class Music extends Command {
 	@Override
@@ -45,8 +45,9 @@ public class Music extends Command {
 		GuildObject g = GuildObject.guildMap.get(msg.getGuild().getId());
 		net.dv8tion.jda.core.managers.AudioManager audio = msg.getGuild().getAudioManager();
 		boolean djSet = !g.getConfig().getDjRoleId().isEmpty();
-		if (djSet && !(contents.startsWith("now") || contents.startsWith("next")
-				 || contents.startsWith("list"))) {
+		if (djSet && !Util.memberHasPermission(msg.getGuild().getMember(msg.getAuthor()), Permission.KICK)
+				&& !(contents.startsWith("now") || contents.startsWith("next")
+						|| contents.startsWith("list"))) {
 			// Opting to fail silently here
 			return;
 		}
@@ -141,7 +142,8 @@ public class Music extends Command {
 				return;
 			}
 		} else if (contents.startsWith("now")) {
-			if (m.getAudioPlayer().getPlayingTrack() == null) {
+			if (m.getAudioPlayer() == null 
+					|| m.getAudioPlayer().getPlayingTrack() == null) {
 				em.setTitle("Error", null)
 				.setColor(Color.RED)
 				.setDescription("No song currently playing");
@@ -159,7 +161,8 @@ public class Music extends Command {
 			msg.getChannel().sendMessage(em.build()).queue();
 			return;
 		} else if (contents.startsWith("next") || contents.startsWith("list")) {
-			if (m.getAudioPlayer().getPlayingTrack() == null) {
+			if (m.getAudioPlayer() == null 
+					|| m.getAudioPlayer().getPlayingTrack() == null) {
 				em.setTitle("Error", null)
 				.setColor(Color.RED)
 				.setDescription("No song currently playing");
