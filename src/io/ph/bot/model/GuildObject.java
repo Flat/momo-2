@@ -80,6 +80,7 @@ public class GuildObject {
 				config.getInt("CommandCooldown", 0), 
 				welcomeMessage,
 				config.getString("MutedRoleId", ""),
+				config.getString("DjRoleID", ""),
 				config.getBoolean("LimitToOneRole", false),
 				config.getBoolean("FirstTime", true),
 				config.getBoolean("DisableInvites", false),
@@ -367,16 +368,18 @@ public class GuildObject {
 		private boolean disableInvites;
 		private boolean advancedLogging;
 		private String mutedRoleId;
+		private String djRoleId;
 
 		ServerConfiguration(String commandPrefix, int messagesPerFifteen, int commandCooldown,
-				String welcomeMessage, String mutedRoleId, boolean limitToOneRole,
+				String welcomeMessage, String mutedRoleId, String djRoleId, boolean limitToOneRole,
 				boolean firstTime, boolean disableInvites,
 				boolean pmWelcomeMessage, boolean advancedLogging) {
 			this.commandPrefix = commandPrefix;
 			this.messagesPerFifteen = messagesPerFifteen;
 			this.commandCooldown = commandCooldown;
 			this.welcomeMessage = welcomeMessage;
-			this.setMutedRoleId(mutedRoleId);
+			this.mutedRoleId = mutedRoleId;
+			this.djRoleId = djRoleId;
 			this.limitToOneRole = limitToOneRole;
 			this.firstTime = firstTime;
 			this.disableInvites = disableInvites;
@@ -421,9 +424,19 @@ public class GuildObject {
 			config.setProperty("MutedRoleID", mutedRoleId);
 		}
 
+		public String getDjRoleId() {
+			return djRoleId;
+		}
+
+		public void setDjRoleId(String djRoleId) {
+			this.djRoleId = djRoleId;
+			config.setProperty("DjRoleID", djRoleId);
+		}
+
 		public boolean isFirstTime() {
 			return firstTime;
 		}
+		
 		public void setFirstTime(boolean firstTime) {
 			this.firstTime = firstTime;
 			config.setProperty("FirstTime", firstTime);
@@ -464,6 +477,8 @@ public class GuildObject {
 			this.advancedLogging = advancedLogging;
 			config.setProperty("AdvancedLogging", advancedLogging);
 		}
+
+
 	}
 
 	public class HistoricalSearches {

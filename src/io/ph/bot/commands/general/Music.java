@@ -25,7 +25,8 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 		aliases = {"play"},
 		permission = Permission.NONE,
 		description = "Play or get information on the music playlist\n"
-				+ "You can also play your guild's music playlist",
+				+ "You can also play your guild's music playlist\n"
+				+ "If your server has a DJ role, this command is restricted to those in that role or mod+",
 		example = "https://youtu.be/dQw4w9WgXcQ\n"
 				+ "playlist (plays your guild's playlist)\n"
 				+ "now\n"
@@ -43,7 +44,12 @@ public class Music extends Command {
 		String titleOverride = null;
 		GuildObject g = GuildObject.guildMap.get(msg.getGuild().getId());
 		net.dv8tion.jda.core.managers.AudioManager audio = msg.getGuild().getAudioManager();
-
+		boolean djSet = !g.getConfig().getDjRoleId().isEmpty();
+		if (djSet && !(contents.startsWith("now") || contents.startsWith("next")
+				 || contents.startsWith("list"))) {
+			// Opting to fail silently here
+			return;
+		}
 		Optional<VoiceChannel> opt;
 		// First, check if the guild has a designated music channel
 		if (!g.getSpecialChannels().getMusicVoice().isEmpty() 
@@ -111,7 +117,8 @@ public class Music extends Command {
 			if (maxVotes > 5)
 				maxVotes = 5;
 			if (++currentVotes >= maxVotes 
-					|| Util.memberHasPermission(msg.getGuild().getMember(msg.getAuthor()), Permission.KICK)) {
+					|| Util.memberHasPermission(msg.getGuild().getMember(msg.getAuthor()), Permission.KICK)
+					|| djSet) {
 				m.getSkipVoters().clear();
 				if (currentVotes >= maxVotes) {
 					em.setTitle("Success", null)
@@ -179,7 +186,8 @@ public class Music extends Command {
 			msg.getChannel().sendMessage(em.build()).queue();
 			return;
 		} else if (contents.startsWith("stop")) {
-			if (!Util.memberHasPermission(msg.getGuild().getMember(msg.getAuthor()), Permission.KICK)) {
+			if (!Util.memberHasPermission(msg.getGuild().getMember(msg.getAuthor()), Permission.KICK)
+					&& !djSet) {
 				em.setTitle("Error", null)
 				.setColor(Color.RED)
 				.setDescription("You need the kick+ permission to stop the queue");
@@ -193,7 +201,8 @@ public class Music extends Command {
 			msg.getChannel().sendMessage(em.build()).queue();
 			return;
 		} else if (contents.startsWith("shuffle")) {
-			if (!Util.memberHasPermission(msg.getGuild().getMember(msg.getAuthor()), Permission.KICK)) {
+			if (!Util.memberHasPermission(msg.getGuild().getMember(msg.getAuthor()), Permission.KICK)
+					&& !djSet) {
 				em.setTitle("Error", null)
 				.setColor(Color.RED)
 				.setDescription("You need the kick+ permission to shuffle the queue");
@@ -207,7 +216,8 @@ public class Music extends Command {
 			msg.getChannel().sendMessage(em.build()).queue();
 			return;
 		} else if (contents.startsWith("volume")) {
-			if (!Util.memberHasPermission(msg.getGuild().getMember(msg.getAuthor()), Permission.KICK)) {
+			if (!Util.memberHasPermission(msg.getGuild().getMember(msg.getAuthor()), Permission.KICK)
+					&& !djSet) {
 				em.setTitle("Error", null)
 				.setColor(Color.RED)
 				.setDescription("You need the kick+ permission to change the volume");
