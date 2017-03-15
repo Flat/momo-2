@@ -29,6 +29,7 @@ import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 
 /**
@@ -226,6 +227,21 @@ public class Bot {
 				TextChannel t;
 				if ((t = j.getTextChannelById(channelId)) != null) {
 					return t;
+				}
+			}
+			return null;
+		}
+		
+		/**
+		 * Get a voice channel from an ID from all shards
+		 * @param channelId Channel ID
+		 * @return VoiceChannel if found, null if not
+		 */
+		public VoiceChannel getVoiceChannelById(String channelId) {
+			for (JDA j : jdaClients) {
+				VoiceChannel c;
+				if ((c = j.getVoiceChannelById(channelId)) != null) {
+					return c;
 				}
 			}
 			return null;

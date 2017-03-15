@@ -9,6 +9,7 @@ import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.MacroObject;
 import io.ph.bot.model.Permission;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Message;
 
 /**
@@ -27,8 +28,12 @@ public class Stats extends Command {
 	@Override
 	public void executeCommand(Message msg) {
 		EmbedBuilder em = new EmbedBuilder();
+		int onlineUsers = (int) msg.getGuild().getMembers().stream()
+				.filter(m -> !m.getOnlineStatus().equals(OnlineStatus.OFFLINE))
+				.count();
+		
 		em.setTitle(msg.getGuild().getName(), null)
-		.addField("Users", msg.getGuild().getMembers().size() + "", true)
+		.addField("Users", onlineUsers + "/" + msg.getGuild().getMembers().size(), true)
 		.addField("Text Channels", msg.getGuild().getTextChannels().size() + "", true)
 		.addField("Voice Channels", msg.getGuild().getVoiceChannels().size() + "", true)
 		.addField("Owner", msg.getGuild().getOwner().getEffectiveName(), true)

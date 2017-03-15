@@ -41,57 +41,42 @@ public class Diagnostics extends Command {
 
 	@Override
 	public void executeCommand(Message msg) {
-		AtomicInteger counter = new AtomicInteger();
+		AtomicInteger guildCounter = new AtomicInteger();
+		AtomicInteger userCounter = new AtomicInteger();
+		AtomicInteger botCounter = new AtomicInteger();
+		AtomicInteger textCounter = new AtomicInteger();
+		AtomicInteger voiceCounter = new AtomicInteger();
+		AtomicLong responseCounter = new AtomicLong();
+		Bot.getInstance().getBots().stream()
+		.forEach(j -> {
+			guildCounter.addAndGet(j.getGuilds().size());
+			userCounter.addAndGet(j.getUsers().size());
+			botCounter.addAndGet((int) j.getUsers().stream()
+					.filter(u -> u.isBot())
+					.count());
+			textCounter.addAndGet(j.getTextChannels().size());
+			voiceCounter.addAndGet(j.getVoiceChannels().size());
+			responseCounter.addAndGet(j.getResponseTotal());
+		});
+		
 		EmbedBuilder em = new EmbedBuilder();
 		em.setAuthor(msg.getGuild().getMember(msg.getJDA().getSelfUser()).getEffectiveName() + " diagnostics", 
 				null, 
 				msg.getJDA().getSelfUser().getAvatarUrl());
 		Runtime r = Runtime.getRuntime();
 		NumberFormat format = NumberFormat.getInstance();
-		
-		Bot.getInstance().getBots().stream()
-				.forEach(j -> counter.addAndGet(j.getGuilds().size()));
-		em.addField("Connected guilds", counter.intValue() + "", true);
-		counter.set(0);
-		
-		
-		AtomicInteger botCounter = new AtomicInteger();
-		Bot.getInstance().getBots().stream()
-		.forEach(j -> counter.addAndGet(j.getUsers().size()));
-		Bot.getInstance().getBots().stream()
-		.forEach(j -> botCounter.addAndGet((int) j.getUsers().stream()
-				.filter(u -> u.isBot())
-				.count()));
-		em.addField("Connected users", counter.intValue() + " (" + botCounter.intValue() + " bots)", true);
-		counter.set(0);
-		
-		
-		Bot.getInstance().getBots().stream()
-		.forEach(j -> counter.addAndGet(j.getTextChannels().size()));
-		em.addField("Total text channels", counter.intValue() + "", true);
-		counter.set(0);
-		
-		
-		Bot.getInstance().getBots().stream()
-		.forEach(j -> counter.addAndGet(j.getTextChannels().size()));
-		em.addField("Total voice channels", counter.intValue() + "", true);
-		counter.set(0);
-		
-		
+		em.addField("Connected guilds", guildCounter.intValue() + "", true);
+		em.addField("Connected users", userCounter.intValue() + " (" + botCounter.intValue() + " bots)", true);
+		em.addField("Total text channels", textCounter.intValue() + "", true);
+		em.addField("Total voice channels", voiceCounter.intValue() + "", true);
 		em.addField("Memory usage", format.format(r.totalMemory() / (1024 * 1024)) + "MB", true);
 		em.addField("CPU usage", getCpuLoad() + "%", true);
 		em.addField("Threads", Thread.activeCount() + "", true);
 		em.addField("Subreddit Feed Count", getSubredditFeedCount() + "", true);
 		em.addField("Twitter Feed Count", getTwitterFeedCount() + "", true);
 		em.addField("Twitch Feed Count", getTwitchFeedCount() + "", true);
-		
-		
-		Bot.getInstance().getBots().stream()
-		.forEach(j -> counter.addAndGet(j.getGuilds().size()));
 		em.addField("Playing music", String.format("%d/%d",
-				playingMusic(), counter.intValue()), true);
-		counter.set(0);
-		
+				playingMusic(), guildCounter.intValue()), true);
 		AtomicLong responses = new AtomicLong();
 		Bot.getInstance().getBots().stream()
 		.forEach(j -> responses.addAndGet(j.getResponseTotal()));
