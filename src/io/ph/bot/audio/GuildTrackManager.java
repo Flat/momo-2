@@ -97,7 +97,7 @@ public class GuildTrackManager extends AudioEventAdapter {
 			.setColor(Color.MAGENTA)
 			.setDescription(String.format("%s, **%s** is now playing\n"
 					+ "%s", this.currentSong.getQueuer().getAsMention(),
-					track.getInfo().title, this.currentSong.getUrl()));
+					track.getInfo().title, track.getInfo().uri));
 			ch.sendMessage(em.build()).queue();
 		}
 	}
