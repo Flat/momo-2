@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -13,11 +14,9 @@ import org.slf4j.LoggerFactory;
 import io.ph.bot.Bot;
 import io.ph.bot.commands.Command;
 import io.ph.bot.commands.CommandHandler;
-import io.ph.bot.feed.TwitterEventListener;
 import io.ph.bot.model.GuildObject;
 import io.ph.bot.model.Permission;
 import io.ph.bot.procedural.ProceduralListener;
-import io.ph.bot.scheduler.JobScheduler;
 import io.ph.util.MessageUtils;
 import io.ph.util.Util;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -46,14 +45,13 @@ public class Listeners extends ListenerAdapter {
 
 	@Override
 	public void onReady(ReadyEvent e) {
-		JobScheduler.initializeScheduler();
-		TwitterEventListener.initTwitter();
 		e.getJDA().getGuilds().stream()
 		.forEach(g -> {
 			checkFiles(g);
 			GuildObject.guildMap.put(g.getId(), new GuildObject(g));
 		});
-		log.info("Bot is now logged on: {} guilds", e.getJDA().getGuilds().size());
+		log.info("Bot is now logged on shard {}: {} guilds", e.getJDA().getShardInfo().getShardId(),
+				e.getJDA().getGuilds().size());
 	}
 
 	@Override 
@@ -61,10 +59,13 @@ public class Listeners extends ListenerAdapter {
 		checkFiles(e.getGuild());
 		GuildObject g = new GuildObject(e.getGuild());
 		GuildObject.guildMap.put(e.getGuild().getId(), g);
-		log.info("Guild joined: {}", e.getGuild().getName());
+		log.info("Guild joined: {} on shard: {}", e.getGuild().getName(), e.getJDA().getShardInfo().getShardId());
 		if (g.getConfig().isFirstTime()) {
+			AtomicInteger guildCount = new AtomicInteger();
+			Bot.getInstance().getBots().stream()
+			.forEach(j -> guildCount.addAndGet(j.getGuilds().size()));
 			e.getGuild().getPublicChannel().sendMessage("Hi, I'm Momo! You are my "
-					+ Util.ordinal(Bot.getInstance().getBot().getGuilds().size()) + " server.\n"
+					+ Util.ordinal(guildCount.get()) + " server.\n"
 					+ "If you want a list of commands, use `$help`. If you want some tutorials on my features, "
 					+ "do `$howto` - I suggest doing `$howto setup` immediately.\n"
 					+ "I also feature a web dashboard for my configuration! "
@@ -123,7 +124,7 @@ public class Listeners extends ListenerAdapter {
 	public void onGuildMemberLeave(GuildMemberLeaveEvent e) {
 		if (!Bot.isReady)
 			return;
-		if (e.getMember().getUser().getId().equals(Bot.getInstance().getBot().getSelfUser().getId()))
+		if (e.getMember().getUser().getId().equals(e.getJDA().getSelfUser().getId()))
 			return;
 		GuildObject g = GuildObject.guildMap.get(e.getGuild().getId());
 		if (!g.getSpecialChannels().getLog().equals("")) {
@@ -183,7 +184,7 @@ public class Listeners extends ListenerAdapter {
 			return;
 		// Requesting prefix
 		if (!e.getMessage().mentionsEveryone()
-				&& e.getMessage().isMentioned(Bot.getInstance().getBot().getSelfUser())) {
+				&& e.getMessage().isMentioned(e.getJDA().getSelfUser())) {
 			if (e.getMessage().getContent().contains("prefix")) {
 				e.getAuthor().openPrivateChannel().queue(ch -> {
 					ch.sendMessage(GuildObject
@@ -228,7 +229,7 @@ public class Listeners extends ListenerAdapter {
 	public void onPrivateMessageReceived(PrivateMessageReceivedEvent e) {
 		if (!Bot.isReady)
 			return;
-		if (e.getAuthor().equals(Bot.getInstance().getBot().getSelfUser())) {
+		if (e.getAuthor().equals(e.getJDA().getSelfUser())) {
 			return;
 		}
 		

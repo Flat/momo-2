@@ -54,10 +54,10 @@ public class ReminderJob implements Job {
 				.setDescription(reminder)
 				.setTimestamp(Instant.now());
 				try {
-					Bot.getInstance().getBot().getUserById(userId).openPrivateChannel().queue(ch -> {
+					Bot.getInstance().shards.getUserById(userId).openPrivateChannel().queue(ch -> {
 						ch.sendMessage(em.build()).queue();
 					});
-				} catch (NullPointerException e) { }
+				} catch (Exception e) { }
 				String sql = "DELETE FROM `global_reminders` WHERE user_id = ? AND remind_time = ?";
 				prep = conn.prepareStatement(sql);
 				prep.setString(1, userId);

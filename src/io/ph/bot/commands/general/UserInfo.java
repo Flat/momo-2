@@ -2,6 +2,7 @@ package io.ph.bot.commands.general;
 
 import java.awt.Color;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import io.ph.bot.Bot;
@@ -42,9 +43,14 @@ public class UserInfo extends Command {
 			msg.getChannel().sendMessage(em.build()).queue();
 			return;
 		}
-		int mutualServers = (int) Bot.getInstance().getBot().getGuilds().stream()
-				.filter(g -> g.getMemberById(target.getUser().getId()) != null)
-				.count();
+		
+		AtomicInteger mutualServers = new AtomicInteger();
+		Bot.getInstance().getBots().stream()
+		.forEach(j -> {
+			mutualServers.addAndGet((int) j.getGuilds().stream()
+			.filter(g -> g.getMemberById(target.getUser().getId()) != null)
+			.count());
+		});
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		em.setTitle("User info for " + target.getEffectiveName(), null)
 		.setColor(Color.MAGENTA)

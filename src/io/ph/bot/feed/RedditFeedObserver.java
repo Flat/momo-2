@@ -153,7 +153,7 @@ public class RedditFeedObserver implements Serializable {
 	}
 
 	public TextChannel getDiscoChannel() {
-		return Bot.getInstance().getBot().getTextChannelById(discoChannel);
+		return Bot.getInstance().shards.getTextChannelById(discoChannel);
 	}
 	
 	public String getDiscoChannelId() {

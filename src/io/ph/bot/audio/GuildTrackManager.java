@@ -60,7 +60,7 @@ public class GuildTrackManager extends AudioEventAdapter {
 
 	@Override
 	public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-		Guild guild = Bot.getInstance().getBot().getGuildById(this.guildId);
+		Guild guild = Bot.getInstance().shards.getGuildById(this.guildId);
 		GuildObject g = GuildObject.guildMap.get(this.guildId);
 		g.getMusicManager().getSkipVoters().clear();
 		if (!queue.isEmpty()) {
@@ -73,7 +73,7 @@ public class GuildTrackManager extends AudioEventAdapter {
 			nextTrack();
 		} else {
 			TextChannel ch;
-			if(this.currentSong != null && (ch = Bot.getInstance().getBot()
+			if(this.currentSong != null && (ch = Bot.getInstance().shards
 					.getTextChannelById(g.getSpecialChannels().getMusic())) != null) {
 				EmbedBuilder em = new EmbedBuilder();
 				em.setTitle("Queue finished!", null)
@@ -89,7 +89,7 @@ public class GuildTrackManager extends AudioEventAdapter {
 	@Override
 	public void onTrackStart(AudioPlayer player, AudioTrack track) {
 		TextChannel ch;
-		if((ch = Bot.getInstance().getBot()
+		if((ch = Bot.getInstance().shards
 				.getTextChannelById(GuildObject.guildMap.get(this.guildId)
 						.getSpecialChannels().getMusic())) != null) {
 			EmbedBuilder em = new EmbedBuilder();

@@ -3,7 +3,6 @@ package io.ph.bot.commands.general;
 import java.awt.Color;
 import java.util.Optional;
 
-import io.ph.bot.Bot;
 import io.ph.bot.audio.AudioManager;
 import io.ph.bot.audio.GuildMusicManager;
 import io.ph.bot.audio.TrackDetails;
@@ -56,10 +55,8 @@ public class Music extends Command {
 		Optional<VoiceChannel> opt;
 		// First, check if the guild has a designated music channel
 		if (!g.getSpecialChannels().getMusicVoice().isEmpty() 
-				&& Bot.getInstance()
-				.getBot().getVoiceChannelById(g.getSpecialChannels().getMusicVoice()) != null) {
-			audio.openAudioConnection(Bot.getInstance()
-					.getBot().getVoiceChannelById(g.getSpecialChannels().getMusicVoice()));
+				&& msg.getJDA().getVoiceChannelById(g.getSpecialChannels().getMusicVoice()) != null) {
+			audio.openAudioConnection(msg.getJDA().getVoiceChannelById(g.getSpecialChannels().getMusicVoice()));
 		} else if (!audio.isConnected() && !audio.isAttemptingToConnect()) {
 			if ((opt = msg.getGuild().getVoiceChannels().stream()
 					.filter(v -> v.getMembers().contains(msg.getGuild().getMember(msg.getAuthor())))
@@ -247,10 +244,8 @@ public class Music extends Command {
 		} else if (contents.startsWith("playlist")) {
 			// Just queue up all the songs I guess
 			if (!g.getSpecialChannels().getMusicVoice().isEmpty() 
-					&& Bot.getInstance()
-					.getBot().getVoiceChannelById(g.getSpecialChannels().getMusicVoice()) != null) {
-				audio.openAudioConnection(Bot.getInstance()
-						.getBot().getVoiceChannelById(g.getSpecialChannels().getMusicVoice()));
+					&& msg.getJDA().getVoiceChannelById(g.getSpecialChannels().getMusicVoice()) != null) {
+				audio.openAudioConnection(msg.getJDA().getVoiceChannelById(g.getSpecialChannels().getMusicVoice()));
 			} else if (!audio.isConnected() && !audio.isAttemptingToConnect()) {
 				if ((opt = msg.getGuild().getVoiceChannels().stream()
 						.filter(v -> v.getMembers().contains(msg.getGuild().getMember(msg.getAuthor())))

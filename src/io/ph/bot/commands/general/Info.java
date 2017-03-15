@@ -26,8 +26,7 @@ public class Info extends Command {
 	@Override
 	public void executeCommand(Message msg) {
 		EmbedBuilder em = new EmbedBuilder();
-		em.setTitle("Hi, I'm " + msg.getGuild().getMember(Bot.getInstance()
-				.getBot().getSelfUser()).getEffectiveName(), null)
+		em.setTitle("Hi, I'm " + msg.getGuild().getMember(msg.getJDA().getSelfUser()).getEffectiveName(), null)
 		.setColor(Color.MAGENTA)
 		.addField("Repository", "<https://momobot.io/github>", true)
 		.addField("Help server", "<https://momobot.io/join>", true)
@@ -35,7 +34,7 @@ public class Info extends Command {
 		.addField("Command list", "<https://momobot.io/commands.html>", true)
 		.setDescription("I can do a lot of things! Too many to list here, though. Feel free to take a look "
 				+ "through the links below, though, to get a quick rundown of my features")
-		.setThumbnail(Bot.getInstance().getBot().getSelfUser().getAvatarUrl())
+		.setThumbnail(msg.getJDA().getSelfUser().getAvatarUrl())
 		.setFooter(String.format("Version %s | Made with <3 by %s", 
 				Bot.BOT_VERSION,
 				"Kagumi"), null);

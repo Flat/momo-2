@@ -106,7 +106,7 @@ public class TwitchFeedObserver implements Serializable {
 	 * @return TextChannel
 	 */
 	public TextChannel getDiscoChannel() {
-		return Bot.getInstance().getBot().getTextChannelById(discoChannel);
+		return Bot.getInstance().shards.getTextChannelById(discoChannel);
 	}
 
 	/**

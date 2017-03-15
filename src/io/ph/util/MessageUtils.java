@@ -16,7 +16,7 @@ public class MessageUtils {
 	 * @param e MessageEmbed
 	 */
 	public static void sendMessage(String channelId, MessageEmbed e) {
-		Bot.getInstance().getBot().getTextChannelById(channelId).sendMessage(e).queue();
+		Bot.getInstance().shards.getTextChannelById(channelId).sendMessage(e).queue();
 	}
 	
 	/**
@@ -25,7 +25,7 @@ public class MessageUtils {
 	 * @param msg String of message
 	 */
 	public static void sendMessage(String channelId, String msg) {
-		Bot.getInstance().getBot().getTextChannelById(channelId).sendMessage(msg).queue();		
+		Bot.getInstance().shards.getTextChannelById(channelId).sendMessage(msg).queue();		
 	}
 	
 	/**
@@ -34,7 +34,7 @@ public class MessageUtils {
 	 * @param msg String of message
 	 */
 	public static void sendPrivateMessage(String userId, String msg) {
-		Bot.getInstance().getBot().getUserById(userId).openPrivateChannel().queue(ch -> ch.sendMessage(msg).queue());
+		Bot.getInstance().shards.getUserById(userId).openPrivateChannel().queue(ch -> ch.sendMessage(msg).queue());
 	}
 	
 	/**

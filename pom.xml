@@ -178,7 +178,7 @@
 		<dependency>
 			<groupId>org.xerial</groupId>
 			<artifactId>sqlite-jdbc</artifactId>
-			<version>3.8.11.2</version>
+			<version>3.16.1</version>
 		</dependency>
 		<!-- These dependencies are required by JDA but are not in compile scope -->
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->

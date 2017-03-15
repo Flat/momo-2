@@ -50,7 +50,7 @@ public class TimedPunishJob implements Job {
 				String userId = rs.getString(1);
 				String guildId = rs.getString(2);
 				String type = rs.getString(4);
-				Guild g = Bot.getInstance().getBot().getGuildById(guildId);
+				Guild g = Bot.getInstance().shards.getGuildById(guildId);
 				switch(type) {
 				case "ban":
 					g.getController().unban(userId).queue();

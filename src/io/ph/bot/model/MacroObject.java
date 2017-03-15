@@ -140,7 +140,7 @@ public class MacroObject {
 		try {
 			String sql;
 			conn = ConnectionPool.getConnection(this.guildId);
-			Member m = Bot.getInstance().getBot().getGuildById(this.guildId).getMemberById(requesterId);
+			Member m = Bot.getInstance().shards.getGuildById(this.guildId).getMemberById(requesterId);
 			//If user isn't a mod, need to check that they made this
 			if (!Util.memberHasPermission(m, Permission.KICK)) {
 				sql = "SELECT hits FROM `discord_macro` WHERE macro = ? AND user_id = ?";
@@ -187,7 +187,7 @@ public class MacroObject {
 		try {
 			String sql;
 			conn = ConnectionPool.getConnection(this.guildId);
-			Member m = Bot.getInstance().getBot().getGuildById(this.guildId).getMemberById(requesterId);
+			Member m = Bot.getInstance().shards.getGuildById(this.guildId).getMemberById(requesterId);
 			//If user isn't a mod, need to check that they made this
 			if (!Util.memberHasPermission(m, Permission.KICK)) {
 				sql = "SELECT hits FROM `discord_macro` WHERE macro = ? AND user_id = ?";

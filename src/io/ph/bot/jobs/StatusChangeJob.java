@@ -1,12 +1,13 @@
 package io.ph.bot.jobs;
 
-import org.quartz.Job;
+import org.quartz.InterruptableJob;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.quartz.UnableToInterruptJobException;
 
 import io.ph.bot.State;
 
-public class StatusChangeJob implements Job {
+public class StatusChangeJob implements InterruptableJob {
 	public static String[] statuses;
 	private static int index = 0;
 
@@ -28,5 +29,11 @@ public class StatusChangeJob implements Job {
 		}
 		statuses[statuses.length - 1] = "Restart now!";
 		index = 0;
+	}
+
+	@Override
+	public void interrupt() throws UnableToInterruptJobException {
+		
+		
 	}
 }
