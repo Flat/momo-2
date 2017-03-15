@@ -50,8 +50,12 @@ public class Listeners extends ListenerAdapter {
 			checkFiles(g);
 			GuildObject.guildMap.put(g.getId(), new GuildObject(g));
 		});
-		log.info("Bot is now logged on shard {}: {} guilds", e.getJDA().getShardInfo().getShardId(),
-				e.getJDA().getGuilds().size());
+		if (e.getJDA().getShardInfo() != null) {
+			log.info("Bot is now logged on shard {}: {} guilds", e.getJDA().getShardInfo().getShardId(),
+					e.getJDA().getGuilds().size());
+		} else {
+			log.info("Bot is now logged: {} guilds", e.getJDA().getGuilds().size());
+		}
 	}
 
 	@Override 
@@ -169,7 +173,7 @@ public class Listeners extends ListenerAdapter {
 			return;
 		//log.info("{}: {}", e.getAuthor().getName(), e.getMessage().getContent());
 		GuildObject g = GuildObject.guildMap.get(e.getGuild().getId());
-		
+
 		// Delete invites
 		if (g.getConfig().isDisableInvites()
 				&& !Util.memberHasPermission(e.getMember(), Permission.KICK)) {
@@ -232,7 +236,7 @@ public class Listeners extends ListenerAdapter {
 		if (e.getAuthor().equals(e.getJDA().getSelfUser())) {
 			return;
 		}
-		
+
 		EmbedBuilder em = new EmbedBuilder();
 		Command c;
 		if((c = CommandHandler.getCommand(e.getMessage().getContent().toLowerCase())) == null) {

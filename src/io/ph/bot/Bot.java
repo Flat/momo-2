@@ -49,7 +49,7 @@ public class Bot {
 	private final static int SHARD_COUNT = 1;
 
 	// Set to true if you want various debug statements
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 	public static final String BOT_VERSION = "v2.0.2";
 	public static boolean isReady = false;
 
@@ -63,13 +63,22 @@ public class Bot {
 			System.exit(1);
 		}
 		jdaClients = new ArrayList<>(SHARD_COUNT);
-		for (int i = 0; i < SHARD_COUNT; i++) {
+		if (SHARD_COUNT > 1) {
+			for (int i = 0; i < SHARD_COUNT; i++) {
+				jdaClients.add(new JDABuilder(AccountType.BOT)
+						.setToken(botConfig.getToken())
+						.setStatus(OnlineStatus.DO_NOT_DISTURB)
+						.setGame(Game.of("launching..."))
+						.addListener(new Listeners(), new ModerationListeners(), new VoiceChannelListeners())
+						.useSharding(i, SHARD_COUNT)
+						.buildBlocking());
+			}
+		} else {
 			jdaClients.add(new JDABuilder(AccountType.BOT)
 					.setToken(botConfig.getToken())
 					.setStatus(OnlineStatus.DO_NOT_DISTURB)
 					.setGame(Game.of("launching..."))
 					.addListener(new Listeners(), new ModerationListeners(), new VoiceChannelListeners())
-					.useSharding(i, SHARD_COUNT)
 					.buildBlocking());
 		}
 		shards = new Shards();
@@ -116,7 +125,7 @@ public class Bot {
 	static {
 		instance = new Bot();
 	}	
-	
+
 	public static Bot getInstance() {
 		return instance;
 	}
@@ -200,7 +209,7 @@ public class Bot {
 			this.botInviteLink = botInviteLink;
 		}
 	}
-	
+
 	public class Shards {
 		/**
 		 * Get a guild from an ID from all shards
@@ -216,7 +225,7 @@ public class Bot {
 			}
 			return null;
 		}
-		
+
 		/**
 		 * Get a text channel from an ID from all shards
 		 * @param channelId Channel ID
@@ -231,7 +240,7 @@ public class Bot {
 			}
 			return null;
 		}
-		
+
 		/**
 		 * Get a voice channel from an ID from all shards
 		 * @param channelId Channel ID
@@ -246,7 +255,7 @@ public class Bot {
 			}
 			return null;
 		}
-		
+
 		/**
 		 * Get a user from an ID from all shards
 		 * @param userId User ID
