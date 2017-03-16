@@ -30,7 +30,7 @@ import net.dv8tion.jda.core.entities.Message;
 						+ "remove all (remove all songs from playlist)"
 		)
 public class Playlist extends Command {
-
+	private static final int MAX_SIZE = 100;
 	@Override
 	public void executeCommand(Message msg) {
 		String[] split = Util.removeFirstArrayEntry(msg.getContent().split(" "));
@@ -46,7 +46,7 @@ public class Playlist extends Command {
 			String url = split[1];
 			String title = Util.combineStringArray(Util
 					.removeFirstArrayEntry(Util.removeFirstArrayEntry(split)));
-			if (g.getMusicPlaylist().size() <= 50) {
+			if (g.getMusicPlaylist().size() <= MAX_SIZE) {
 				g.getMusicPlaylist().add(new PlaylistEntity(title, url));
 				em.setTitle("Success", null)
 				.setColor(Color.GREEN)

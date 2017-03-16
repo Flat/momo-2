@@ -71,7 +71,7 @@
 		<dependency>
 			<groupId>net.dv8tion</groupId>
 			<artifactId>JDA</artifactId>
-			<version>3.0.BETA2_148</version>
+			<version>3.0.0_155</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -117,7 +117,7 @@
 		<dependency>
 			<groupId>com.sedmelluq</groupId>
 			<artifactId>lavaplayer</artifactId>
-			<version>1.2.29</version>
+			<version>1.2.30</version>
 		</dependency>
 		<!-- Twitter feeds -->
 		<dependency>
