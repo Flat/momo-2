@@ -156,7 +156,7 @@ public class Music extends Command {
 						m.getTrackManager().getCurrentSong().getTitle(), true)
 			.addField("Progress", Util.formatTime(m.getAudioPlayer().getPlayingTrack().getPosition())
 					+ "/" + Util.formatTime(m.getAudioPlayer().getPlayingTrack().getDuration()), true)
-			.addField("Source", m.getTrackManager().getCurrentSong().getUrl(), false);
+			.addField("Source", m.getAudioPlayer().getPlayingTrack().getInfo().uri, false);
 			msg.getChannel().sendMessage(em.build()).queue();
 			return;
 		} else if (contents.startsWith("next") || contents.startsWith("list")) {
@@ -187,7 +187,8 @@ public class Music extends Command {
 			}
 			msg.getChannel().sendMessage(em.build()).queue();
 			return;
-		} else if (contents.startsWith("stop")) {
+		} else if (contents.startsWith("stop") || contents.startsWith("clear")
+				|| contents.startsWith("reset")) {
 			if (!Util.memberHasPermission(msg.getGuild().getMember(msg.getAuthor()), Permission.KICK)
 					&& !djSet) {
 				em.setTitle("Error", null)
