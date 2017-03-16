@@ -97,11 +97,10 @@ public class JobScheduler {
 	 * Change status on rotation
 	 */
 	private static void statusChange() {
-		JobDetail job = JobBuilder.newJob(StatusChangeJob.class).withIdentity("statusChangeJob", "group1").build();
 		Trigger trigger = TriggerBuilder.newTrigger().withIdentity("statusChangeJob", "group1")
 				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(60).repeatForever()).build();
 		try {
-			scheduler.scheduleJob(job, trigger);
+			scheduler.scheduleJob(StatusChangeJob.job, trigger);
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
