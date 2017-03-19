@@ -60,9 +60,11 @@ public class Diagnostics extends Command {
 		});
 		
 		EmbedBuilder em = new EmbedBuilder();
-		em.setAuthor(msg.getGuild().getMember(msg.getJDA().getSelfUser()).getEffectiveName() + " diagnostics", 
-				null, 
-				msg.getJDA().getSelfUser().getAvatarUrl());
+		String title = msg.getGuild().getMember(msg.getJDA().getSelfUser()).getEffectiveName() + " diagnostics";
+		if (msg.getJDA().getShardInfo() != null) {
+			title += msg.getJDA().getShardInfo().getShardString();
+		}
+		em.setAuthor(title,	null, msg.getJDA().getSelfUser().getAvatarUrl());
 		Runtime r = Runtime.getRuntime();
 		NumberFormat format = NumberFormat.getInstance();
 		em.addField("Connected guilds", guildCounter.intValue() + "", true);
