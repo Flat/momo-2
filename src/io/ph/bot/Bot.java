@@ -94,7 +94,7 @@ public class Bot {
 		TwitterEventListener.initTwitter();
 	}
 
-	private boolean loadProperties() {
+	public boolean loadProperties() {
 		try {
 			PropertiesConfiguration config = new PropertiesConfiguration("resources/Bot.properties");
 			botConfig.setToken(config.getString("BotToken"));
