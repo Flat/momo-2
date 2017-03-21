@@ -11,7 +11,7 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 
 /**
- * Information & intro
+ * Get a user's avatar
  * @author Paul
  *
  */
@@ -38,7 +38,7 @@ public class Avatar extends Command {
 			msg.getChannel().sendMessage(em.build()).queue();
 			return;
 		}
-		msg.getChannel().sendMessage(target.getUser().getAvatarUrl()).queue();
+		msg.getChannel().sendMessage(target.getUser().getAvatarUrl() + "?size=256").queue();
 	}
 
 }

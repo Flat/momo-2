@@ -12,7 +12,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 
 /**
- * Setup the muted role
+ * Setup the DJ role
  * @author Paul
  *
  */

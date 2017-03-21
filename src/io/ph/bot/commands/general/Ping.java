@@ -21,6 +21,7 @@ public class Ping extends Command {
 		EmbedBuilder em = new EmbedBuilder();
 		em.setTitle("Ping?", null)
 		.setDescription("Pong!")
+		.setFooter(msg.getJDA().getPing() + "ms", null)
 		.setColor(Color.MAGENTA);
 		msg.getChannel().sendMessage(em.build()).queue();
 	}
