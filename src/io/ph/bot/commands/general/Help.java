@@ -82,13 +82,15 @@ public class Help extends Command {
 				.setColor(Color.CYAN)
 				.addField(prev, sb.toString(), false)
 				.setFooter("PM me a command name to get more information", null);
-				msg.getAuthor().getPrivateChannel().sendMessage(em.build()).queue();
+				msg.getAuthor().getPrivateChannel().sendMessage(em.build()).queue(success1 -> {
+					em.clearFields();
+					em.setTitle("Success", null)
+					.setColor(Color.GREEN)
+					.setDescription("Check your PMs!");
+					msg.getChannel().sendMessage(em.build()).queue();
+				});
 			});
-			em.clearFields();
-			em.setTitle("Success", null)
-			.setColor(Color.GREEN)
-			.setDescription("Check your PMs!");
-			msg.getChannel().sendMessage(em.build()).queue();
+			
 		}
 
 	}
