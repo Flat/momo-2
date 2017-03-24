@@ -224,7 +224,8 @@ public class Music extends Command {
 		}
 		em.setTitle("Current track", null)
 		.setColor(Color.CYAN)
-		.addField("Name", m.getTrackManager().getCurrentSong().getTitle() == null ? 
+		.addField("Name", (m.getTrackManager().getCurrentSong().getTitle() == null
+		|| m.getTrackManager().getCurrentSong().getTitle().contains("ytsearch")) ? 
 				m.getAudioPlayer().getPlayingTrack().getInfo().title :
 					m.getTrackManager().getCurrentSong().getTitle(), true)
 		.addField("Progress", Util.formatTime(m.getAudioPlayer().getPlayingTrack().getPosition())
