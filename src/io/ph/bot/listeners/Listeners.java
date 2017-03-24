@@ -33,6 +33,7 @@ import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberNickChangeEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.priv.PrivateMessageReceivedEvent;
+import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 /**
@@ -49,6 +50,7 @@ public class Listeners extends ListenerAdapter {
 		.forEach(g -> {
 			checkFiles(g);
 			GuildObject.guildMap.put(g.getId(), new GuildObject(g));
+			startupChecks(g);
 		});
 		if (e.getJDA().getShardInfo() != null) {
 			log.info("Bot is now logged on shard {}: {} guilds", e.getJDA().getShardInfo().getShardId(),
@@ -56,6 +58,23 @@ public class Listeners extends ListenerAdapter {
 		} else {
 			log.info("Bot is now logged: {} guilds", e.getJDA().getGuilds().size());
 		}
+	}
+	
+	/**
+	 * This provides startup checks for guilds and config.
+	 * For example, a guild deletes a joinable role while the bot was offline
+	 * @param guild Guild to check
+	 */
+	private static void startupChecks(Guild guild) {
+		GuildObject g = GuildObject.guildMap.get(guild.getId());
+		
+		// Joinable roles
+		for (String id : g.getJoinableRoles()) {
+			if (guild.getRoleById(id) == null) {
+				g.removeJoinableRole(id);
+			}
+		}
+		
 	}
 
 	@Override 
@@ -288,6 +307,14 @@ public class Listeners extends ListenerAdapter {
 			e.getChannel().createPermissionOverride(r).queue(or -> {
 				or.getManager().deny(net.dv8tion.jda.core.Permission.VOICE_SPEAK).queue();
 			});
+		}
+	}
+	
+	@Override
+	public void onRoleDelete(RoleDeleteEvent e) {
+		GuildObject g = GuildObject.guildMap.get(e.getGuild().getId());
+		if (g.isJoinableRole(e.getRole().getId())) {
+			g.removeJoinableRole(e.getRole().getId());
 		}
 	}
 

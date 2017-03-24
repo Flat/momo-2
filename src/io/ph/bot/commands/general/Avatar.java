@@ -17,7 +17,7 @@ import net.dv8tion.jda.core.entities.Message;
  */
 @CommandData (
 		defaultSyntax = "avatar",
-		aliases = {"ava"},
+		aliases = {"ava", "avi"},
 		permission = Permission.NONE,
 		description = "Link your or another person's avatar",
 		example = "(no parameters)"

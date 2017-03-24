@@ -14,7 +14,7 @@ import net.dv8tion.jda.core.entities.Message;
 
 @CommandData (
 		defaultSyntax = "changeavatar",
-		aliases = {"avatar"},
+		aliases = {},
 		permission = Permission.BOT_OWNER,
 		description = "Upload a discord attachment and change the avatar to said attachment",
 		example = "(image attachment)"
