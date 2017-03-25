@@ -52,9 +52,8 @@ public class UserInfo extends Command {
 			.count());
 		});
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-		Color color = target.getColor() == null ? Color.MAGENTA : target.getColor();
 		em.setTitle("User info for " + target.getEffectiveName(), null)
-		.setColor(color)
+		.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.MAGENTA))
 		.addField("User", target.getUser().getName() + "#" + target.getUser().getDiscriminator(), true)
 		.addField("Creation date", target.getUser().getCreationTime().format(formatter), true)
 		.addField("Mutual servers", mutualServers + "", true)

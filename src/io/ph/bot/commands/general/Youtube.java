@@ -84,7 +84,7 @@ public class Youtube extends Command {
 						new String[] {v.getSnippet().getTitle(), "https://youtube.com/watch?v=" + v.getId()});
 			}
 			em.setTitle("Youtube results for " + contents, null);
-			em.setColor(Color.GREEN);
+			em.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN));
 			em.setDescription(sb.toString());
 			em.setFooter(String.format("Use %smusic # on these results to play music", 
 					GuildObject.guildMap.get(msg.getGuild().getId()).getConfig().getCommandPrefix()), null);

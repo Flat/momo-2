@@ -48,7 +48,7 @@ public class FFXIV extends Command {
 				em.setAuthor(xiv.getFirstName() + " " 
 						+ xiv.getLastName() + " of " + xiv.getServer(), 
 						xiv.getLodestoneLink(), null)
-				.setColor(Color.GREEN)
+				.setColor(Util.memberFromMessage(msg).getColor())
 				.setThumbnail(xiv.getJobImageLink());
 				StringBuilder sb = new StringBuilder();
 				sb.append("**" + xiv.getGender() + " " + xiv.getRace() + "** | **" + xiv.getFaction() + "**\n")

@@ -39,7 +39,7 @@ public class RemoveTwitchFeed extends Command {
 			if(TwitchEventListener.removeTwitchFeed(TwitchEventListener
 					.resolveUserIdFromUsername(contents), msg.getGuild())) {
 				em.setTitle("Success", null)
-				.setColor(Color.GREEN)
+				.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 				.setDescription("Removed **" + contents + "** from your Twitch.tv feeds");
 			} else {
 				em.setTitle("Error", null)

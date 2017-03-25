@@ -78,7 +78,7 @@ public class Music extends Command {
 		if (contents.equals("") && msg.getAttachments().isEmpty()) {
 			String prefix = g.getConfig().getCommandPrefix();
 			em.setTitle(prefix + "music [URL|attachment]", null)
-			.setColor(Color.MAGENTA)
+			.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.MAGENTA))
 			.setDescription(String.format("*%s [URL|attachment]* - play a song\n"
 					+ "*%<s now* - show current song\n"
 					+ "*%<s next* - show playlist of songs\n"
@@ -191,11 +191,11 @@ public class Music extends Command {
 			m.getSkipVoters().clear();
 			if (currentVotes >= maxVotes) {
 				em.setTitle("Success", null)
-				.setColor(Color.GREEN)
+				.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 				.setDescription("Vote to skip passed");
 			} else {
 				em.setTitle("Force skip", null)
-				.setColor(Color.GREEN)
+				.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 				.setDescription("Force skipped by " + msg.getGuild().getMember(msg.getAuthor()).getEffectiveName());
 			}
 			m.getTrackManager().skipTrack();
@@ -204,7 +204,7 @@ public class Music extends Command {
 		} else {
 			m.getSkipVoters().add(msg.getAuthor().getId());
 			em.setTitle("Voted to skip", null)
-			.setColor(Color.GREEN)
+			.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 			.setDescription("Votes needed to pass: " + currentVotes + "/" + maxVotes);
 			msg.getChannel().sendMessage(em.build()).queue();
 		}
@@ -282,7 +282,7 @@ public class Music extends Command {
 		}
 		m.reset();
 		em.setTitle("Music stopped", null)
-		.setColor(Color.GREEN)
+		.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 		.setDescription("Queue cleared");
 		msg.getChannel().sendMessage(em.build()).queue();
 	}
@@ -302,7 +302,7 @@ public class Music extends Command {
 		}
 		m.shuffle();
 		em.setTitle("Music shuffled", null)
-		.setColor(Color.GREEN)
+		.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 		.setDescription("Wow, kerfluffle");
 		msg.getChannel().sendMessage(em.build()).queue();
 	}
@@ -330,7 +330,7 @@ public class Music extends Command {
 			return;
 		}
 		em.setTitle("Success", null)
-		.setColor(Color.GREEN)
+		.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 		.setDescription("Set volume to " + input);
 		msg.getChannel().sendMessage(em.build()).queue();
 		g.getMusicManager().getAudioPlayer().setVolume(input);

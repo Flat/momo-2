@@ -60,7 +60,7 @@ public class WoW extends Command {
 				WoWCharacter wow = new WoWCharacter(serverName, split[0], split[1].toLowerCase());
 				StringBuilder sb = new StringBuilder();
 				em.setTitle(wow.getUsername() + " of " + wow.getRealm(), null)
-				.setColor(Color.GREEN);
+				.setColor(Util.memberFromMessage(msg).getColor());
 				sb.append("**Level " + wow.getLevel() + "** " + wow.getGender() + " "  
 				+ wow.getRace() + " " + wow.getGameClass() +"\n");
 				sb.append("**Item Level**: " + wow.getItemLevel() + "\n");

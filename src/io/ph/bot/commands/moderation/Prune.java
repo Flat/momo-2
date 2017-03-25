@@ -43,7 +43,7 @@ public class Prune extends Command {
 			msg.getTextChannel().getHistory().retrievePast(DEFAULT_PRUNE + 1).queue(list -> {
 				msg.getTextChannel().deleteMessages(list).queue(success -> {
 					em.setTitle("Success", null)
-					.setColor(Color.GREEN)
+					.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 					.setDescription("Pruned " + DEFAULT_PRUNE + " messages");
 					msg.getChannel().sendMessage(em.build()).queue();
 				}, failure -> {
@@ -77,7 +77,7 @@ public class Prune extends Command {
 				msg.getTextChannel().getHistory().retrievePast(num + 2).queue(msgs -> {
 					msg.getTextChannel().deleteMessages(msgs).queue(success -> {
 						em.setTitle("Success", null)
-						.setColor(Color.GREEN)
+						.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 						.setDescription("Pruned " + (i2) + " messages");
 						msg.getChannel().sendMessage(em.build()).queue();
 					}, failure -> {
@@ -105,7 +105,7 @@ public class Prune extends Command {
 					}
 					msg.getTextChannel().deleteMessages(toPrune).queue(success -> {
 						em.setTitle("Success", null)
-						.setColor(Color.GREEN)
+						.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 						.setDescription("Pruned " + tCounter.getVal() + " of **" 
 								+ target2.getEffectiveName() + "**'s messages");
 						msg.getChannel().sendMessage(em.build()).queue();
@@ -134,7 +134,7 @@ public class Prune extends Command {
 			final Member target2 = target;
 			msg.getTextChannel().deleteMessages(toPrune).queue(success -> {
 				em.setTitle("Success", null)
-				.setColor(Color.GREEN)
+				.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 				.setDescription("Pruned " + targetCounter2 + " of **" 
 						+ target2.getEffectiveName() + "**'s messages");
 				msg.getChannel().sendMessage(em.build()).queue();
@@ -168,7 +168,7 @@ public class Prune extends Command {
 				final Member target2 = target;
 				msg.getTextChannel().deleteMessages(toPrune).queue(success -> {
 					em.setTitle("Success", null)
-					.setColor(Color.GREEN)
+					.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 					.setDescription("Pruned " + targetCounter2 + " of **" 
 							+ target2.getEffectiveName() + "**'s messages");
 					msg.getChannel().sendMessage(em.build()).queue();

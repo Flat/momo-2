@@ -95,7 +95,7 @@ public class Macro extends Command {
 		try {
 			if(m.create()) {
 				em.setTitle("Success", null)
-				.setColor(Color.GREEN)
+				.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 				.setDescription("Macro **" + resolved[0] + "** created");
 			} else {
 				em.setTitle("Error", null)
@@ -124,7 +124,7 @@ public class Macro extends Command {
 			MacroObject m = MacroObject.forName(contents, msg.getGuild().getId());
 			if(m.delete(msg.getAuthor().getId())) {
 				em.setTitle("Success", null)
-				.setColor(Color.GREEN)
+				.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 				.setDescription("Macro **" + contents + "** deleted");
 			} else {
 				em.setTitle("Error", null)
@@ -159,7 +159,7 @@ public class Macro extends Command {
 			MacroObject m = MacroObject.forName(resolved[0], msg.getGuild().getId());
 			if(m.edit(msg.getAuthor().getId(), resolved[1])) {
 				em.setTitle("Success", null)
-				.setColor(Color.GREEN)
+				.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 				.setDescription("Macro **" + resolved[0] + "** edited");
 			} else {
 				em.setTitle("Error", null)
@@ -197,7 +197,7 @@ public class Macro extends Command {
 				em.setTitle("Search results for user " 
 						+ msg.getGuild().getMember(msg
 								.getMentionedUsers().get(0)).getEffectiveName(), null)
-				.setColor(Color.GREEN);
+				.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN));
 				int i = 0;
 				for(String s : result) {
 					if(i++ == 75) {
@@ -218,7 +218,7 @@ public class Macro extends Command {
 		} else {
 			if((result = MacroObject.searchForName(contents, msg.getGuild().getId())) != null) {
 				em.setTitle("Search results for " + contents, null)
-				.setColor(Color.GREEN);
+				.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN));
 				int i = 0;
 				for(String s : result) {
 					if(i++ == 75) {
@@ -254,7 +254,7 @@ public class Macro extends Command {
 			MacroObject m = MacroObject.forName(contents, msg.getGuild().getId());
 			Member mem = msg.getGuild().getMemberById(m.getUserId());
 			em.setTitle("Information on " + contents, null)
-			.setColor(Color.GREEN)
+			.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 			.addField("Creator", mem == null ? m.getFallbackUsername() : mem.getEffectiveName(), true)
 			.addField("Hits", m.getHits()+"", true)
 			.addField("Date created", m.getDate().toString(), true);

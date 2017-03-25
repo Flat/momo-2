@@ -38,7 +38,7 @@ public class RemoveTwitterFeed extends Command {
 			User u = TwitterEventListener.twitterClient.lookupUsers(new String[]{contents}).get(0);
 			if(TwitterEventListener.removeTwitterFeed(u.getId(), msg.getGuild())) {
 				em.setTitle("Success", null)
-				.setColor(Color.GREEN)
+				.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 				.setDescription("Removed **" + contents + "** from your Twitter feeds");
 			} else {
 				em.setTitle("Error", null)

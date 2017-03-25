@@ -84,7 +84,7 @@ public class ThemeSearch extends Command implements Runnable {
 		try {
 			tempMessage = msg.getChannel()
 					.sendMessage(new EmbedBuilder()
-							.setColor(Color.MAGENTA)
+							.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.MAGENTA))
 							.setDescription("Searching...")
 							.build()).complete();
 			Map<String, ArrayList<Theme>> map = Theme.getThemeResults(search);

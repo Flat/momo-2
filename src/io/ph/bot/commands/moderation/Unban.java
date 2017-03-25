@@ -72,7 +72,7 @@ public class Unban extends Command {
 		}
 		msg.getGuild().getController().unban(target).queue(success -> {
 			em.setTitle("Success", null)
-			.setColor(Color.GREEN)
+			.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 			.setDescription(target.getName() + " has been unbanned")
 			.setTimestamp(Instant.now())
 			.setFooter("Local time", null);

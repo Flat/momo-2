@@ -49,7 +49,7 @@ public class Playlist extends Command {
 			if (g.getMusicPlaylist().size() <= MAX_SIZE) {
 				g.getMusicPlaylist().add(new PlaylistEntity(title, url));
 				em.setTitle("Success", null)
-				.setColor(Color.GREEN)
+				.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 				.setDescription("Added " + title + " to your playlist");
 				g.saveMusicPlaylist(msg.getGuild().getId());
 			} else {
@@ -62,7 +62,7 @@ public class Playlist extends Command {
 			if (!Util.isInteger(split[1])) {
 				if (split[1].equalsIgnoreCase("all")) {
 					em.setTitle("Success", null)
-					.setColor(Color.GREEN)
+					.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 					.setDescription("Cleared your playlist");
 					g.getMusicPlaylist().clear();
 					g.saveMusicPlaylist(msg.getGuild().getId());
@@ -79,7 +79,7 @@ public class Playlist extends Command {
 			} else {
 				PlaylistEntity e = g.getMusicPlaylist().remove(index);
 				em.setTitle("Success", null)
-				.setColor(Color.GREEN)
+				.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 				.setDescription("Removed " + e.getTitle() + " from your playlist");
 				g.saveMusicPlaylist(msg.getGuild().getId());
 			}
@@ -89,7 +89,7 @@ public class Playlist extends Command {
 				sb.append(String.format("**(%d)** %s\n", i + 1, g.getMusicPlaylist().get(i).getTitle()));
 			}
 			em.setTitle("Playlist", null)
-			.setColor(Color.MAGENTA)
+			.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.MAGENTA))
 			.setDescription(sb.toString());
 		}
 		if (!em.isEmpty()) {

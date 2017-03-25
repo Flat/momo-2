@@ -55,7 +55,7 @@ public class TwitchFeed extends Command {
 			}
 			new TwitchFeedObserver(msg.getChannel().getId(), contents.toLowerCase(), userId);
 			em.setTitle("Success", null)
-			.setColor(Color.GREEN)
+			.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 			.setDescription("Registered " + contents + " to feed to this channel");
 		} catch (UnirestException e1) {
 			e1.printStackTrace();

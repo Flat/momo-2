@@ -30,7 +30,7 @@ public class ChangeStatus extends Command {
 			StatusChangeJob.resume();
 			EmbedBuilder em = new EmbedBuilder();
 			em.setTitle("Success", null)
-			.setColor(Color.GREEN)
+			.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 			.setDescription("Resuming status rotation");
 			msg.getChannel().sendMessage(em.build()).queue();
 		}

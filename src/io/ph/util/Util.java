@@ -1,5 +1,6 @@
 package io.ph.util;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -422,5 +423,24 @@ public class Util {
 			}
 		}
 		return nowLDT.atZone(ZoneId.systemDefault()).toInstant();
+	}
+	
+	/**
+	 * Resolve a user's color with a default fallback
+	 * @param member Member to check
+	 * @param fallback Default color to fallback to
+	 * @return Color or fallback
+	 */
+	public static Color resolveColor(Member member, Color fallback) {
+		return member.getColor() == null ? fallback : member.getColor();
+	}
+	
+	/**
+	 * Resolve a member from a message
+	 * @param msg Message to resolve from
+	 * @return Member of this guild
+	 */
+	public static Member memberFromMessage(Message msg) {
+		return msg.getGuild().getMember(msg.getAuthor());
 	}
 }

@@ -6,6 +6,7 @@ import io.ph.bot.Bot;
 import io.ph.bot.commands.Command;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
+import io.ph.util.Util;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
@@ -27,7 +28,7 @@ public class Info extends Command {
 	public void executeCommand(Message msg) {
 		EmbedBuilder em = new EmbedBuilder();
 		em.setTitle("Hi, I'm " + msg.getGuild().getMember(msg.getJDA().getSelfUser()).getEffectiveName(), null)
-		.setColor(Color.MAGENTA)
+		.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.MAGENTA))
 		.addField("Repository", "<https://momobot.io/github>", true)
 		.addField("Help server", "<https://momobot.io/join>", true)
 		.addField("Invite link", Bot.getInstance().getConfig().getBotInviteLink(), true)

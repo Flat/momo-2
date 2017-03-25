@@ -96,7 +96,7 @@ public class Unmute extends Command {
 		}
 		msg.getGuild().getController().removeRolesFromMember(target, role).queue(success -> {
 			em.setTitle("Success", null)
-			.setColor(Color.GREEN)
+			.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 			.setDescription(target.getEffectiveName() + " has been unmuted")
 			.setFooter("Local time", null);
 			msg.getChannel().sendMessage(em.build()).queue();

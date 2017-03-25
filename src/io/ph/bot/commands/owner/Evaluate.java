@@ -32,7 +32,7 @@ public class Evaluate extends Command {
 		String contents = Util.getCommandContents(msg);
 		EmbedBuilder em = new EmbedBuilder();
 		em.setTitle("Evaluation engine", null)
-		.setColor(Color.MAGENTA)
+		.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.MAGENTA))
 		.addField("Command", contents, false);
 		try {
 			Object o = null;

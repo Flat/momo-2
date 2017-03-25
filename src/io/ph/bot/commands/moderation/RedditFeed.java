@@ -89,7 +89,7 @@ public class RedditFeed extends ProceduralCommand {
 		String contents = Util.getCommandContents(msg);
 
 		em.setTitle("Success", null);
-		em.setColor(Color.GREEN);
+		em.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN));
 		em.setDescription(String.format("Registered /r/**%s** for notifications", contents));
 		String response = (String) super.getResponses().get(0);
 		boolean showImg;

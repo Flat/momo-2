@@ -41,7 +41,7 @@ public class GuildMusicManager {
 		}
 		EmbedBuilder em = new EmbedBuilder();
 		em.setTitle("Success", null)
-		.setColor(Color.MAGENTA)
+		.setColor(Util.resolveColor(member, Color.GREEN))
 		.setDescription("Queued up your playlist!");
 		channel.sendMessage(em.build()).queue();
 	}
@@ -64,7 +64,7 @@ public class GuildMusicManager {
 				}
 				if (announce) {
 					em.setTitle("Music queued", null)
-					.setColor(Color.GREEN)
+					.setColor(Util.resolveColor(member, Color.GREEN))
 					.setDescription(String.format("%s was queued by %s",  
 							(titleOverride == null || titleOverride.startsWith("ytsearch"))
 							? track.getInfo().title : titleOverride,
@@ -97,7 +97,7 @@ public class GuildMusicManager {
 				}
 
 				em.setTitle("Playlist queued", null)
-				.setColor(Color.GREEN)
+				.setColor(Util.resolveColor(member, Color.GREEN))
 				.setDescription("Playlist *" + playlist.getName() + "* queued by " + member.getEffectiveName())
 				.setFooter(String.format("Playlist size: %d | Queue size: %d",
 						playlist.getTracks().size(),

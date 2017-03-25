@@ -85,7 +85,7 @@ public class Help extends Command {
 				msg.getAuthor().getPrivateChannel().sendMessage(em.build()).queue(success1 -> {
 					em.clearFields();
 					em.setTitle("Success", null)
-					.setColor(Color.GREEN)
+					.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 					.setDescription("Check your PMs!");
 					msg.getChannel().sendMessage(em.build()).queue();
 				});

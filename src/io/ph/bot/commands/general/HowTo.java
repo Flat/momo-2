@@ -30,7 +30,7 @@ public class HowTo extends Command {
 	@Override
 	public void executeCommand(Message msg) {
 		em = new EmbedBuilder();
-		em.setColor(Color.MAGENTA);
+		em.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.MAGENTA));
 		String s = Util.getCommandContents(msg);
 		String prefix = GuildObject.guildMap.get(msg.getGuild().getId()).getConfig().getCommandPrefix();
 		switch(s.toLowerCase()) {

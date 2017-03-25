@@ -65,7 +65,7 @@ public class Mute extends Command {
 		Member target;
 		String targetS = null;
 		em.setTitle("Success", null)
-		.setColor(Color.GREEN);
+		.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN));
 		Instant now = null;
 		if (Util.getParam(msg).equalsIgnoreCase("temp")) {
 			now = Util.resolveInstantFromString(Util.getParam(t));

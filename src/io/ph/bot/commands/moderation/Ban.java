@@ -49,7 +49,7 @@ public class Ban extends Command {
 		}
 		Member target;
 		em.setTitle("Success", null)
-		.setColor(Color.GREEN);
+		.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN));
 		Instant now = null;
 		if (Util.getParam(msg).equalsIgnoreCase("temp")) {
 			now = Util.resolveInstantFromString(Util.getParam(t));

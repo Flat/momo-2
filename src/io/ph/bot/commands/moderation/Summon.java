@@ -7,6 +7,7 @@ import java.util.Optional;
 import io.ph.bot.commands.Command;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
+import io.ph.util.Util;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.VoiceChannel;
@@ -44,14 +45,14 @@ public class Summon extends Command {
 		if (msg.getGuild().getAudioManager().isConnected()
 				&& msg.getGuild().getAudioManager().getConnectedChannel().equals(opt.get())) {
 			em.setTitle("Hmm...", null)
-			.setColor(Color.MAGENTA)
+			.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.MAGENTA))
 			.setDescription("I'm already in your voice channel!");
 			msg.getChannel().sendMessage(em.build()).queue();
 			return;
 		}
 		audio.openAudioConnection(opt.get());
 		em.setTitle("Success", null)
-		.setColor(Color.GREEN)
+		.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 		.setDescription("Joined your voice channel");
 		msg.getChannel().sendMessage(em.build()).queue();
 		return;

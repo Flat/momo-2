@@ -34,7 +34,7 @@ public class RemoveRedditFeed extends Command {
 		}
 		if(RedditEventListener.removeRedditFeed(contents, msg.getGuild())) {
 			em.setTitle("Success", null)
-			.setColor(Color.GREEN)
+			.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 			.setDescription("Removed /r/**" + contents + "** from your reddit feeds.\n"
 					+ "Changes will take place in about 30 seconds");
 		} else {

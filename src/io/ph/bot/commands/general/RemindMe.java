@@ -83,7 +83,7 @@ public class RemindMe extends Command {
 			SQLUtils.closeQuietly(conn);
 		}
 		em.setTitle("Success", null)
-		.setColor(Color.GREEN)
+		.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 		.setDescription("You will be reminded at...");
 		em.setTimestamp(target)
 		.setFooter("Local time", null);
