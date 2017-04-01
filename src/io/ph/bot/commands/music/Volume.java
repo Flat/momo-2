@@ -26,6 +26,6 @@ public class Volume extends Command {
 				&& !Util.memberHasPermission(msg.getGuild().getMember(msg.getAuthor()), Permission.KICK)) {
 			return;
 		}
-		Music.volume(msg, djSet);
+		Music.volume(msg, Util.getCommandContents(msg), djSet);
 	}
 }

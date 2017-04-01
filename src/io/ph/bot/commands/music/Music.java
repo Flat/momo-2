@@ -104,7 +104,7 @@ public class Music extends Command {
 			shuffle(msg, djSet);
 			return;
 		} else if (contents.startsWith("volume")) {
-			volume(msg, djSet);
+			volume(msg, Util.getCommandContents(Util.getCommandContents(msg)), djSet);
 			return;
 		} else if (contents.startsWith("playlist")) {
 			// Just queue up all the songs I guess
@@ -307,7 +307,7 @@ public class Music extends Command {
 		msg.getChannel().sendMessage(em.build()).queue();
 	}
 	
-	public static void volume(Message msg, boolean...bs) {
+	public static void volume(Message msg, String volume, boolean...bs) {
 		GuildObject g = GuildObject.guildMap.get(msg.getGuild().getId());
 		EmbedBuilder em = new EmbedBuilder();
 		String contents = Util.getCommandContents(msg);
@@ -321,8 +321,8 @@ public class Music extends Command {
 			return;
 		}
 		int input;
-		if (!Util.isInteger(Util.getCommandContents(contents)) 
-				|| (input = Integer.parseInt(Util.getCommandContents(contents))) > 100 || input < 0) {
+		if (!Util.isInteger(volume) 
+				|| (input = Integer.parseInt(volume)) > 100 || input < 0) {
 			em.setTitle("Error", null)
 			.setColor(Color.RED)
 			.setDescription("Please set volume between 0 and 100");
