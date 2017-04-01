@@ -79,6 +79,10 @@ public class Listeners extends ListenerAdapter {
 
 	@Override 
 	public void onGuildJoin(GuildJoinEvent e) {
+		if (!e.getGuild().getSelfMember().hasPermission(net.dv8tion.jda.core.Permission.MESSAGE_WRITE)) {
+			e.getGuild().leave().queue();
+			return;
+		}
 		checkFiles(e.getGuild());
 		GuildObject g = new GuildObject(e.getGuild());
 		GuildObject.guildMap.put(e.getGuild().getId(), g);
@@ -97,6 +101,10 @@ public class Listeners extends ListenerAdapter {
 					}, failure -> {
 						g.getConfig().setFirstTime(false);
 					});
+			if (!e.getGuild().getSelfMember().hasPermission(net.dv8tion.jda.core.Permission.MESSAGE_EMBED_LINKS)) {
+				e.getGuild().getPublicChannel().sendMessage("I require permissions to Embed Links for the"
+						+ " vast majority of my functionality. Please enable it!").queue();
+			}
 		}
 	}
 
