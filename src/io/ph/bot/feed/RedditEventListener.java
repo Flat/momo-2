@@ -92,6 +92,10 @@ public class RedditEventListener implements Job {
 			return null;
 		}
 		for (RedditFeedObserver observer : redditFeed.get(subreddit)) {
+			if (observer.getDiscoChannel() == null) {
+				removeRedditFeed(subreddit, guild);
+				continue;
+			}
 			if (observer.getDiscoChannel().getGuild().equals(guild))
 				return observer;
 		}
