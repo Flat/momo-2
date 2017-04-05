@@ -91,6 +91,7 @@ public class RedditEventListener implements Job {
 		if (!redditFeed.containsKey(subreddit)) {
 			return null;
 		}
+		// TODO: Concurrent modification
 		for (RedditFeedObserver observer : redditFeed.get(subreddit)) {
 			if (observer.getDiscoChannel() == null) {
 				redditFeed.get(subreddit).remove(observer);

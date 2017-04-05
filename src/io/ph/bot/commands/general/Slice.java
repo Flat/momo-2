@@ -27,7 +27,7 @@ import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
 /**
- * Slice up an emoji into a 7x7 grid for Nitro purposes
+ * Slice up an emoji into a 5x5 grid for Nitro purposes
  * A foray into meme territory
  * @author Paul
  *
@@ -36,7 +36,7 @@ import net.dv8tion.jda.core.entities.Message;
 		defaultSyntax = "slice",
 		aliases = {"splice"},
 		permission = Permission.NONE,
-		description = "Slice up an Emoji into a 7x7 grid for Nitro purposes\n"
+		description = "Slice up an Emoji into a 5x5 grid for Nitro purposes\n"
 				+ "Takes in one emoji and a single, no space name after",
 				example = ":thinking: nameOfEmote"
 		)
@@ -89,7 +89,7 @@ public class Slice extends Command {
 	}
 
 	/**
-	 * Cut an image into a 7x7 grid
+	 * Cut an image into a 5x5 grid
 	 * @param img Image to cut
 	 * @param nameOfEmoji Name of the emoji
 	 * @param directoryNum Number where the temp resources are stored
@@ -98,7 +98,7 @@ public class Slice extends Command {
 	 */
 	private static String cut(BufferedImage img, String nameOfEmoji, int directoryNum) throws IOException {
 		BufferedImage[][] array;
-		img = scale(img, 448, 448);
+		img = scale(img, 320, 320);
 		int height = img.getHeight();
 		int width = img.getWidth();
 		// How big each slice is
