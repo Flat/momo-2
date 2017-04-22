@@ -69,7 +69,7 @@ public class Bot {
 						.setToken(botConfig.getToken())
 						.setStatus(OnlineStatus.DO_NOT_DISTURB)
 						.setGame(Game.of("launching..."))
-						.addListener(new Listeners(), new ModerationListeners(), new VoiceChannelListeners())
+						.addEventListener(new Listeners(), new ModerationListeners(), new VoiceChannelListeners())
 						.useSharding(i, SHARD_COUNT)
 						.buildBlocking());
 			}
@@ -78,7 +78,7 @@ public class Bot {
 					.setToken(botConfig.getToken())
 					.setStatus(OnlineStatus.DO_NOT_DISTURB)
 					.setGame(Game.of("launching..."))
-					.addListener(new Listeners(), new ModerationListeners(), new VoiceChannelListeners())
+					.addEventListener(new Listeners(), new ModerationListeners(), new VoiceChannelListeners())
 					.buildBlocking());
 		}
 		shards = new Shards();
