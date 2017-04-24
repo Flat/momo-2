@@ -89,6 +89,9 @@ public class GuildTrackManager extends AudioEventAdapter {
 	@Override
 	public void onTrackStart(AudioPlayer player, AudioTrack track) {
 		TextChannel ch;
+		if (GuildObject.guildMap.get(this.guildId).getSpecialChannels().getMusic().isEmpty()) {
+			return;
+		}
 		if((ch = Bot.getInstance().shards
 				.getTextChannelById(GuildObject.guildMap.get(this.guildId)
 						.getSpecialChannels().getMusic())) != null) {
