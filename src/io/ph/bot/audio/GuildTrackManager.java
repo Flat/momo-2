@@ -73,7 +73,7 @@ public class GuildTrackManager extends AudioEventAdapter {
 			nextTrack();
 		} else {
 			TextChannel ch;
-			if(this.currentSong != null && (ch = Bot.getInstance().shards
+			if(!g.getSpecialChannels().getMusic().isEmpty() && this.currentSong != null && (ch = Bot.getInstance().shards
 					.getTextChannelById(g.getSpecialChannels().getMusic())) != null) {
 				EmbedBuilder em = new EmbedBuilder();
 				em.setTitle("Queue finished!", null)
