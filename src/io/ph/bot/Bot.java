@@ -46,6 +46,7 @@ public class Bot {
 	// Sharding splits the connection gateways to Discord and splits servers
 	// among the shards. Discord limits you to 2500 guilds per shard, so you should
 	// try and make it so TOTAL_GUILDS/SHARD_COUNT ~= 1750
+	// TODO: Move this to configuration
 	private final static int SHARD_COUNT = 1;
 
 	// Set to true if you want various debug statements
@@ -59,7 +60,8 @@ public class Bot {
 
 	public void start(String[] args) throws LoginException, IllegalArgumentException, InterruptedException, RateLimitedException {
 		if (!loadProperties()) {
-			logger.error("Could not load Config.properties");
+			logger.error("Could not load Bot.properties correctly."
+					+ " Make sure every field is filled, including MaxSongLength");
 			System.exit(1);
 		}
 		jdaClients = new ArrayList<>(SHARD_COUNT);
