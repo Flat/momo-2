@@ -43,8 +43,8 @@ public class Macro extends Command {
 	@Override
 	public void executeCommand(Message msg) {
 		this.msg = msg;
-		em = new EmbedBuilder();
-		contents = Util.getCommandContents(msg);
+		this.em = new EmbedBuilder();
+		this.contents = Util.getCommandContents(msg);
 		if(contents.equals("")) {
 			MessageUtils.sendIncorrectCommandUsage(msg, this);
 			return;
@@ -59,6 +59,8 @@ public class Macro extends Command {
 			editMacro();
 		} else if(param.equalsIgnoreCase("search")) {
 			searchForMacro();
+		} else if (param.equalsIgnoreCase("list")) {
+			listMacros();
 		} else if(param.equalsIgnoreCase("info")) {
 			macroInfo();
 		} else {
@@ -75,6 +77,9 @@ public class Macro extends Command {
 		msg.getChannel().sendMessage(em.build()).queue();
 	}
 
+	/**
+	 * Create a macro
+	 */
 	private void createMacro() {
 		contents = Util.getCommandContents(contents);
 		if(contents.equals("") || contents.split(" ").length < 2) {
@@ -107,6 +112,9 @@ public class Macro extends Command {
 		}
 	}
 
+	/**
+	 * Delete a macro
+	 */
 	private void deleteMacro() {
 		contents = Util.getCommandContents(contents);
 		if(contents.equals("")) {
@@ -139,6 +147,9 @@ public class Macro extends Command {
 		}
 	}
 
+	/**
+	 * Edit a macro
+	 */
 	private void editMacro() {
 		contents = Util.getCommandContents(contents);
 		if(contents.equals("")) {
@@ -174,6 +185,9 @@ public class Macro extends Command {
 		}
 	}
 
+	/**
+	 * Fuzzy search for a macro
+	 */
 	private void searchForMacro() {
 		contents = Util.getCommandContents(contents);
 		if(contents.equals("")) {
@@ -236,7 +250,38 @@ public class Macro extends Command {
 			}
 		}
 	}
+	
+	/**
+	 * List all macros made by a user
+	 */
+	private void listMacros() {
+		Member m;
+		String possibleUser = Util.getCommandContents(this.contents);
+		if (possibleUser.isEmpty()) {
+			m = msg.getMember();
+		} else {
+			m = Util.resolveMemberFromMessage(possibleUser, msg.getGuild());
+		}
+		String[] results = MacroObject.searchByUser(m.getUser().getId(), msg.getGuild().getId());
+		if (results == null) {
+			em.setTitle("Error", null)
+			.setColor(Color.RED)
+			.setDescription("No macros found for user " + m.getEffectiveName());
+			return;
+		}
+		StringBuilder sb = new StringBuilder();
+		for (String s : results) {
+			sb.append(s + ", ");
+		}
+		
+		em.setTitle("Macros created by " + msg.getMember().getEffectiveName(), null)
+		.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
+		.setDescription(sb.substring(0, sb.length() - 2));
+	}
 
+	/**
+	 * Send information on a macro
+	 */
 	private void macroInfo() {
 		contents = Util.getCommandContents(contents);
 		if(contents.equals("")) {
