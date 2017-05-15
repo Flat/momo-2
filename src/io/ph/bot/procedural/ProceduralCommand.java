@@ -24,9 +24,11 @@ public abstract class ProceduralCommand extends Command implements ProceduralInt
 	private int currentStep;
 	private List<Object> responses = new ArrayList<Object>();
 	private List<Object> cache;
+	// Previous embedded message to remove if needed
+	private Message previousEmbed;
 	
 	public void addCache(Object o) {
-		if(cache == null)
+		if (cache == null)
 			cache = new ArrayList<Object>();
 		cache.add(o);
 	}
@@ -40,11 +42,9 @@ public abstract class ProceduralCommand extends Command implements ProceduralInt
 	public ProceduralCommand(Message msg) {
 		currentStep = 0;
 		this.starter = msg;
+		this.previousEmbed = msg;
 	}
-	/*public void initiate(Message msg) {
-		this.starter = msg;
-		currentStep = 0;
-	}*/
+	
 	/**
 	 * Send a (templated) message to the original channel
 	 * @param description Description to be included
@@ -55,7 +55,9 @@ public abstract class ProceduralCommand extends Command implements ProceduralInt
 		.setColor(Color.MAGENTA)
 		.setDescription(description)
 		.setFooter("Type \"exit\" to quit", null);
-		this.starter.getChannel().sendMessage(em.build()).queue();
+		this.starter.getChannel().sendMessage(em.build()).queue(msg -> {
+			this.previousEmbed = msg;
+		});
 	}
 	
 	/**
@@ -63,14 +65,14 @@ public abstract class ProceduralCommand extends Command implements ProceduralInt
 	 * @param msg {@link Message} that triggered this
 	 */
 	public void step(Message msg) {
-		if(msg.getContent().equalsIgnoreCase("exit")) {
+		if (msg.getContent().equalsIgnoreCase("exit")) {
 			exit();
 			return;
 		}
-		if(msg.getContent().equalsIgnoreCase(this.getBreakOut()) 
+		if (msg.getContent().equalsIgnoreCase(this.getBreakOut()) 
 				&& getTypes()[getCurrentStep()].equals(StepType.REPEATER)) {
 			incrementStep();
-			if(getCurrentStep() >= getSteps().length) {
+			if (getCurrentStep() >= getSteps().length) {
 				finish();
 				return;
 			}
@@ -80,7 +82,7 @@ public abstract class ProceduralCommand extends Command implements ProceduralInt
 			addResponse(msg.getContent());
 			break;
 		case INTEGER:
-			if(Util.isInteger(msg.getContent())) {
+			if (Util.isInteger(msg.getContent())) {
 				addResponse(Integer.parseInt(msg.getContent()));
 			} else {
 				sendMessage("Error: Not a valid numerical input\n" + getSteps()[getCurrentStep()]);
@@ -88,7 +90,7 @@ public abstract class ProceduralCommand extends Command implements ProceduralInt
 			}
 			break;
 		case DOUBLE:
-			if(Util.isDouble(msg.getContent())) {
+			if (Util.isDouble(msg.getContent())) {
 				addResponse(Double.parseDouble(msg.getContent()));
 			} else {
 				sendMessage("Error: Not a valid decimal input\n" + getSteps()[getCurrentStep()]);
@@ -101,9 +103,9 @@ public abstract class ProceduralCommand extends Command implements ProceduralInt
 			return;
 		case YES_NO:
 			String s = msg.getContent();
-			if(s.equalsIgnoreCase("y") || s.equalsIgnoreCase("yes")) {
+			if (s.equalsIgnoreCase("y") || s.equalsIgnoreCase("yes")) {
 				addResponse(true);
-			} else if(s.equalsIgnoreCase("n") || s.equalsIgnoreCase("no")) {
+			} else if (s.equalsIgnoreCase("n") || s.equalsIgnoreCase("no")) {
 				addResponse(false);
 			} else {
 				sendMessage("Invalid yes/no answer: Please use \"y\" or \"n\"\n" + getSteps()[getCurrentStep()]);
@@ -111,7 +113,10 @@ public abstract class ProceduralCommand extends Command implements ProceduralInt
 			}
 			break;
 		}
-		if(getCurrentStep() + 1 >= getSteps().length) {
+		if (getDeletePrevious()) {
+			previousEmbed.delete().queue();
+		}
+		if (getCurrentStep() + 1 >= getSteps().length) {
 			finish();
 		} else {
 			incrementStep();

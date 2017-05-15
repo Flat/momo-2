@@ -25,4 +25,9 @@ public @interface ProceduralAnnotation {
 	 * @return
 	 */
 	String breakOut();
+	/**
+	 * Delete previous embed msg
+	 * @return
+	 */
+	boolean deletePrevious();
 }

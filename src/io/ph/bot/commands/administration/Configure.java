@@ -30,7 +30,8 @@ import net.dv8tion.jda.core.entities.Message;
 				"Automatically delete invite links sent by non-moderator users?",
 				"How many messages can a user send per 15 seconds? Use 0 to disable slow mode"}, 
 		types = {StepType.YES_NO, StepType.YES_NO, StepType.INTEGER},
-		breakOut = "finish"
+		breakOut = "finish",
+		deletePrevious = true
 		)
 public class Configure extends ProceduralCommand {
 

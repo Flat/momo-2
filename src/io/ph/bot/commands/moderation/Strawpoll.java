@@ -27,7 +27,8 @@ import net.dv8tion.jda.core.entities.Message;
 		title = "Strawpoll creation",
 		steps = {"Name of poll?", "Can users multi-vote? (y/n)", "New option"}, 
 		types = {StepType.STRING, StepType.YES_NO, StepType.REPEATER},
-		breakOut = "finish"
+		breakOut = "finish",
+		deletePrevious = true
 		)
 public class Strawpoll extends ProceduralCommand {
 
@@ -69,7 +70,7 @@ public class Strawpoll extends ProceduralCommand {
 		}
 		boolean multi = (boolean) super.getResponses().get(1);
 		String[] options = super.getResponses().subList(2, super.getResponses().size())
-				.toArray(new String[super.getResponses().size()]);
+				.toArray(new String[super.getResponses().size() - 2]);
 		if(options.length < 2 || options.length > 30) {
 			super.sendMessage("Error: You must have between 2 and 30 options (inclusive)");
 			super.exit();

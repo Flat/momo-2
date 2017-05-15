@@ -28,7 +28,8 @@ import twitter4j.User;
 		title = "Twitter feed",
 		steps = {"Show images in updates?", "Show retweets?", "Show replies?"}, 
 		types = {StepType.YES_NO, StepType.YES_NO, StepType.YES_NO},
-		breakOut = "finish"
+		breakOut = "finish",
+		deletePrevious = true
 		)
 public class TwitterFeed extends ProceduralCommand {
 

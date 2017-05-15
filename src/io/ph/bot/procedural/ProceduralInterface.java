@@ -13,4 +13,7 @@ public interface ProceduralInterface {
 	public default StepType[] getTypes() {
 		return this.getClass().getAnnotation(ProceduralAnnotation.class).types();
 	}
+	public default boolean getDeletePrevious() {
+		return this.getClass().getAnnotation(ProceduralAnnotation.class).deletePrevious();
+	}
 }

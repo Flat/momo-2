@@ -33,7 +33,8 @@ import net.dv8tion.jda.core.entities.Message;
 		title = "Reddit feed",
 		steps = {"Show images in updates? Answer with all/no nsfw/none", "Show text preview for self posts?"}, 
 		types = {StepType.STRING, StepType.YES_NO},
-		breakOut = "finish"
+		breakOut = "finish",
+		deletePrevious = true
 		)
 public class RedditFeed extends ProceduralCommand {
 

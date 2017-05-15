@@ -29,7 +29,8 @@ import net.dv8tion.jda.core.entities.Message;
 		steps = {"PM message to the user? If no, the message will be broadcast to your "
 				+ "designated welcome channel (y/n)"}, 
 		types = {StepType.YES_NO},
-		breakOut = "finish"
+		breakOut = "finish",
+		deletePrevious = true
 		)
 public class ChangeWelcomeMessage extends ProceduralCommand {
 	public ChangeWelcomeMessage(Message msg) {
