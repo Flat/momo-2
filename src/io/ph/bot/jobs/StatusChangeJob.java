@@ -1,5 +1,9 @@
 package io.ph.bot.jobs;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -9,7 +13,7 @@ import org.quartz.JobExecutionException;
 import io.ph.bot.State;
 
 public class StatusChangeJob implements Job {
-	public static String[] statuses;
+	public static List<String> statuses = new ArrayList<>();
 	private static int index = 0;
 	public static JobDetail job = 
 			JobBuilder.newJob(StatusChangeJob.class).withIdentity("statusChangeJob", "group1").build();
@@ -22,8 +26,8 @@ public class StatusChangeJob implements Job {
 		if (interrupted) {
 			return;
 		}
-		State.changeBotStatus(statuses[index]);
-		if (++index >= statuses.length) {
+		State.changeBotStatus(statuses.get(index));
+		if (++index >= statuses.size()) {
 			index = 0;
 		}
 	}
@@ -33,14 +37,42 @@ public class StatusChangeJob implements Job {
 	 * @param minutes Minutes to countdown
 	 */
 	public static void commenceUpdateCountdown(int minutes) {
-		statuses = new String[minutes + 1];
+		statuses.clear();
+		String[] strings = new String[minutes + 1];
 		for (int i = minutes; i > 0; i--) {
-			statuses[(minutes - i)] = "Restart in " + i + " minutes";
+			strings[(minutes - i)] = "Restart in " + i + " minutes";
 		}
-		statuses[statuses.length - 1] = "Restart now!";
+		strings[strings.length - 1] = "Restart now!";
+		index = 0;
+		statuses.addAll(Arrays.asList(strings));
+	}
+	
+	/**
+	 * Set statuses
+	 * @param s String array of statuses
+	 */
+	public static void setStatuses(String[] s) {
+		statuses.clear();
+		statuses.addAll(Arrays.asList(s));
 		index = 0;
 	}
 
+	/**
+	 * Add a status to the rotation
+	 * @param s Status to add
+	 */
+	public static void addStatus(String s) {
+		statuses.add(s);
+	}
+	
+	/**
+	 * Remove a status from the rotation
+	 * @param s Status to remove
+	 */
+	public static void removeStatus(String s) {
+		statuses.remove(s);
+	}
+	
 	public static void interrupt() {
 		interrupted = true;
 	}

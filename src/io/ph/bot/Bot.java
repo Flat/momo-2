@@ -116,7 +116,7 @@ public class Bot {
 					logger.info("Added API key for: {}", key);
 				}
 			}
-			StatusChangeJob.statuses = config.getStringArray("StatusRotation");
+			StatusChangeJob.setStatuses(config.getStringArray("StatusRotation"));
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

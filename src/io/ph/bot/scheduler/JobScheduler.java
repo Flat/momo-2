@@ -123,8 +123,8 @@ public class JobScheduler {
 			LoggerFactory.getLogger(JobScheduler.class).warn("You do not have a "
 					+ "reddit client/secret setup in Bot.properties - Your bot will not have support for Reddit feeds");
 		}
-		if(StatusChangeJob.statuses != null && StatusChangeJob.statuses.length > 0
-				&& !StatusChangeJob.statuses[0].isEmpty()) {
+		if(StatusChangeJob.statuses != null && StatusChangeJob.statuses.size() > 0
+				&& !StatusChangeJob.statuses.get(0).isEmpty()) {
 			statusChange();
 		}
 			
