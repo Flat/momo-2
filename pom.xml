@@ -135,7 +135,7 @@
 		<dependency>
 			<groupId>com.github.paul-io</groupId>
 			<artifactId>RESTWrappers</artifactId>
-			<version>91efd8334c</version>
+			<version>df6f21e5e8</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson -->
 		<!-- Retrofit converter to gson -->
