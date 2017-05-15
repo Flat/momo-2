@@ -48,39 +48,58 @@ public class FFXIVCharacter {
 				throw new BadCharacterException();
 			}
 			Document doc = Jsoup.parse(new URL(lodestoneLink), 10000);
-			this.imageLink = doc.select(".bg_chara_264").select("img").first().attr("src");
-			String[] raceGender = doc.select("div.chara_profile_title").first().text().split(" / ");
-			this.race = raceGender[0];
-			this.faction = raceGender[1];
-			this.gender = raceGender[2].equalsIgnoreCase("♀") ? "Female" : "Male";
+			this.imageLink = doc.select("div.character__detail__image").select("img").first().attr("src");
+			String raceGender = doc.select("div.character-block__box").first()
+					.select("p.character-block__name").first()
+					.html();
+			this.race = raceGender.substring(0, raceGender.indexOf('<'));
+			this.faction = raceGender.substring(raceGender.indexOf('>') + 1, raceGender.indexOf('/') - 1);
+			this.gender = raceGender.contains("♀") ? "Female" : "Male";
 			
-			Elements charProfile = doc.select("dl.chara_profile_box_info");
-			this.nameday = charProfile.get(0).select(".txt_name").first().text();
-			this.guardian = charProfile.get(0).select(".txt_name").get(1).text();
-			this.cityState = charProfile.get(1).select(".txt_name").first().text();
-			if(charProfile.size() == 4) {
-				this.grandCompany = doc.select("dl.chara_profile_box_info").get(2).select(".txt_name").first().text();
-				this.freeCompany = doc.select("dl.chara_profile_box_info").get(3).select(".txt_name").first().text();
-			} else if(charProfile.size() == 3) {
-				String s = charProfile.get(2).select(".txt").first().text();
-				if(s.contains("Free")) {
-					this.freeCompany = charProfile.get(2).select(".txt_name").first().text();
-					this.grandCompany = "none";
-				} else {
-					this.grandCompany = charProfile.get(2).select(".txt_name").first().text();
+			Element charProfile = doc.select("div.character-block__box").get(1);
+			this.nameday = charProfile.select("p.character-block__birth").first().text();
+			this.guardian = charProfile.select("p.character-block__name").first().text();
+			
+			Element cityStateEle = doc.select("div.character-block__box").get(2);
+			this.cityState = cityStateEle.select("p.character-block__name").first().text();
+			
+			int profileElements = doc.select("div.character__profile__data__detail").first()
+					.select("div.character-block").size();
+			if(profileElements == 5) { // Has both grand & free
+				this.grandCompany = doc.select("div.character-block__box").get(3)
+						.select("p.character-block__name").first().text();
+				this.freeCompany = doc.select("div.character-block__box").get(4)
+						.select("div.character__freecompany__name").first()
+						.select("a").first().text();
+			} else if(profileElements == 4) { // Has only grand OR free
+				if (doc.select("div.character__freecompany__crest").isEmpty()) {
+					this.grandCompany = doc.select("div.character-block__box").get(3)
+							.select("p.character-block__name").first().text();
 					this.freeCompany = "none";
+				} else {
+					this.freeCompany = doc.select("div.character-block__box").get(4)
+							.select("div.character__freecompany__name").first()
+							.select("a").first().text();
+					this.grandCompany = "none";
 				}
 			} else {
 				this.freeCompany = "none";
 				this.grandCompany = "none";
 			}
 
-			this.jobImageLink = doc.select("div#class_info").first().select("img").first().attr("src");
+			this.jobImageLink = doc.select("div.character__class_icon").first().select("img").first().attr("src");
 		} catch (IOException e) {
 			throw new IOException();
 		}
 	}
 
+	/**
+	 * Get and retrieve the character URL for an FFXIV character
+	 * @param firstName First name fo character
+	 * @param lastName Last name of character
+	 * @param server Server name
+	 * @return URL of character if found, null if not found or an exception occurs
+	 */
 	private static String getCharacterUrl(String firstName, String lastName, String server) {
 		String world = StringUtils.capitalize(server.toLowerCase());
 		String url = String.format("http://na.finalfantasyxiv.com/lodestone/character/?q=%s+%s&worldname=%s&classjob=&race_tribe=&order=", 
@@ -89,13 +108,14 @@ public class FFXIVCharacter {
 		final String last = StringUtils.capitalize(lastName.toLowerCase());
 		try {
 			Document doc = Jsoup.parse(new URL(url), 10000);
-			Elements eles = doc.getElementsByClass("player_name_area");
+			Elements eles = doc.getElementsByClass("entry__link");
 			if(eles.size() == 0) {
 				return null;
 			}
 			
 			Element character = eles.stream()
-					.filter(e -> e.select("a").first().text().equals(first + " " + last))
+					.filter(e -> e.select("div.entry__box--world").first().select("p.entry__name").first()
+							.text().equalsIgnoreCase(first + " " + last))
 					.findFirst()
 					.get().select("a").first();
 
