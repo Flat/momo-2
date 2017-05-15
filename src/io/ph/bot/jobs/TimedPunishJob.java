@@ -60,13 +60,16 @@ public class TimedPunishJob implements Job {
 						Member u = g.getMemberById(userId);
 						if (u == null)
 							break;
+						if (g.getRoleById(GuildObject
+								.guildMap.get(g.getId()).getConfig().getMutedRoleId()) == null)
+							break;
 						u.getGuild().getController().removeRolesFromMember(u, g.getRoleById(GuildObject
 								.guildMap.get(g.getId()).getConfig().getMutedRoleId())).queue(success -> {
 									Bot.getInstance().getEventDispatcher()
 									.dispatch(new UserUnmutedEvent(g, u.getUser()));
 								});
-					} catch (NullPointerException e) {
-
+					} catch (NullPointerException | IllegalArgumentException e) {
+						e.printStackTrace();
 					}
 					break;
 				}
