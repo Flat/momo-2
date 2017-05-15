@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.ph</groupId>
 	<artifactId>momo</artifactId>
-	<version>2.0.4</version>
+	<version>2.0.5</version>
 	<name>Momo-2</name>
 	<description>Momo bot version 2</description>
 	<properties>
