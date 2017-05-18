@@ -10,7 +10,7 @@ Join the discord server linked above to get support, see upcoming features, or t
 Visit [this link](https://discordapp.com/oauth2/authorize?client_id=259137993351102464&scope=bot&permissions=268435518) and select which server you want it to join. The bot will give you a bit of an intro message letting you know everything is a-ok. It's as easy as that!
 #### What commands are available?
 Send the command `$help` or visit the website at [this link](https://momobot.io/commands.html). If you need more information on specific commands, you can try `$help command-name` or just PM the bot the command name.
-###Web dashboard
+### Web dashboard
 Introduced in update 1.2, Momo features a [web dashboard](https://momobot.io/dash) to configure various aspects of the bot, such as welcome prefix, enabled commands, and Twitter/Reddit feeds. You don't have to be the server owner, either - configuration starts from moderators with the `kick` permission. Everything that can be done through the dashboard can also be done through commands.
 ### Features? Gimme some info!
 * Reddit, Twitter, & Twitch.tv feeds - Get updates directly to your channel of choice with image/preview configuration
