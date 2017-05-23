@@ -221,8 +221,12 @@ public class Bot {
 		public Guild getGuildById(String guildId) {
 			for (JDA j : jdaClients) {
 				Guild g;
-				if ((g = j.getGuildById(guildId)) != null) {
-					return g;
+				try {
+					if ((g = j.getGuildById(guildId)) != null) {
+						return g;
+					}
+				} catch (NumberFormatException e) {
+					return null;
 				}
 			}
 			return null;
@@ -236,8 +240,12 @@ public class Bot {
 		public TextChannel getTextChannelById(String channelId) {
 			for (JDA j : jdaClients) {
 				TextChannel t;
-				if ((t = j.getTextChannelById(channelId)) != null) {
-					return t;
+				try {
+					if ((t = j.getTextChannelById(channelId)) != null) {
+						return t;
+					}
+				} catch (NumberFormatException e) {
+					return null;
 				}
 			}
 			return null;
@@ -251,8 +259,12 @@ public class Bot {
 		public VoiceChannel getVoiceChannelById(String channelId) {
 			for (JDA j : jdaClients) {
 				VoiceChannel c;
-				if ((c = j.getVoiceChannelById(channelId)) != null) {
-					return c;
+				try {
+					if ((c = j.getVoiceChannelById(channelId)) != null) {
+						return c;
+					}
+				} catch (NumberFormatException e) {
+					return null;
 				}
 			}
 			return null;
@@ -266,8 +278,12 @@ public class Bot {
 		public User getUserById(String userId) {
 			for (JDA j : jdaClients) {
 				User u;
-				if ((u = j.getUserById(userId)) != null) {
-					return u;
+				try {
+					if ((u = j.getUserById(userId)) != null) {
+						return u;
+					}
+				} catch (NumberFormatException e) {
+					return null;
 				}
 			}
 			return null;

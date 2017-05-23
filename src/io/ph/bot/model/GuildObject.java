@@ -416,6 +416,9 @@ public class GuildObject {
 			config.setProperty("NewUserWelcomeMessage", welcomeMessage);
 		}
 		public String getMutedRoleId() {
+			// This is a *REALLY* bad hack
+			if (mutedRoleId == null || mutedRoleId.isEmpty())
+				return "11111111111";
 			return mutedRoleId;
 		}
 
