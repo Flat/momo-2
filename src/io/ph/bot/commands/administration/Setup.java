@@ -28,14 +28,15 @@ public class Setup extends Command {
 	public void executeCommand(Message msg) {
 		GuildObject g = GuildObject.guildMap.get(msg.getGuild().getId());
 		EmbedBuilder em = new EmbedBuilder();
-		if((g.getConfig().getMutedRoleId() != null
-				&& !g.getConfig().getMutedRoleId().isEmpty())
-				&& msg.getGuild().getRoleById(g.getConfig().getMutedRoleId()) != null) {
-			em.setTitle("Error", null)
-			.setColor(Color.RED)
-			.setDescription("Looks like I'm already setup here...");
-			msg.getChannel().sendMessage(em.build()).queue();
-			return;
+		if(g.getConfig().getMutedRoleId() != null
+				&& !g.getConfig().getMutedRoleId().isEmpty()) {
+			if (msg.getGuild().getRoleById(g.getConfig().getMutedRoleId()) != null) {
+				em.setTitle("Error", null)
+				.setColor(Color.RED)
+				.setDescription("Looks like I'm already setup here...");
+				msg.getChannel().sendMessage(em.build()).queue();
+				return;
+			}
 		}
 		msg.getGuild().getController().createRole().queue(role -> {
 			role.getManagerUpdatable()
