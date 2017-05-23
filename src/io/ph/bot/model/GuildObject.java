@@ -415,10 +415,8 @@ public class GuildObject {
 			this.welcomeMessage = welcomeMessage;
 			config.setProperty("NewUserWelcomeMessage", welcomeMessage);
 		}
+
 		public String getMutedRoleId() {
-			// This is a *REALLY* bad hack
-			if (mutedRoleId == null || mutedRoleId.isEmpty())
-				return "11111111111";
 			return mutedRoleId;
 		}
 
@@ -439,7 +437,7 @@ public class GuildObject {
 		public boolean isFirstTime() {
 			return firstTime;
 		}
-		
+
 		public void setFirstTime(boolean firstTime) {
 			this.firstTime = firstTime;
 			config.setProperty("FirstTime", firstTime);

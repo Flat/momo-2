@@ -28,8 +28,8 @@ public class Setup extends Command {
 	public void executeCommand(Message msg) {
 		GuildObject g = GuildObject.guildMap.get(msg.getGuild().getId());
 		EmbedBuilder em = new EmbedBuilder();
-		if((!g.getConfig().getMutedRoleId().equals("")
-				|| g.getConfig().getMutedRoleId() != null)
+		if((g.getConfig().getMutedRoleId() != null
+				&& !g.getConfig().getMutedRoleId().isEmpty())
 				&& msg.getGuild().getRoleById(g.getConfig().getMutedRoleId()) != null) {
 			em.setTitle("Error", null)
 			.setColor(Color.RED)
@@ -37,12 +37,6 @@ public class Setup extends Command {
 			msg.getChannel().sendMessage(em.build()).queue();
 			return;
 		}
-		/*IRole mutedRole = null;
-		RoleBuilder rb = new RoleBuilder(msg.getGuild());
-		rb.setMentionable(false);
-		rb.setColor(new Color(217, 0, 90));
-		rb.withName("muted");
-		rb.withPermissions(Permissions.getDeniedPermissionsForNumber(3212288));*/
 		msg.getGuild().getController().createRole().queue(role -> {
 			role.getManagerUpdatable()
 			.getNameField().setValue("muted")
