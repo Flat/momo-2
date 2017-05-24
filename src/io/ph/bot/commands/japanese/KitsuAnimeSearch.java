@@ -68,7 +68,7 @@ public class KitsuAnimeSearch extends Command {
 			em.addField("Type", WordUtils.capitalize(anime.getData().get(0).getType()), true);
 			if(Util.isDouble(anime.getData().get(0).getAttributes().getAverageRating() + ""))
 				em.addField("Rating", 
-						(new DecimalFormat(".##").format(anime.getData().get(0).getAttributes().getAverageRating())) + "/5", true);
+						(new DecimalFormat(".##").format(anime.getData().get(0).getAttributes().getAverageRating())) + "/100", true);
 			em.addField("Episodes", anime.getData().get(0).getAttributes().getEpisodeCount() == null ? "not yet aired" : 
 				anime.getData().get(0).getAttributes().getEpisodeCount() + "", true);
 			StringBuilder aired = new StringBuilder();
