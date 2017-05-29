@@ -111,7 +111,7 @@ public class Overwatch extends Command {
 			String quickplay = String.format("**Win %%**: %.2f (%d/%d)\n"
 					+ "**Average K/D**: %.1f/%.1f", q.getOverallStats().getWinRate(),
 					q.getOverallStats().getWins(), q.getOverallStats().getLosses(),
-					c.getAverageStats().getFinalBlowsAvg(), c.getAverageStats().getDeathsAvg());
+					q.getAverageStats().getFinalBlowsAvg(), q.getAverageStats().getDeathsAvg());
 
 			em.setTitle(username, null)
 			.setThumbnail(stats.getQuickplay().getOverallStats().getAvatar())
