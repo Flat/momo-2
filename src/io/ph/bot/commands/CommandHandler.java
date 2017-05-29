@@ -147,7 +147,7 @@ public class CommandHandler {
 	/**
 	 * Get a command by its true name or alias
 	 * @param name Name of command
-	 * @return Command you're looking for
+	 * @return Command you're looking for, null if not found
 	 */
 	public static Command getCommand(String name) {
 		return CommandHandler.commandMap.get(aliasToDefaultMap.get(name));
