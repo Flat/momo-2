@@ -14,6 +14,7 @@ import javax.management.ObjectName;
 
 import io.ph.bot.Bot;
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.feed.RedditEventListener;
 import io.ph.bot.feed.RedditFeedObserver;
@@ -33,6 +34,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "diagnostics",
 		aliases = {},
+		category = CommandCategory.BOT_OWNER,
 		permission = Permission.BOT_OWNER,
 		description = "Diagnostic information on the bot",
 		example = "(no parameters)"

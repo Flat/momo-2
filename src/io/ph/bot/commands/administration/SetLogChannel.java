@@ -3,6 +3,7 @@ package io.ph.bot.commands.administration;
 import java.awt.Color;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.GuildObject;
 import io.ph.bot.model.Permission;
@@ -16,6 +17,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "logchannel",
 		aliases = {},
+		category = CommandCategory.ADMINISTRATION,
 		permission = Permission.MANAGE_SERVER,
 		description = "Change the log channel for server.\n"
 				+ "If this is set, the bot will send messages detailing certain events (people leaving/joining, bans etc)",

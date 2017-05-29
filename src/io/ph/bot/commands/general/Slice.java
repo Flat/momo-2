@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 import org.apache.commons.io.FileUtils;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
 import io.ph.util.Util;
@@ -35,10 +36,11 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "slice",
 		aliases = {"splice"},
+		category = CommandCategory.UTILITY,
 		permission = Permission.NONE,
 		description = "Slice up an Emoji into a 5x5 grid for Nitro purposes\n"
 				+ "Takes in one emoji and a single, no space name after",
-				example = ":thinking: nameOfEmote"
+		example = ":thinking: nameOfEmote"
 		)
 public class Slice extends Command {
 

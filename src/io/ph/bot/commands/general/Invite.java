@@ -2,6 +2,7 @@ package io.ph.bot.commands.general;
 
 import io.ph.bot.Bot;
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
 import net.dv8tion.jda.core.entities.Message;
@@ -14,6 +15,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "invite",
 		aliases = {},
+		category = CommandCategory.UTILITY,
 		permission = Permission.NONE,
 		description = "Send a link to invite me to a server",
 		example = "(no parameters)"

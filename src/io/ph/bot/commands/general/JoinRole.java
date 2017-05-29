@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.GuildObject;
 import io.ph.bot.model.Permission;
@@ -22,6 +23,7 @@ import net.dv8tion.jda.core.entities.Role;
 @CommandData (
 		defaultSyntax = "joinrole",
 		aliases = {"addto"},
+		category = CommandCategory.UTILITY,
 		permission = Permission.NONE,
 		description = "Assign yourself a designated joinable role",
 		example = "role-name"

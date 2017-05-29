@@ -16,6 +16,7 @@ import java.util.Random;
 import org.apache.tika.mime.MimeTypes;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
 import io.ph.util.Util;
@@ -30,6 +31,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "waifu2x",
 		aliases = {"upscale"},
+		category = CommandCategory.UTILITY,
 		permission = Permission.NONE,
 		description = "Upscale an image with Waifu2x. Either 1 direct link or attachment",
 		example = "[image attachment|direct url]"

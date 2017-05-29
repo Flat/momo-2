@@ -3,6 +3,7 @@ package io.ph.bot.commands.administration;
 import java.awt.Color;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.exception.IllegalArgumentException;
 import io.ph.bot.model.GuildObject;
@@ -19,6 +20,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "disable",
 		aliases = {"disablecommand"},
+		category = CommandCategory.ADMINISTRATION,
 		permission = Permission.MANAGE_ROLES,
 		description = "Disable a command.\n"
 				+ "Only normal user commands can be disabled. You can see the status by using the commandstatus command. "

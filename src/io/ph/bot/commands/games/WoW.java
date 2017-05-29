@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.exception.BadCharacterException;
 import io.ph.bot.exception.NoAPIKeyException;
@@ -24,6 +25,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "wow",
 		aliases = {},
+		category = CommandCategory.GAMES,
 		permission = Permission.NONE,
 		description = "Look up a character in the World of Warcraft armory.\n"
 				+ "Format is wow character-name region realm-name\n"

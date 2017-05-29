@@ -2,6 +2,7 @@ package io.ph.bot.commands.moderation;
 
 import java.awt.Color;
 
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.feed.RedditEventListener;
 import io.ph.bot.feed.RedditFeedObserver;
@@ -22,12 +23,13 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "reddit",
 		aliases = {"subreddit", "redditfeed"},
+		category = CommandCategory.FEED,
 		permission = Permission.KICK,
 		description = "Set this channel as a reddit feed for a given subreddit.\n"
 				+ "Use the unreddit command to remove and listreddit command to show all feeds\n"
 				+ "The bot does not show images from posts that have the word \"spoiler\" in the title. "
 				+ "However, be aware that if you show NSFW images, images that are marked NSFW for the purpose of spoilers will show!",
-				example = "awwnime"
+		example = "awwnime"
 		)
 @ProceduralAnnotation (
 		title = "Reddit feed",

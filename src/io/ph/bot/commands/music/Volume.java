@@ -1,6 +1,7 @@
 package io.ph.bot.commands.music;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.GuildObject;
 import io.ph.bot.model.Permission;
@@ -11,6 +12,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "setvolume",
 		aliases = {"setvol", "volume"},
+		category = CommandCategory.MUSIC,
 		permission = Permission.NONE,
 		description = "Set the volume of the player between 0 and 100",
 		example = "50"

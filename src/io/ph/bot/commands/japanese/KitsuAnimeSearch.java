@@ -7,6 +7,7 @@ import java.text.DecimalFormat;
 import org.apache.commons.lang.WordUtils;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
 import io.ph.rest.RESTCache;
@@ -29,6 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @CommandData (
 		defaultSyntax = "anime",
 		aliases = {"kitsu"},
+		category = CommandCategory.ANIME,
 		permission = Permission.NONE,
 		description = "Search for an anime from Kitsu.io\n",
 		example = "shin sekai yori"

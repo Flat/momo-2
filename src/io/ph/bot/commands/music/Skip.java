@@ -1,6 +1,7 @@
 package io.ph.bot.commands.music;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.GuildObject;
 import io.ph.bot.model.Permission;
@@ -11,6 +12,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "skip",
 		aliases = {},
+		category = CommandCategory.MUSIC,
 		permission = Permission.NONE,
 		description = "Vote to skip a song. If you have kick+ permissions or the DJ role, "
 				+ "this force skips",

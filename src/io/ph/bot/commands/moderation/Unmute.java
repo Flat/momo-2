@@ -8,6 +8,7 @@ import java.time.Instant;
 
 import io.ph.bot.Bot;
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.events.UserUnmutedEvent;
 import io.ph.bot.model.GuildObject;
@@ -28,6 +29,7 @@ import net.dv8tion.jda.core.entities.Role;
 @CommandData (
 		defaultSyntax = "unmute",
 		aliases = {},
+		category = CommandCategory.MODERATION,
 		permission = Permission.KICK,
 		description = "Remove the muted role from a user",
 		example = "target"

@@ -3,6 +3,7 @@ package io.ph.bot.commands.moderation;
 import java.awt.Color;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.feed.TwitterEventListener;
 import io.ph.bot.model.Permission;
@@ -20,6 +21,7 @@ import twitter4j.User;
 @CommandData (
 		defaultSyntax = "removetwitter",
 		aliases = {"untwitter"},
+		category = CommandCategory.FEED,
 		permission = Permission.KICK,
 		description = "Remove a twitter feed from this channel",
 		example = "FF_XIV_EN"

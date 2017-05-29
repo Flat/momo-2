@@ -3,6 +3,7 @@ package io.ph.bot.commands.administration;
 import java.awt.Color;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.GuildObject;
 import io.ph.bot.model.Permission;
@@ -20,6 +21,7 @@ import net.dv8tion.jda.core.entities.Role;
 @CommandData (
 		defaultSyntax = "enablerole",
 		aliases = {"joinablerole"},
+		category = CommandCategory.ADMINISTRATION,
 		permission = Permission.MANAGE_ROLES,
 		description = "Designate a joinable role\n"
 				+ "Create or designate a pre-existing role as joinable. Users can then join it with the joinrole command",

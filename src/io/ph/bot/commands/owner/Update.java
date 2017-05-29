@@ -1,6 +1,7 @@
 package io.ph.bot.commands.owner;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.jobs.StatusChangeJob;
 import io.ph.bot.model.Permission;
@@ -10,6 +11,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "update",
 		aliases = {},
+		category = CommandCategory.BOT_OWNER,
 		permission = Permission.BOT_OWNER,
 		description = "Start an update timer in the status to say \"Restart in n\" where n is minutes."
 				+ " Doesn't actually kill the bot at 0",

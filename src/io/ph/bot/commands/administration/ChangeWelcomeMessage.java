@@ -1,5 +1,6 @@
 package io.ph.bot.commands.administration;
 
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.GuildObject;
 import io.ph.bot.model.Permission;
@@ -20,6 +21,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "changewelcome",
 		aliases = {"welcomemessage", "changewelcomemessage"},
+		category = CommandCategory.ADMINISTRATION,
 		permission = Permission.MANAGE_SERVER,
 		description = "Change the server's welcome message. Use $user$ and $server$ to replace with the new user and the server name, respectively",
 		example = "Welcome $user$ to $server$!"

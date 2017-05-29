@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.commands.CommandHandler;
 import io.ph.bot.model.GuildObject;
@@ -20,6 +21,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "help",
 		aliases = {"commands"},
+		category = CommandCategory.UTILITY,
 		permission = Permission.NONE,
 		description = "Either list all commands or get help for one",
 		example = "(optional command name)"

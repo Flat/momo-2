@@ -5,6 +5,7 @@ import java.awt.Color;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.exception.NoAPIKeyException;
 import io.ph.bot.feed.TwitchEventListener;
@@ -21,6 +22,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "removetwitch",
 		aliases = {"untwitch"},
+		category = CommandCategory.FEED,
 		permission = Permission.KICK,
 		description = "Remove a Twitch.tv feed from this channel",
 		example = "TSM_TheOddOne"

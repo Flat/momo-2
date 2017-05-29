@@ -3,6 +3,7 @@ package io.ph.bot.commands.administration;
 import java.awt.Color;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.GuildObject;
 import io.ph.bot.model.Permission;
@@ -19,6 +20,7 @@ import net.dv8tion.jda.core.entities.Role;
 @CommandData (
 		defaultSyntax = "disablerole",
 		aliases = {"removejoinablerole"},
+		category = CommandCategory.ADMINISTRATION,
 		permission = Permission.MANAGE_ROLES,
 		description = "Disable a joinable role.\n"
 				+ "Designate a role that cannot be joined. Note: This will not remove users who are already in that role, "

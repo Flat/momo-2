@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import org.apache.commons.lang3.StringUtils;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.GuildObject;
 import io.ph.bot.model.MacroObject;
@@ -26,6 +27,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "macro",
 		aliases = {"m"},
+		category = CommandCategory.UTILITY,
 		permission = Permission.NONE,
 		description = "Create, delete, edit, search, or get information on a macro\n"
 				+ "A macro is a quick way to bind text or links to a shortcut",

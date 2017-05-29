@@ -3,6 +3,7 @@ package io.ph.bot.commands.general;
 import java.awt.Color;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.GuildObject;
 import io.ph.bot.model.Permission;
@@ -20,6 +21,7 @@ import net.dv8tion.jda.core.entities.Role;
 @CommandData (
 		defaultSyntax = "leaverole",
 		aliases = {},
+		category = CommandCategory.UTILITY,
 		permission = Permission.NONE,
 		description = "Leave a role that is designated as joinable",
 		example = "role-name"

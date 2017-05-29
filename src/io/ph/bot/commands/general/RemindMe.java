@@ -10,6 +10,7 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
 import io.ph.db.ConnectionPool;
@@ -27,6 +28,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "remindme",
 		aliases = {"remind"},
+		category = CommandCategory.UTILITY,
 		permission = Permission.NONE,
 		description = "Designate a time in the future to be PM'd a reminder\n"
 				+ "This requires a time in the format of #w#d#h#m. "

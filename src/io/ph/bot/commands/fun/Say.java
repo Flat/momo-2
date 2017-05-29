@@ -1,6 +1,7 @@
-package io.ph.bot.commands.general;
+package io.ph.bot.commands.fun;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
 import io.ph.util.Util;
@@ -14,6 +15,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "say",
 		aliases = {"echo"},
+		category = CommandCategory.FUN,
 		permission = Permission.NONE,
 		description = "Have the bot say something",
 		example = "Hi, it's me!"

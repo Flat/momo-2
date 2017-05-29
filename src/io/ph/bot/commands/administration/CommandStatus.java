@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.Map.Entry;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.commands.CommandHandler;
 import io.ph.bot.model.GuildObject;
@@ -20,6 +21,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "commandstatus",
 		aliases = {"status"},
+		category = CommandCategory.ADMINISTRATION,
 		permission = Permission.MANAGE_ROLES,
 		description = "Check all toggleable commands, listing which are enabled and which are disabled",
 		example = "(no parameters)"

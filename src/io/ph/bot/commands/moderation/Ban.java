@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.time.Instant;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
 import io.ph.db.ConnectionPool;
@@ -26,6 +27,7 @@ import net.dv8tion.jda.core.exceptions.RateLimitedException;
 @CommandData (
 		defaultSyntax = "ban",
 		aliases = {"b"},
+		category = CommandCategory.MODERATION,
 		permission = Permission.BAN,
 		description = "Ban a user. Can be temporary by using the \"temp\" parameter",
 		example = "temp 1w2d username"

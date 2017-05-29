@@ -7,8 +7,6 @@ import java.lang.annotation.RetentionPolicy;
 import io.ph.bot.model.Permission;
 /**
  * Syntax for commands
- * TODO: Eventually replace Command error messages with the content of these annotations
- * TODO: Categorize commands for better sorting with help command
  * @author Paul
  */
 @Documented
@@ -24,6 +22,12 @@ public @interface CommandData {
 	 * @return Aliases
 	 */
 	String[] aliases();
+	/**
+	 * Command category as outlined in CommandCategory
+	 * @see io.ph.bot.commands.CommandCategory
+	 * @return Category
+	 */
+	CommandCategory category();
 	/**
 	 * Description of the command
 	 * @return Description

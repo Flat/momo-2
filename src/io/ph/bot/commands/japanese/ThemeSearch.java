@@ -8,6 +8,7 @@ import java.util.Map;
 import org.slf4j.LoggerFactory;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.exception.NoAPIKeyException;
 import io.ph.bot.exception.NoSearchResultException;
@@ -26,6 +27,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "theme",
 		aliases = {"animetheme"},
+		category = CommandCategory.ANIME,
 		permission = Permission.NONE,
 		description = "Search for an anime theme song off Themes.moe",
 		example = "shinsekai yori"
@@ -145,6 +147,7 @@ public class ThemeSearch extends Command implements Runnable {
 			} catch(Exception e) {}
 		}
 	}
+	
 	@Override
 	public void run() {
 		process(this.msg);

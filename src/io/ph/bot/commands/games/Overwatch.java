@@ -9,6 +9,7 @@ import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
 import io.ph.restwrappers.overwatch.OverwatchAPI;
@@ -33,6 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @CommandData (
 		defaultSyntax = "overwatch",
 		aliases = {"ow"},
+		category = CommandCategory.GAMES,
 		permission = Permission.NONE,
 		description = "Lookup an overwatch user. You must use a region code (NA, EU, or KR)"
 				+ " and your FULL Battle.net username. This includes the #xxxx identifier."

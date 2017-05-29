@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import io.ph.bot.State;
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.jobs.StatusChangeJob;
 import io.ph.bot.model.Permission;
@@ -14,6 +15,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "changestatus",
 		aliases = {},
+		category = CommandCategory.BOT_OWNER,
 		permission = Permission.BOT_OWNER,
 		description = "Change bot's game status. This interrupts the set rotation.\n"
 				+ "To resume rotation, use the command $changestatus reset",

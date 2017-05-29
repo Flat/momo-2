@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.List;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.GuildObject;
 import io.ph.util.Util;
@@ -19,6 +20,7 @@ import net.dv8tion.jda.core.entities.Role;
 @CommandData (
 		defaultSyntax = "dj",
 		aliases = {"djrole"},
+		category = CommandCategory.ADMINISTRATION,
 		permission =  io.ph.bot.model.Permission.MANAGE_ROLES,
 		description = "Create or specify a role to control music. If one is set, normal users "
 				+ "need to have the role to control queues. Leave this command empty if you want "

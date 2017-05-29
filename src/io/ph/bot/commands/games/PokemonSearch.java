@@ -10,6 +10,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
 import io.ph.rest.RESTCache;
@@ -32,6 +33,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @CommandData (
 		defaultSyntax = "pokemon",
 		aliases = {"poke"},
+		category = CommandCategory.GAMES,
 		permission = Permission.NONE,
 		description = "Lookup a Pokemon by name or ID. Gen 7 is not supported yet",
 		example = "meloetta-aria"

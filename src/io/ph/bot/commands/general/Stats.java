@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 import io.ph.bot.Bot;
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.MacroObject;
 import io.ph.bot.model.Permission;
@@ -19,6 +20,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "stats",
 		aliases = {},
+		category = CommandCategory.UTILITY,
 		permission = Permission.NONE,
 		description = "Display stats for the server",
 		example = "(no parameters)"

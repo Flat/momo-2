@@ -8,6 +8,7 @@ import java.util.List;
 
 import io.ph.bot.Bot;
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.exception.NoAPIKeyException;
 import io.ph.bot.model.GenericContainer;
@@ -38,6 +39,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @CommandData (
 		defaultSyntax = "source",
 		aliases = {"sauce"},
+		category = CommandCategory.UTILITY,
 		permission = Permission.NONE,
 		description = "Check SauceNao for the source on an image\n"
 				+ "Will first check your message for an image URL or attachment. "

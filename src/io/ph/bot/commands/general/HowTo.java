@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import io.ph.bot.Bot;
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.GuildObject;
 import io.ph.bot.model.Permission;
@@ -20,6 +21,7 @@ import net.dv8tion.jda.core.entities.TextChannel;
 @CommandData (
 		defaultSyntax = "howto",
 		aliases = {"tutorial"},
+		category = CommandCategory.UTILITY,
 		permission = Permission.NONE,
 		description = "PM a guide to the user, specified by the given input. "
 				+ "Doing just the command will give you a list of help topics",

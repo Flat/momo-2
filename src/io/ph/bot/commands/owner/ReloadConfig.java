@@ -2,6 +2,7 @@ package io.ph.bot.commands.owner;
 
 import io.ph.bot.Bot;
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
 import net.dv8tion.jda.core.entities.Message;
@@ -9,6 +10,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "reloadconfig",
 		aliases = {},
+		category = CommandCategory.BOT_OWNER,
 		permission = Permission.BOT_OWNER,
 		description = "Reload config",
 		example = "(no params)"

@@ -2,6 +2,7 @@ package io.ph.bot.commands.owner;
 
 import io.ph.bot.State;
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
 import io.ph.util.Util;
@@ -14,6 +15,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "changeusername",
 		aliases = {},
+		category = CommandCategory.BOT_OWNER,
 		permission = Permission.BOT_OWNER,
 		description = "Change bot username",
 		example = "New Username"

@@ -3,6 +3,7 @@ package io.ph.bot.commands.moderation;
 import java.awt.Color;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.feed.RedditEventListener;
 import io.ph.bot.model.Permission;
@@ -18,6 +19,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "removereddit",
 		aliases = {"unreddit", "unsubreddit", "removeredditfeed"},
+		category = CommandCategory.FEED,
 		permission = Permission.KICK,
 		description = "Remove a reddit feed from this channel",
 		example = "awwnime"

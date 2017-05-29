@@ -16,6 +16,7 @@ import com.google.common.base.Joiner;
 
 import io.ph.bot.Bot;
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.exception.NoAPIKeyException;
 import io.ph.bot.model.GuildObject;
@@ -32,6 +33,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "youtube",
 		aliases = {"yt"},
+		category = CommandCategory.UTILITY,
 		permission = Permission.NONE,
 		description = "Search Youtube for a search query and return the first 5 results",
 		example = "kyoukara omoide"

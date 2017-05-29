@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.GenericContainer;
 import io.ph.bot.model.Permission;
@@ -21,6 +22,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "prune",
 		aliases = {},
+		category = CommandCategory.MODERATION,
 		permission = Permission.KICK,
 		description = "Prune n messages (default 40, up to 75). Can prune a specific user's messages with a mention.\n",
 		example = "25 @target\n"

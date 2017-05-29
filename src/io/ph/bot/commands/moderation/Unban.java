@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.time.Instant;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
 import io.ph.db.ConnectionPool;
@@ -23,6 +24,7 @@ import net.dv8tion.jda.core.entities.User;
 @CommandData (
 		defaultSyntax = "unban",
 		aliases = {},
+		category = CommandCategory.MODERATION,
 		permission = Permission.BAN,
 		description = "Unban a user",
 		example = "target"

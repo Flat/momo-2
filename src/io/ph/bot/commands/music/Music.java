@@ -7,6 +7,7 @@ import io.ph.bot.audio.AudioManager;
 import io.ph.bot.audio.GuildMusicManager;
 import io.ph.bot.audio.TrackDetails;
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.GuildObject;
 import io.ph.bot.model.Permission;
@@ -22,18 +23,19 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 @CommandData (
 		defaultSyntax = "music",
 		aliases = {"play"},
+		category = CommandCategory.MUSIC,
 		permission = Permission.NONE,
 		description = "Play or get information on the music playlist\n"
 				+ "You can also play your guild's music playlist\n"
 				+ "If your server has a DJ role, this command is restricted to those in that role or mod+",
-				example = "https://youtu.be/dQw4w9WgXcQ\n"
-						+ "playlist (plays your guild's playlist)\n"
-						+ "now\n"
-						+ "next\n"
-						+ "skip (kick+ force skips)\n"
-						+ "volume (requires kick+)\n"
-						+ "shuffle (requires kick+)\n"
-						+ "stop (requires kick+)"
+		example = "https://youtu.be/dQw4w9WgXcQ\n"
+				+ "playlist (plays your guild's playlist)\n"
+				+ "now\n"
+				+ "next\n"
+				+ "skip (kick+ force skips)\n"
+				+ "volume (requires kick+)\n"
+				+ "shuffle (requires kick+)\n"
+				+ "stop (requires kick+)"
 		)
 public class Music extends Command {
 	@Override
@@ -86,7 +88,6 @@ public class Music extends Command {
 			msg.getChannel().sendMessage(em.build()).queue();
 			return;
 		}
-		GuildMusicManager m = g.getMusicManager();
 		if (contents.startsWith("skip")) {
 			skip(msg, djSet);
 			return;
@@ -310,7 +311,6 @@ public class Music extends Command {
 	public static void volume(Message msg, String volume, boolean...bs) {
 		GuildObject g = GuildObject.guildMap.get(msg.getGuild().getId());
 		EmbedBuilder em = new EmbedBuilder();
-		String contents = Util.getCommandContents(msg);
 		boolean djSet = bs.length > 0 ? bs[0] : false;
 		if (!Util.memberHasPermission(msg.getGuild().getMember(msg.getAuthor()), Permission.KICK)
 				&& !djSet) {

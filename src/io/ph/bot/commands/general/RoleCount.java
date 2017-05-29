@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.GuildObject;
 import io.ph.bot.model.Permission;
@@ -19,6 +20,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "rolecount",
 		aliases = {"rolelist", "rolestats"},
+		category = CommandCategory.UTILITY,
 		permission = Permission.NONE,
 		description = "Get meta information about your joinable roles",
 		example = "(no parameters)"

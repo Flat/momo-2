@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.JishoObject;
 import io.ph.bot.model.Permission;
@@ -18,6 +19,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "jisho",
 		aliases = {"jisyo", "eewa", "waee", "nihongo"},
+		category = CommandCategory.UTILITY,
 		permission = Permission.NONE,
 		description = "Lookup Jisho.org for a Japanese term",
 		example = "house"

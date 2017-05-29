@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.Optional;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
 import io.ph.util.Util;
@@ -19,6 +20,7 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 @CommandData (
 		defaultSyntax = "summon",
 		aliases = {},
+		category = CommandCategory.MUSIC,
 		permission = Permission.KICK,
 		description = "Summon Momo into your voice channel",
 		example = "(no parameters)"

@@ -2,6 +2,7 @@ package io.ph.bot.commands.administration;
 
 import java.awt.Color;
 
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.GuildObject;
 import io.ph.bot.model.Permission;
@@ -20,6 +21,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "configure",
 		aliases = {"config"},
+		category = CommandCategory.ADMINISTRATION,
 		permission = Permission.MANAGE_SERVER,
 		description = "Configure various settings for your server",
 		example = "(no parameters)"

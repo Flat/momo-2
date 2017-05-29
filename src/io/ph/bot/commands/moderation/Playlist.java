@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import io.ph.bot.audio.PlaylistEntity;
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.GuildObject;
 import io.ph.bot.model.Permission;
@@ -20,6 +21,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "playlist",
 		aliases = {},
+		category = CommandCategory.MUSIC,
 		permission = Permission.KICK,
 		description = "Create and manage the guild's playlist\n"
 				+ "Each server gets a playlist unique to it which you can add or remove songs to. "

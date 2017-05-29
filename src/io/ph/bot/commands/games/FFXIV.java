@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.IOException;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.exception.BadCharacterException;
 import io.ph.bot.model.GuildObject;
@@ -22,6 +23,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "ffxiv",
 		aliases = {"ff14"},
+		category = CommandCategory.GAMES,
 		permission = Permission.NONE,
 		description = "Lookup a character in the Final Fantasy 14 Lodestone search.\n"
 				+ "Format is ffxiv server first-name last-name\n"

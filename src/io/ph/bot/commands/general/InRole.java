@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.stream.Collectors;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
 import io.ph.util.Util;
@@ -19,6 +20,7 @@ import net.dv8tion.jda.core.entities.Role;
 @CommandData (
 		defaultSyntax = "inrole",
 		aliases = {"role"},
+		category = CommandCategory.UTILITY,
 		permission = Permission.NONE,
 		description = "See what users are in a role",
 		example = "role-name"

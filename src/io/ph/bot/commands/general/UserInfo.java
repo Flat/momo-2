@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import io.ph.bot.Bot;
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
 import io.ph.util.Util;
@@ -23,6 +24,7 @@ import net.dv8tion.jda.core.entities.Role;
 @CommandData (
 		defaultSyntax = "userinfo",
 		aliases = {"user"},
+		category = CommandCategory.UTILITY,
 		permission = Permission.NONE,
 		description = "Information on a user",
 		example = "@target"

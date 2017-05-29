@@ -3,6 +3,7 @@ package io.ph.bot.commands.general;
 import java.awt.Color;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
 import io.ph.util.Util;
@@ -18,6 +19,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "avatar",
 		aliases = {"ava", "avi"},
+		category = CommandCategory.UTILITY,
 		permission = Permission.NONE,
 		description = "Link your or another person's avatar",
 		example = "(no parameters)"

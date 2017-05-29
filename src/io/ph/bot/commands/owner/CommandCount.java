@@ -3,6 +3,7 @@ package io.ph.bot.commands.owner;
 import java.awt.Color;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.commands.CommandHandler;
 import io.ph.bot.model.GenericContainer;
@@ -13,7 +14,8 @@ import net.dv8tion.jda.core.entities.Message;
 
 @CommandData (
 		defaultSyntax = "commandcount",
-		aliases = { "count" },
+		aliases = {"count"},
+		category = CommandCategory.BOT_OWNER,
 		permission = Permission.BOT_OWNER,
 		description = "Get command counts",
 		example = ""

@@ -3,6 +3,7 @@ package io.ph.bot.commands.administration;
 import java.awt.Color;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.GuildObject;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -18,6 +19,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "setup",
 		aliases = {"initialize"},
+		category = CommandCategory.ADMINISTRATION,
 		permission =  io.ph.bot.model.Permission.MANAGE_SERVER,
 		description = "Perform initial setup by creating the muted role and initializing the guild",
 		example = "(no parameters)"

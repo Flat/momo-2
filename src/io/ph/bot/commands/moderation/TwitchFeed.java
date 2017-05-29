@@ -5,6 +5,7 @@ import java.awt.Color;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.exception.NoAPIKeyException;
 import io.ph.bot.feed.RedditEventListener;
@@ -22,6 +23,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "twitch",
 		aliases = {"twitchfeed"},
+		category = CommandCategory.FEED,
 		permission = Permission.KICK,
 		description = "Set this channel as a Twitch feed for a given username.\n"
 				+ "Use the untwitch command to remove and listtwitch command to show all feeds\n",

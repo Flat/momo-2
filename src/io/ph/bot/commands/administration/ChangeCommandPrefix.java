@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.time.Instant;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.GuildObject;
 import io.ph.bot.model.Permission;
@@ -20,6 +21,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "changeprefix",
 		aliases = {"changecommandprefix", "commandprefix"},
+		category = CommandCategory.ADMINISTRATION,
 		permission = Permission.MANAGE_SERVER,
 		description = "Change the server's command prefix",
 		example = "#"

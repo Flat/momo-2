@@ -2,6 +2,7 @@ package io.ph.bot.commands.moderation;
 
 import java.awt.Color;
 
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.feed.TwitterEventListener;
 import io.ph.bot.feed.TwitterFeedObserver;
@@ -20,6 +21,7 @@ import twitter4j.User;
 @CommandData (
 		defaultSyntax = "twitter",
 		aliases = {"twitterfeed"},
+		category = CommandCategory.FEED,
 		permission = Permission.KICK,
 		description = "Subscribe to a Twitter account and get tweets delivered to this channel",
 		example = "FF_XIV_EN"

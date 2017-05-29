@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.feed.RedditEventListener;
 import io.ph.bot.feed.RedditFeedObserver;
@@ -21,6 +22,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "listreddit",
 		aliases = {"listredditfeeds", "redditlist"},
+		category = CommandCategory.FEED,
 		permission = Permission.KICK,
 		description = "List all reddit feeds for your server",
 		example = "(no parameters)"

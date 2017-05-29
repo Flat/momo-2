@@ -2,6 +2,7 @@ package io.ph.bot.commands.moderation;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
 import io.ph.bot.model.StrawpollObject;
@@ -19,6 +20,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "strawpoll",
 		aliases = {"createpoll", "poll"},
+		category = CommandCategory.UTILITY,
 		permission = Permission.KICK,
 		description = "Create a poll",
 		example = "(no parameters)"

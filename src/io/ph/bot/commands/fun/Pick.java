@@ -1,9 +1,10 @@
-package io.ph.bot.commands.general;
+package io.ph.bot.commands.fun;
 
 import java.awt.Color;
 import java.util.concurrent.ThreadLocalRandom;
 
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.Permission;
 import io.ph.util.MessageUtils;
@@ -19,6 +20,7 @@ import net.dv8tion.jda.core.entities.Message;
 @CommandData (
 		defaultSyntax = "pick",
 		aliases = {"choose"},
+		category = CommandCategory.FUN,
 		permission = Permission.NONE,
 		description = "Pick between multiple choices",
 		example = "play games or sleep or do homework"

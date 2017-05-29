@@ -9,6 +9,7 @@ import java.time.OffsetDateTime;
 
 import io.ph.bot.Bot;
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.events.UserMutedEvent;
 import io.ph.bot.model.GuildObject;
@@ -30,6 +31,7 @@ import net.dv8tion.jda.core.entities.Role;
 @CommandData (
 		defaultSyntax = "mute",
 		aliases = {},
+		category = CommandCategory.MODERATION,
 		permission = Permission.KICK,
 		description = "Assign the Muted role to a user. Can be temporary by using the \"temp\" parameter",
 		example = "temp 1d2h target"

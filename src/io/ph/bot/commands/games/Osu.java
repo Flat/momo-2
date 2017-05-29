@@ -8,6 +8,7 @@ import java.util.List;
 
 import io.ph.bot.Bot;
 import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.exception.NoAPIKeyException;
 import io.ph.bot.model.Permission;
@@ -29,6 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @CommandData (
 		defaultSyntax = "osu",
 		aliases = {"circles"},
+		category = CommandCategory.GAMES,
 		permission = Permission.NONE,
 		description = "Lookup an osu! user",
 		example = "username"
