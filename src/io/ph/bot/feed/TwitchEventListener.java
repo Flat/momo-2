@@ -90,8 +90,10 @@ public class TwitchEventListener implements Job {
 			return null;
 		}
 		for (TwitchFeedObserver observer : twitchFeed.get(userId)) {
-			if (observer.getDiscoChannel().getGuild().equals(guild))
-				return observer;
+			if (observer.getDiscoChannel() != null) {
+				if (observer.getDiscoChannel().getGuild().equals(guild))
+					return observer;
+			}
 		}
 		return null;
 	}
