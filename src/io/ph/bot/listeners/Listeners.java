@@ -76,16 +76,22 @@ public class Listeners extends ListenerAdapter {
 		}
 
 		// Auto assign
-		if (guild.getRoleById(g.getConfig().getAutoAssignRoleId()) == null) {
-			g.getConfig().setAutoAssignRoleId("");
+		if (!g.getConfig().getAutoAssignRoleId().isEmpty()) {
+			if (guild.getRoleById(g.getConfig().getAutoAssignRoleId()) == null) {
+				g.getConfig().setAutoAssignRoleId("");
+			}
 		}
 		// DJ
-		if (guild.getRoleById(g.getConfig().getDjRoleId()) == null) {
-			g.getConfig().setDjRoleId("");
+		if (!g.getConfig().getDjRoleId().isEmpty()) {
+			if (guild.getRoleById(g.getConfig().getDjRoleId()) == null) {
+				g.getConfig().setDjRoleId("");
+			}
 		}
 		// Mute
-		if (guild.getRoleById(g.getConfig().getMutedRoleId()) == null) {
-			g.getConfig().setMutedRoleId("");
+		if (!g.getConfig().getMutedRoleId().isEmpty()) {
+			if (guild.getRoleById(g.getConfig().getMutedRoleId()) == null) {
+				g.getConfig().setMutedRoleId("");
+			}
 		}
 
 	}
