@@ -59,7 +59,7 @@ public class Listeners extends ListenerAdapter {
 			log.info("Bot is now logged: {} guilds", e.getJDA().getGuilds().size());
 		}
 	}
-	
+
 	/**
 	 * This provides startup checks for guilds and config.
 	 * For example, a guild deletes a joinable role while the bot was offline
@@ -67,14 +67,27 @@ public class Listeners extends ListenerAdapter {
 	 */
 	private static void startupChecks(Guild guild) {
 		GuildObject g = GuildObject.guildMap.get(guild.getId());
-		
+
 		// Joinable roles
 		for (String id : g.getJoinableRoles()) {
 			if (guild.getRoleById(id) == null) {
 				g.removeJoinableRole(id);
 			}
 		}
-		
+
+		// Auto assign
+		if (guild.getRoleById(g.getConfig().getAutoAssignRoleId()) == null) {
+			g.getConfig().setAutoAssignRoleId("");
+		}
+		// DJ
+		if (guild.getRoleById(g.getConfig().getDjRoleId()) == null) {
+			g.getConfig().setDjRoleId("");
+		}
+		// Mute
+		if (guild.getRoleById(g.getConfig().getMutedRoleId()) == null) {
+			g.getConfig().setMutedRoleId("");
+		}
+
 	}
 
 	@Override 
@@ -132,6 +145,7 @@ public class Listeners extends ListenerAdapter {
 		if (!Bot.isReady)
 			return;
 		GuildObject g = GuildObject.guildMap.get(e.getGuild().getId());
+		// Log channel
 		if (!g.getSpecialChannels().getLog().equals("")) {
 			EmbedBuilder em = new EmbedBuilder().setAuthor(e.getMember().getUser().getName() + " has joined the server", 
 					null, e.getMember().getUser().getAvatarUrl())
@@ -139,6 +153,7 @@ public class Listeners extends ListenerAdapter {
 					.setTimestamp(Instant.now());
 			MessageUtils.sendMessage(g.getSpecialChannels().getLog(), em.build());
 		}
+		// Welcome message
 		if ((!g.getSpecialChannels().getWelcome().equals("") || g.getConfig().isPmWelcomeMessage())
 				&& !g.getConfig().getWelcomeMessage().isEmpty()) {
 			String msg = g.getConfig().getWelcomeMessage();
@@ -148,6 +163,15 @@ public class Listeners extends ListenerAdapter {
 				MessageUtils.sendMessage(g.getSpecialChannels().getWelcome(), msg);
 			else
 				MessageUtils.sendPrivateMessage(e.getMember().getUser().getId(), msg);
+		}
+		// Auto assign
+		if (!g.getConfig().getAutoAssignRoleId().isEmpty()) {
+			Role r = e.getGuild().getRoleById(g.getConfig().getAutoAssignRoleId());
+			if (r == null) {
+				g.getConfig().setAutoAssignRoleId("");
+			} else {
+				e.getGuild().getController().addRolesToMember(e.getMember(), r).queue();
+			}
 		}
 	}
 
@@ -317,13 +341,28 @@ public class Listeners extends ListenerAdapter {
 			});
 		}
 	}
-	
+
 	@Override
 	public void onRoleDelete(RoleDeleteEvent e) {
 		GuildObject g = GuildObject.guildMap.get(e.getGuild().getId());
+		String roleId = e.getRole().getId();
+		// Joinable
 		if (g.isJoinableRole(e.getRole().getId())) {
 			g.removeJoinableRole(e.getRole().getId());
 		}
+		// Auto assign
+		if (g.getConfig().getAutoAssignRoleId().equals(roleId)) {
+			g.getConfig().setAutoAssignRoleId("");
+		}
+		// DJ
+		if (g.getConfig().getDjRoleId().equals(roleId)) {
+			g.getConfig().setDjRoleId("");
+		}
+		// Mute
+		if (g.getConfig().getMutedRoleId().equals(roleId)) {
+			g.getConfig().setMutedRoleId("");
+		}
+
 	}
 
 	private static void checkFiles(Guild g) {

@@ -85,7 +85,8 @@ public class GuildObject {
 				config.getBoolean("FirstTime", true),
 				config.getBoolean("DisableInvites", false),
 				config.getBoolean("PMWelcomeMessage", false),
-				config.getBoolean("AdvancedLogging", false));
+				config.getBoolean("AdvancedLogging", false),
+				config.getString("AutoAssignRoleId", ""));
 		// Load up enabled & disabled commands
 		String[] enabledCommands = config.getStringArray("EnabledCommands");
 		String[] disabledCommands = config.getStringArray("DisabledCommands");
@@ -369,11 +370,13 @@ public class GuildObject {
 		private boolean advancedLogging;
 		private String mutedRoleId;
 		private String djRoleId;
+		private String autoAssignRoleId;
 
 		ServerConfiguration(String commandPrefix, int messagesPerFifteen, int commandCooldown,
 				String welcomeMessage, String mutedRoleId, String djRoleId, boolean limitToOneRole,
 				boolean firstTime, boolean disableInvites,
-				boolean pmWelcomeMessage, boolean advancedLogging) {
+				boolean pmWelcomeMessage, boolean advancedLogging,
+				String autoAssignRoleId) {
 			this.commandPrefix = commandPrefix;
 			this.messagesPerFifteen = messagesPerFifteen;
 			this.commandCooldown = commandCooldown;
@@ -385,6 +388,7 @@ public class GuildObject {
 			this.disableInvites = disableInvites;
 			this.pmWelcomeMessage = pmWelcomeMessage;
 			this.advancedLogging = advancedLogging;
+			this.autoAssignRoleId = autoAssignRoleId;
 		}
 
 		public String getCommandPrefix() {
@@ -394,23 +398,29 @@ public class GuildObject {
 			this.commandPrefix = commandPrefix;
 			config.setProperty("ServerCommandPrefix", commandPrefix);
 		}
+
 		public int getMessagesPerFifteen() {
 			return messagesPerFifteen;
 		}
+
 		public void setMessagesPerFifteen(int messagesPerFifteen) {
 			this.messagesPerFifteen = messagesPerFifteen;
 			config.setProperty("MessagesPerFifteenSeconds", messagesPerFifteen);
 		}
+
 		public int getCommandCooldown() {
 			return commandCooldown;
 		}
+
 		public void setCommandCooldown(int commandCooldown) {
 			this.commandCooldown = commandCooldown;
 			config.setProperty("CommandCooldown", commandCooldown);
 		}
+
 		public String getWelcomeMessage() {
 			return welcomeMessage;
 		}
+
 		public void setWelcomeMessage(String welcomeMessage) {
 			this.welcomeMessage = welcomeMessage;
 			config.setProperty("NewUserWelcomeMessage", welcomeMessage);
@@ -432,6 +442,15 @@ public class GuildObject {
 		public void setDjRoleId(String djRoleId) {
 			this.djRoleId = djRoleId;
 			config.setProperty("DjRoleID", djRoleId);
+		}
+
+		public String getAutoAssignRoleId() {
+			return this.autoAssignRoleId;
+		}
+
+		public void setAutoAssignRoleId(String autoAssignRoleId) {
+			this.autoAssignRoleId = autoAssignRoleId;
+			config.setProperty("AutoAssignRoleId", autoAssignRoleId);
 		}
 
 		public boolean isFirstTime() {
