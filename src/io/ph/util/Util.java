@@ -15,6 +15,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,9 +24,11 @@ import javax.net.ssl.HttpsURLConnection;
 import org.apache.tika.Tika;
 
 import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonValue;
 
 import io.ph.bot.Bot;
+import io.ph.bot.exception.NoAPIKeyException;
 import io.ph.bot.model.Permission;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
@@ -442,5 +445,37 @@ public class Util {
 	 */
 	public static Member memberFromMessage(Message msg) {
 		return msg.getGuild().getMember(msg.getAuthor());
+	}
+	
+	/**
+	 * Get an image link from an imgur album
+	 * @param albumId Album ID
+	 * @return Link to an image
+	 * @throws NoAPIKeyException No imgur key setup
+	 */
+	public static String getRandomImageLinkForImgurId(String albumId) throws NoAPIKeyException {
+		try {
+			URL url = new URL(String.format("https://api.imgur.com/3/album/%s/images", albumId));
+			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+			urlConnection.setRequestProperty("Authorization", "Client-ID "
+					+ Bot.getInstance().getApiKeys().get("imgur"));
+			urlConnection.connect();
+			StringBuilder stb = new StringBuilder();
+			// Get the response
+			BufferedReader rd = new BufferedReader(
+					new InputStreamReader(urlConnection.getInputStream()));
+			String line;
+			while ((line = rd.readLine()) != null) {
+				stb.append(line).append("\n");
+			}
+			JsonArray ja = Json.parse(stb.toString()).asObject().get("data").asArray();
+			int randomInt = ThreadLocalRandom.current().nextInt(0, ja.size());
+			String imgurLink = ja.get(randomInt).asObject().get("link").asString();
+			
+			return imgurLink;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
