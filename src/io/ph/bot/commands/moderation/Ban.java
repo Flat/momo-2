@@ -79,14 +79,13 @@ public class Ban extends Command {
 			em.setDescription(target.getEffectiveName() + " has been banned");
 		}
 		try {
-			if (msg.getGuild().getController().getBans().complete(true).contains(target)) {
+			if (msg.getGuild().getBans().complete(true).contains(target)) {
 				em.setTitle("Error", null)
 				.setColor(Color.RED)
 				.setDescription(target.getEffectiveName() + " is already banned");
 				msg.getChannel().sendMessage(em.build()).queue();
 				return;
 			}
-
 			msg.getGuild().getController().ban(target, 0).queue(success -> {
 				msg.getChannel().sendMessage(em.build()).queue();
 			}, failure -> {
