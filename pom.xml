@@ -23,7 +23,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.4.3</version>
+				<version>3.0.0</version>
 				<configuration>
 					<!-- <minimizeJar>true</minimizeJar> -->
 					<filters>
@@ -71,7 +71,7 @@
 		<dependency>
 			<groupId>net.dv8tion</groupId>
 			<artifactId>JDA</artifactId>
-			<version>3.1.0_206</version>
+			<version>3.1.1_210</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -166,7 +166,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>21.0</version>
+			<version>22.0</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-youtube -->
 		<dependency>
@@ -178,7 +178,7 @@
 		<dependency>
 			<groupId>org.xerial</groupId>
 			<artifactId>sqlite-jdbc</artifactId>
-			<version>3.16.1</version>
+			<version>3.18.0</version>
 		</dependency>
 		<!-- These dependencies are required by JDA but are not in compile scope -->
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
