@@ -86,7 +86,6 @@ public class KitsuAnimeSearch extends Command {
 			em.setFooter("information from kitsu.io", null);
 			msg.getChannel().sendMessage(em.build()).queue();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

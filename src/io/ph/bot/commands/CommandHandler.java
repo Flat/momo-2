@@ -32,7 +32,6 @@ import net.dv8tion.jda.core.entities.Message;
  * A command needs to override only run(Message msg)
  * and will follow the requirements outlined in the CommandSyntax annotation
  * 
- * TODO: Rewrite this to not rely on a global
  * @author Paul
  *
  */
