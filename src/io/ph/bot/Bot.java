@@ -21,6 +21,7 @@ import io.ph.bot.listeners.Listeners;
 import io.ph.bot.listeners.ModerationListeners;
 import io.ph.bot.listeners.VoiceChannelListeners;
 import io.ph.bot.scheduler.JobScheduler;
+import io.ph.bot.ws.WebsocketServer;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -94,6 +95,7 @@ public class Bot {
 	private static void initialize() {
 		JobScheduler.initializeScheduler();
 		TwitterEventListener.initTwitter();
+		WebsocketServer.getInstance().start();
 	}
 
 	public boolean loadProperties() {
@@ -101,11 +103,11 @@ public class Bot {
 			PropertiesConfiguration config = new PropertiesConfiguration("resources/Bot.properties");
 			botConfig.setToken(config.getString("BotToken"));
 			botConfig.setAvatar(config.getString("Avatar"));
-			botConfig.setBotOwnerId(config.getString("BotOwnerId"));
+			botConfig.setBotOwnerId(config.getLong("BotOwnerId", 0));
 			botConfig.setBotInviteLink(config.getString("InviteLink"));
 			botConfig.setMaxSongLength(config.getInt("MaxSongLength", 15));
-
-
+			botConfig.setCompanionBot(config.getBoolean("MusicCompanion", false));
+			
 			Configuration subset = config.subset("apikey");
 			Iterator<String> iter = subset.getKeys();
 			while(iter.hasNext()) {
@@ -168,8 +170,18 @@ public class Bot {
 	}
 
 	public class BotConfiguration {
-		private String token, botOwnerId, avatar, botInviteLink;
+		private String token, avatar, botInviteLink;
+		private boolean companionBot;
+		private long botOwnerId;
 		private int maxSongLength; // in minutes
+
+		public boolean isCompanionBot() {
+			return this.companionBot;
+		}
+
+		public void setCompanionBot(boolean companionBot) {
+			this.companionBot = companionBot;
+		}
 
 		public int getMaxSongLength() {
 			return maxSongLength;
@@ -187,11 +199,11 @@ public class Bot {
 			this.token = token;
 		}
 
-		public String getBotOwnerId() {
+		public long getBotOwnerId() {
 			return botOwnerId;
 		}
 
-		public void setBotOwnerId(String botOwnerId) {
+		public void setBotOwnerId(long botOwnerId) {
 			this.botOwnerId = botOwnerId;
 		}
 
@@ -218,18 +230,22 @@ public class Bot {
 		 * @param guildId Guild ID
 		 * @return Guild if found, null if not
 		 */
-		public Guild getGuildById(String guildId) {
+		public Guild getGuildById(long guildId) {
 			for (JDA j : jdaClients) {
 				Guild g;
-				try {
-					if ((g = j.getGuildById(guildId)) != null) {
-						return g;
-					}
-				} catch (NumberFormatException e) {
-					return null;
+				if ((g = j.getGuildById(guildId)) != null) {
+					return g;
 				}
 			}
 			return null;
+		}
+
+		public Guild getGuildById(String guildId) {
+			try {
+				return getGuildById(Long.parseLong(guildId));
+			} catch (NumberFormatException e) {
+				return null;
+			}
 		}
 
 		/**
@@ -237,18 +253,22 @@ public class Bot {
 		 * @param channelId Channel ID
 		 * @return TextChannel if found, null if not
 		 */
-		public TextChannel getTextChannelById(String channelId) {
+		public TextChannel getTextChannelById(long channelId) {
 			for (JDA j : jdaClients) {
 				TextChannel t;
-				try {
-					if ((t = j.getTextChannelById(channelId)) != null) {
-						return t;
-					}
-				} catch (NumberFormatException e) {
-					return null;
+				if ((t = j.getTextChannelById(channelId)) != null) {
+					return t;
 				}
 			}
 			return null;
+		}
+
+		public TextChannel getTextChannelById(String channelId) {
+			try {
+				return getTextChannelById(Long.parseLong(channelId));
+			} catch (NumberFormatException e) {
+				return null;
+			}
 		}
 
 		/**
@@ -256,18 +276,22 @@ public class Bot {
 		 * @param channelId Channel ID
 		 * @return VoiceChannel if found, null if not
 		 */
-		public VoiceChannel getVoiceChannelById(String channelId) {
+		public VoiceChannel getVoiceChannelById(long channelId) {
 			for (JDA j : jdaClients) {
 				VoiceChannel c;
-				try {
-					if ((c = j.getVoiceChannelById(channelId)) != null) {
-						return c;
-					}
-				} catch (NumberFormatException e) {
-					return null;
+				if ((c = j.getVoiceChannelById(channelId)) != null) {
+					return c;
 				}
 			}
 			return null;
+		}
+
+		public VoiceChannel getVoiceChannelById(String channelId) {
+			try {
+				return getVoiceChannelById(Long.parseLong(channelId));
+			} catch (NumberFormatException e) {
+				return null;
+			}
 		}
 
 		/**
@@ -275,18 +299,22 @@ public class Bot {
 		 * @param userId User ID
 		 * @return User if found, null if not
 		 */
-		public User getUserById(String userId) {
+		public User getUserById(long userId) {
 			for (JDA j : jdaClients) {
 				User u;
-				try {
-					if ((u = j.getUserById(userId)) != null) {
-						return u;
-					}
-				} catch (NumberFormatException e) {
-					return null;
+				if ((u = j.getUserById(userId)) != null) {
+					return u;
 				}
 			}
 			return null;
+		}
+
+		public User getUserById(String userId) {
+			try {
+				return getUserById(Long.parseLong(userId));
+			} catch (NumberFormatException e) {
+				return null;
+			}
 		}
 	}
 }

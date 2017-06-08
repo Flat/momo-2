@@ -149,7 +149,7 @@ public class Util {
 	 */
 	public static boolean memberHasPermission(Member member, Permission permission) {
 		if (permission.getJdaPerm() == null 
-				&& member.getUser().getId().equals(Bot.getInstance().getConfig().getBotOwnerId())) {
+				&& member.getUser().getIdLong() == Bot.getInstance().getConfig().getBotOwnerId()) {
 			return true;
 		}
 		if (permission.getJdaPerm() != null && member.hasPermission(permission.getJdaPerm())) {
@@ -166,6 +166,7 @@ public class Util {
 	public static String getParam(Message msg) {
 		return getParam(msg.getContent());
 	}
+
 	/**
 	 * Get the first parameter of a command based on a space split
 	 * @param str String to parse
@@ -254,7 +255,7 @@ public class Util {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Check if String input is a valid URL
 	 * @param input String input
@@ -427,7 +428,7 @@ public class Util {
 		}
 		return nowLDT.atZone(ZoneId.systemDefault()).toInstant();
 	}
-	
+
 	/**
 	 * Resolve a user's color with a default fallback
 	 * @param member Member to check
@@ -437,7 +438,7 @@ public class Util {
 	public static Color resolveColor(Member member, Color fallback) {
 		return member.getColor() == null ? fallback : member.getColor();
 	}
-	
+
 	/**
 	 * Resolve a member from a message
 	 * @param msg Message to resolve from
@@ -446,7 +447,7 @@ public class Util {
 	public static Member memberFromMessage(Message msg) {
 		return msg.getGuild().getMember(msg.getAuthor());
 	}
-	
+
 	/**
 	 * Get an image link from an imgur album
 	 * @param albumId Album ID
@@ -471,7 +472,7 @@ public class Util {
 			JsonArray ja = Json.parse(stb.toString()).asObject().get("data").asArray();
 			int randomInt = ThreadLocalRandom.current().nextInt(0, ja.size());
 			String imgurLink = ja.get(randomInt).asObject().get("link").asString();
-			
+
 			return imgurLink;
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -3,6 +3,7 @@ package io.ph.bot.commands.music;
 import java.awt.Color;
 import java.util.Optional;
 
+import io.ph.bot.Bot;
 import io.ph.bot.audio.AudioManager;
 import io.ph.bot.audio.GuildMusicManager;
 import io.ph.bot.audio.TrackDetails;
@@ -28,18 +29,22 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 		description = "Play or get information on the music playlist\n"
 				+ "You can also play your guild's music playlist\n"
 				+ "If your server has a DJ role, this command is restricted to those in that role or mod+",
-		example = "https://youtu.be/dQw4w9WgXcQ\n"
-				+ "playlist (plays your guild's playlist)\n"
-				+ "now\n"
-				+ "next\n"
-				+ "skip (kick+ force skips)\n"
-				+ "volume (requires kick+)\n"
-				+ "shuffle (requires kick+)\n"
-				+ "stop (requires kick+)"
+				example = "https://youtu.be/dQw4w9WgXcQ\n"
+						+ "playlist (plays your guild's playlist)\n"
+						+ "now\n"
+						+ "next\n"
+						+ "skip (kick+ force skips)\n"
+						+ "volume (requires kick+)\n"
+						+ "shuffle (requires kick+)\n"
+						+ "stop (requires kick+)"
 		)
 public class Music extends Command {
+
 	@Override
 	public void executeCommand(Message msg) {
+		if (!shouldContinueMusic(msg)) {
+			return;
+		}
 		final EmbedBuilder em = new EmbedBuilder();
 		String contents = Util.getCommandContents(msg);
 		String titleOverride = null;
@@ -151,8 +156,11 @@ public class Music extends Command {
 		GuildMusicManager.loadAndPlay(msg.getTextChannel(), 
 				contents, titleOverride, msg.getGuild().getMember(msg.getAuthor()), true);
 	}
-	
+
 	public static void skip(Message msg, boolean...bs) {
+		if (!shouldContinueMusic(msg)) {
+			return;
+		}
 		GuildObject g = GuildObject.guildMap.get(msg.getGuild().getId());
 		net.dv8tion.jda.core.managers.AudioManager audio = msg.getGuild().getAudioManager();
 		GuildMusicManager m = g.getMusicManager();
@@ -210,8 +218,11 @@ public class Music extends Command {
 			msg.getChannel().sendMessage(em.build()).queue();
 		}
 	}
-	
+
 	public static void now(Message msg) {
+		if (!shouldContinueMusic(msg)) {
+			return;
+		}
 		GuildObject g = GuildObject.guildMap.get(msg.getGuild().getId());
 		GuildMusicManager m = g.getMusicManager();
 		EmbedBuilder em = new EmbedBuilder();
@@ -234,12 +245,15 @@ public class Music extends Command {
 		.addField("Source", m.getAudioPlayer().getPlayingTrack().getInfo().uri, false);
 		msg.getChannel().sendMessage(em.build()).queue();
 	}
-	
+
 	public static void next(Message msg) {
+		if (!shouldContinueMusic(msg)) {
+			return;
+		}
 		GuildObject g = GuildObject.guildMap.get(msg.getGuild().getId());
 		GuildMusicManager m = g.getMusicManager();
 		EmbedBuilder em = new EmbedBuilder();
-		
+
 		if (m.getAudioPlayer() == null 
 				|| m.getAudioPlayer().getPlayingTrack() == null) {
 			em.setTitle("Error", null)
@@ -267,8 +281,11 @@ public class Music extends Command {
 		}
 		msg.getChannel().sendMessage(em.build()).queue();
 	}
-	
+
 	public static void stop(Message msg, boolean...bs) {
+		if (!shouldContinueMusic(msg)) {
+			return;
+		}
 		GuildObject g = GuildObject.guildMap.get(msg.getGuild().getId());
 		GuildMusicManager m = g.getMusicManager();
 		EmbedBuilder em = new EmbedBuilder();
@@ -287,8 +304,11 @@ public class Music extends Command {
 		.setDescription("Queue cleared");
 		msg.getChannel().sendMessage(em.build()).queue();
 	}
-	
+
 	public static void shuffle(Message msg, boolean...bs) {
+		if (!shouldContinueMusic(msg)) {
+			return;
+		}
 		GuildObject g = GuildObject.guildMap.get(msg.getGuild().getId());
 		GuildMusicManager m = g.getMusicManager();
 		EmbedBuilder em = new EmbedBuilder();
@@ -307,8 +327,11 @@ public class Music extends Command {
 		.setDescription("Wow, kerfluffle");
 		msg.getChannel().sendMessage(em.build()).queue();
 	}
-	
+
 	public static void volume(Message msg, String volume, boolean...bs) {
+		if (!shouldContinueMusic(msg)) {
+			return;
+		}
 		GuildObject g = GuildObject.guildMap.get(msg.getGuild().getId());
 		EmbedBuilder em = new EmbedBuilder();
 		boolean djSet = bs.length > 0 ? bs[0] : false;
@@ -334,5 +357,21 @@ public class Music extends Command {
 		.setDescription("Set volume to " + input);
 		msg.getChannel().sendMessage(em.build()).queue();
 		g.getMusicManager().getAudioPlayer().setVolume(input);
+	}
+
+	/**
+	 * Check if a music command should continue and play through this instance of Momo.
+	 * 
+	 * This function has an inherent side effect in sending an error message 
+	 * if this bot shouldn't continue with music
+	 * 
+	 * @param msg Originating message
+	 * @return True if this instance should play music, false to return.
+	 */
+	public static boolean shouldContinueMusic(Message msg) {
+		if (!Bot.getInstance().getConfig().isCompanionBot()) {
+			return true;
+		}
+		return false;
 	}
 }

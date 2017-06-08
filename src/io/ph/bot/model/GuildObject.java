@@ -22,12 +22,14 @@ import org.apache.commons.io.FileUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import io.ph.bot.Bot;
 import io.ph.bot.audio.AudioManager;
 import io.ph.bot.audio.GuildMusicManager;
 import io.ph.bot.audio.PlaylistEntity;
 import io.ph.bot.commands.Command;
 import io.ph.bot.commands.CommandHandler;
 import io.ph.bot.exception.IllegalArgumentException;
+import io.ph.bot.ws.OutgoingOperations;
 import net.dv8tion.jda.core.entities.Guild;
 import net.jodah.expiringmap.ExpirationPolicy;
 import net.jodah.expiringmap.ExpiringMap;
@@ -54,6 +56,9 @@ public class GuildObject {
 	private Set<String> joinableRoles = new HashSet<>();
 	private HashMap<String, Boolean> commandStatus = new HashMap<>();
 
+	private long guildId;
+
+
 	/**
 	 * Initialize this guild and add it to the guildMap
 	 * <p>
@@ -68,6 +73,7 @@ public class GuildObject {
 		} catch (ConfigurationException e) {
 			e.printStackTrace();
 		}
+		this.guildId = g.getIdLong();
 		this.specialChannels = new SpecialChannels(config.getString("WelcomeChannelId", ""),
 				config.getString("MusicChannelId", ""), config.getString("LogChannelId", ""),
 				config.getString("MusicVoiceChannelId", ""));
@@ -123,6 +129,10 @@ public class GuildObject {
 			e.printStackTrace();
 		}
 
+	}
+
+	public long getGuildId() {
+		return this.guildId;
 	}
 
 	/**
@@ -189,7 +199,14 @@ public class GuildObject {
 	 * @throws IllegalArgumentException Command doesn't exist
 	 */
 	public boolean disableCommand(String s) throws IllegalArgumentException {
-		return editCommand(s, false);
+		boolean success = editCommand(s, false);
+		if (success && Bot.getInstance().getConfig().isCompanionBot()) {
+			s = CommandHandler.aliasToDefaultMap.get(s);
+			if (s.equals("music")) {
+				OutgoingOperations.sendOp3(this.guildId, false);
+			}
+		}
+		return success;
 	}
 
 	/**
@@ -199,7 +216,14 @@ public class GuildObject {
 	 * @throws IllegalArgumentException Command doesn't exist
 	 */
 	public boolean enableCommand(String s) throws IllegalArgumentException {
-		return editCommand(s, true);
+		boolean success = editCommand(s, true);
+		if (success && Bot.getInstance().getConfig().isCompanionBot()) {
+			s = CommandHandler.aliasToDefaultMap.get(s);
+			if (s.equals("music")) {
+				OutgoingOperations.sendOp3(this.guildId, true);
+			}
+		}
+		return success;
 	}
 
 	/**
@@ -397,6 +421,9 @@ public class GuildObject {
 		public void setCommandPrefix(String commandPrefix) {
 			this.commandPrefix = commandPrefix;
 			config.setProperty("ServerCommandPrefix", commandPrefix);
+			if (Bot.getInstance().getConfig().isCompanionBot()) {
+				OutgoingOperations.sendOp2(guildId);
+			}
 		}
 
 		public int getMessagesPerFifteen() {
@@ -442,6 +469,9 @@ public class GuildObject {
 		public void setDjRoleId(String djRoleId) {
 			this.djRoleId = djRoleId;
 			config.setProperty("DjRoleID", djRoleId);
+			if (Bot.getInstance().getConfig().isCompanionBot()) {
+				OutgoingOperations.sendOp2(guildId);
+			}
 		}
 
 		public String getAutoAssignRoleId() {
@@ -568,6 +598,9 @@ public class GuildObject {
 		public void setMusic(String music) {
 			this.music = music;
 			config.setProperty("MusicChannelId", music);
+			if (Bot.getInstance().getConfig().isCompanionBot()) {
+				OutgoingOperations.sendOp2(guildId);
+			}
 		}
 
 		public String getLog() {
@@ -586,6 +619,9 @@ public class GuildObject {
 		public void setMusicVoice(String musicVoice) {
 			this.musicVoice = musicVoice;
 			config.setProperty("MusicVoiceChannelId", musicVoice);
+			if (Bot.getInstance().getConfig().isCompanionBot()) {
+				OutgoingOperations.sendOp2(guildId);
+			}
 		}
 	}
 }
