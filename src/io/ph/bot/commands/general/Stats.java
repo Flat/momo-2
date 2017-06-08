@@ -9,6 +9,7 @@ import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.model.MacroObject;
 import io.ph.bot.model.Permission;
+import io.ph.util.Util;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Message;
@@ -33,7 +34,7 @@ public class Stats extends Command {
 		int onlineUsers = (int) msg.getGuild().getMembers().stream()
 				.filter(m -> !m.getOnlineStatus().equals(OnlineStatus.OFFLINE))
 				.count();
-		
+
 		em.setTitle(msg.getGuild().getName(), null)
 		.addField("Users", onlineUsers + "/" + msg.getGuild().getMembers().size(), true)
 		.addField("Text Channels", msg.getGuild().getTextChannels().size() + "", true)
@@ -42,13 +43,15 @@ public class Stats extends Command {
 		.addField("Creation Date", msg.getGuild().getCreationTime().format(
 				DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 				.toString(), true)
-		.addField("Server ID", msg.getGuild().getId(), true);
+		.addField("Server ID", msg.getGuild().getId(), true)
+		.addField("Shard ID", msg.getJDA().getShardInfo().getShardString(), true);
+
 		Object[] topMacro = null;
 		if((topMacro = MacroObject.topMacro(msg.getGuild().getId())) != null)
-				em.addField("Top macro", "**" + topMacro[1] + "** by **"
-						+ msg.getGuild().getMemberById((String) topMacro[2]).getEffectiveName() 
-						+ "**: " + topMacro[0] + " hits", false);
-		em.setColor(Color.CYAN)
+			em.addField("Top macro", "**" + topMacro[1] + "** by **"
+					+ msg.getGuild().getMemberById((String) topMacro[2]).getEffectiveName() 
+					+ "**: " + topMacro[0] + " hits", false);
+		em.setColor(Util.resolveColor(msg.getMember(), Color.CYAN))
 		.setFooter("Bot version: " + Bot.BOT_VERSION, null);
 		msg.getChannel().sendMessage(em.build()).queue();
 
