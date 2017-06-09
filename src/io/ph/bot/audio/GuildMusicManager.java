@@ -53,7 +53,8 @@ public class GuildMusicManager {
 			EmbedBuilder em = new EmbedBuilder();
 			@Override
 			public void trackLoaded(AudioTrack track) {
-				if(track.getDuration() / 1000 > (Bot.getInstance().getConfig().getMaxSongLength() * 60)
+				if(Bot.getInstance().getConfig().getMaxSongLength() > 0
+						&& track.getDuration() / 1000 > (Bot.getInstance().getConfig().getMaxSongLength() * 60)
 						&& announce) {
 					em.setTitle("Error", null)
 					.setColor(Color.RED)
