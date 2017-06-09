@@ -3,7 +3,7 @@ This list of opcodes is for the client (each shard of the companion bot). The cl
 ## OUTGOING TO MAIN BOT
 ##### 1 - Initial handshake
 This is sent on bot initialization, and will retry if the connection is closed.
-```json
+```
 {
 	op: 1,
 	key: String,
@@ -14,7 +14,7 @@ This is sent on bot initialization, and will retry if the connection is closed.
 ##### 2 - Request for guild information
 This is sent when a guild invites the client, and requests an opcode 2
 
-```json
+```
 {
     op: 2,
     key: String,
@@ -25,7 +25,7 @@ This is sent when a guild invites the client, and requests an opcode 2
 ##### 5 - Send current music stats
 This is sent periodically (every 30 seconds) and contains data for all shards on the client and how many are playing music
 
-```json
+```
 {
     op: 5,
     key: String,
@@ -38,7 +38,7 @@ This is sent periodically (every 30 seconds) and contains data for all shards on
 ## INCOMING FROM MAIN BOT
 ##### 1 - Initial handshake response
 This only responds with guild information for the ones sent out. Don't worry about supporterIds
-```json
+```
 {
 	op: 1,
 	supporterIds: [ long, long, ...]
@@ -56,7 +56,7 @@ This only responds with guild information for the ones sent out. Don't worry abo
 
 ##### 2 - Incoming guild information
 This is broadcast to all clients when a new server is initialized from the server or is requested. It is up to the client to add it to its guild map if it is actually connected to that shard
-```json
+```
 {
     op: 2,
     guildId: long,
@@ -69,7 +69,7 @@ This is broadcast to all clients when a new server is initialized from the serve
 
 ##### 3 - Guild change in command status
 Guild decided to enable or disable the music command, send to all clients
-```json
+```
 {
     op: 3,
     enable: boolean
@@ -78,7 +78,7 @@ Guild decided to enable or disable the music command, send to all clients
 
 ##### 10 - Add new supporter
 This can be ignored if you are hosting it yourself - supporters (patreon) is only on the main bot
-```json
+```
 {
 	op: 10,
 	supporterId: long
@@ -87,7 +87,7 @@ This can be ignored if you are hosting it yourself - supporters (patreon) is onl
 
 ##### 11 - Remove supporter
 This can be ignored if you are hosting it yourself - supporters (patreon) is only on the main bot
-```json
+```
 {
 	op: 11,
 	supporterId: long
