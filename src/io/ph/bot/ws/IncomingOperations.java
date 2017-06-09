@@ -6,6 +6,7 @@ import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 
 import io.ph.bot.Bot;
+import io.ph.bot.commands.owner.Diagnostics;
 import io.ph.bot.exception.NoAPIKeyException;
 
 public class IncomingOperations {
@@ -37,6 +38,9 @@ public class IncomingOperations {
 			break;
 		case 2:
 			OutgoingOperations.sendOp2(sock, jo.getLong("guildId", 0));
+			break;
+		case 5:
+			Diagnostics.currentMusic.put(jo.getInt("shardId", 0), jo.getInt("playingMusic", 0));
 			break;
 		default:
 			return;

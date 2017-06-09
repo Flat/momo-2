@@ -3,7 +3,9 @@ package io.ph.bot.commands.owner;
 import java.awt.Color;
 import java.lang.management.ManagementFactory;
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -22,7 +24,6 @@ import io.ph.bot.feed.TwitchEventListener;
 import io.ph.bot.feed.TwitchFeedObserver;
 import io.ph.bot.feed.TwitterEventListener;
 import io.ph.bot.feed.TwitterFeedObserver;
-import io.ph.bot.model.GuildObject;
 import io.ph.bot.model.Permission;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
@@ -40,7 +41,8 @@ import net.dv8tion.jda.core.entities.Message;
 		example = "(no parameters)"
 		)
 public class Diagnostics extends Command {
-
+	public static Map<Integer, Integer> currentMusic = new HashMap<>();
+	
 	@Override
 	public void executeCommand(Message msg) {
 		AtomicInteger guildCounter = new AtomicInteger();
@@ -113,13 +115,8 @@ public class Diagnostics extends Command {
 		return counter;
 	}
 	private static int playingMusic() {
-		int counter = 0;
-		for(GuildObject g : GuildObject.guildMap.values()) {
-			if(g.getMusicManager() != null && 
-					g.getMusicManager().getTrackManager().getCurrentSong() != null)
-				counter++;
-		}
-		return counter;
+		return currentMusic.values().stream()
+				.mapToInt(Integer::intValue).sum();
 	}
 	private static double getCpuLoad() {
 		// http://stackoverflow.com/questions/18489273/how-to-get-percentage-of-cpu-usage-of-os-from-java
