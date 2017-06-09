@@ -41,6 +41,9 @@ import net.dv8tion.jda.core.entities.Message;
 public class Youtube extends Command {
 	@Override
 	public void executeCommand(Message msg) {
+		if (Bot.getInstance().getConfig().isCompanionBot()) {
+			return;
+		}
 		EmbedBuilder em = new EmbedBuilder();
 		String contents = Util.getCommandContents(msg);
 		if(contents.length() == 0) {
