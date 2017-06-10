@@ -7,6 +7,8 @@ import io.ph.bot.Bot;
 import io.ph.bot.audio.AudioManager;
 import io.ph.bot.audio.GuildMusicManager;
 import io.ph.bot.audio.TrackDetails;
+import io.ph.bot.audio.stream.StreamSource;
+import io.ph.bot.audio.stream.listenmoe.ListenMoeData;
 import io.ph.bot.commands.Command;
 import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
@@ -234,15 +236,29 @@ public class Music extends Command {
 			msg.getChannel().sendMessage(em.build()).queue();
 			return;
 		}
-		em.setTitle("Current track", null)
-		.setColor(Color.CYAN)
-		.addField("Name", (m.getTrackManager().getCurrentSong().getTitle() == null
-		|| m.getTrackManager().getCurrentSong().getTitle().contains("ytsearch")) ? 
-				m.getAudioPlayer().getPlayingTrack().getInfo().title :
-					m.getTrackManager().getCurrentSong().getTitle(), true)
-		.addField("Progress", Util.formatTime(m.getAudioPlayer().getPlayingTrack().getPosition())
-				+ "/" + Util.formatTime(m.getAudioPlayer().getPlayingTrack().getDuration()), true)
-		.addField("Source", m.getAudioPlayer().getPlayingTrack().getInfo().uri, false);
+		TrackDetails t;
+		// Current "track" is a stream
+		if ((t = m.getTrackManager().getCurrentSong()).getStreamSource() != null) {
+			// Listen.moe
+			if (t.getStreamSource().equals(StreamSource.LISTEN_MOE)) {
+				ListenMoeData d = ListenMoeData.getInstance();
+				em.setTitle("Listen.moe stream")
+				.setColor(Util.resolveColor(msg.getMember(), Color.CYAN))
+				.addField("Name", d.getSongName(), true)
+				.addField("Artist", d.getArtist(), true)
+				.addField("Listeners", d.getListeners() + "", true);
+			}
+		} else {
+			em.setTitle("Current track", null)
+			.setColor(Util.resolveColor(msg.getMember(), Color.CYAN))
+			.addField("Name", (m.getTrackManager().getCurrentSong().getTitle() == null
+			|| m.getTrackManager().getCurrentSong().getTitle().contains("ytsearch")) ? 
+					m.getAudioPlayer().getPlayingTrack().getInfo().title :
+						m.getTrackManager().getCurrentSong().getTitle(), true)
+			.addField("Progress", Util.formatTime(m.getAudioPlayer().getPlayingTrack().getPosition())
+					+ "/" + Util.formatTime(m.getAudioPlayer().getPlayingTrack().getDuration()), true)
+			.addField("Source", m.getAudioPlayer().getPlayingTrack().getInfo().uri, false);
+		}
 		msg.getChannel().sendMessage(em.build()).queue();
 	}
 
@@ -265,7 +281,7 @@ public class Music extends Command {
 		em.setTitle(String.format("Coming up - %d songs | %s total",
 				m.getTrackManager().getQueue().size(),
 				Util.formatTime(m.getTrackManager().getDurationOfQueue())), null)
-		.setColor(Color.CYAN);
+		.setColor(Util.resolveColor(msg.getMember(), Color.CYAN));
 		int index = 0;
 		for(TrackDetails t : AudioManager.getGuildManager(msg.getGuild()).getTrackManager().getQueue()) {
 			if (index++ >= 10) {
@@ -358,6 +374,7 @@ public class Music extends Command {
 		msg.getChannel().sendMessage(em.build()).queue();
 		g.getMusicManager().getAudioPlayer().setVolume(input);
 	}
+	
 
 	/**
 	 * Check if a music command should continue and play through this instance of Momo.
