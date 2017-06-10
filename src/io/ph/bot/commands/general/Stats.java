@@ -50,7 +50,7 @@ public class Stats extends Command {
 		if((topMacro = MacroObject.topMacro(msg.getGuild().getId())) != null)
 			em.addField("Top macro", "**" + topMacro[1] + "** by **"
 					+ msg.getGuild().getMemberById((String) topMacro[2]).getEffectiveName() 
-					+ "**: " + topMacro[0] + " hits", false);
+					+ "**: " + topMacro[0] + " hits", true);
 		em.setColor(Util.resolveColor(msg.getMember(), Color.CYAN))
 		.setFooter("Bot version: " + Bot.BOT_VERSION, null);
 		msg.getChannel().sendMessage(em.build()).queue();
