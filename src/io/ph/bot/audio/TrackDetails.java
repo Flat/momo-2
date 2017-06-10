@@ -2,6 +2,7 @@ package io.ph.bot.audio;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
+import io.ph.bot.audio.stream.StreamSource;
 import net.dv8tion.jda.core.entities.Member;
 
 public class TrackDetails {
@@ -10,6 +11,7 @@ public class TrackDetails {
 	private AudioTrack track;
 	private String guildId;
 	private String title;
+	private StreamSource source;
 
 	public TrackDetails(String url, String title, Member queuer, AudioTrack track, String guildId) {
 		this.url = url;
@@ -53,6 +55,23 @@ public class TrackDetails {
 
 	public String getTitle() {
 		return title;
+	}
+	
+	/**
+	 * Possible null StreamSource of this track
+	 * @return null if track isn't stream, StreamSource if it is a stream
+	 */
+	public StreamSource getStreamSource() {
+		if (!track.getInfo().isStream) {
+			return null;
+		}
+		if (track.getInfo().uri.contains("listen.moe")) {
+			return StreamSource.LISTEN_MOE;
+		}
+		if (track.getInfo().uri.contains("youtube")) {
+			return StreamSource.YOUTUBE;
+		}
+		return null;
 	}
 
 }

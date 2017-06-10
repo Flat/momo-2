@@ -11,7 +11,6 @@ import io.ph.bot.commands.Command;
 import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
 import io.ph.bot.exception.NoAPIKeyException;
-import io.ph.bot.model.GenericContainer;
 import io.ph.bot.model.Permission;
 import io.ph.rest.RESTCache;
 import io.ph.restwrappers.saucenao.Result;
@@ -20,6 +19,7 @@ import io.ph.restwrappers.saucenao.SauceNaoResult;
 import io.ph.util.Util;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageHistory;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -53,7 +53,7 @@ public class SourceSearch extends Command {
 	public void executeCommand(Message msg) {
 		URL url = resolveUrl(msg);
 		em = new EmbedBuilder();
-		if(url == null) {
+		if (url == null) {
 			em.setTitle("Error", null)
 			.setColor(Color.RED)
 			.setDescription("No image found in your message or the previous " + SEARCH + " messages");
@@ -64,7 +64,7 @@ public class SourceSearch extends Command {
 		Builder builder = new Retrofit.Builder()
 				.baseUrl(SauceNaoAPI.ENDPOINT)
 				.addConverterFactory(GsonConverterFactory.create());
-		if((interceptor = queryInterceptor()) != null) {
+		if ((interceptor = queryInterceptor()) != null) {
 			builder.client((new OkHttpClient.Builder()).addInterceptor(interceptor).build());
 		} else {
 			em.setTitle("Error", null)
@@ -79,7 +79,7 @@ public class SourceSearch extends Command {
 		Call<SauceNaoResult> sauceCall = api.getSauce(url);
 		try {
 			SauceNaoResult sauce = sauceCall.execute().body();
-			if(sauce.getResults() == null) {
+			if (sauce.getResults() == null) {
 				em.setTitle("Error", null)
 				.setColor(Color.RED)
 				.setDescription(String.format("No results found on SauceNao for <%s>", url.toString()))
@@ -96,7 +96,7 @@ public class SourceSearch extends Command {
 
 	private void resolveData(SauceNaoResult sauce) {
 		Result image = sauce.getResults().get(0);
-		if(image.getHeader().getThumbnail() != null)
+		if (image.getHeader().getThumbnail() != null)
 			em.setThumbnail(image.getHeader().getThumbnail());
 		em.setColor(Color.MAGENTA);
 		em.addField("Similarity", String.format("%s%%", image.getHeader().getSimilarity()), true);
@@ -173,34 +173,34 @@ public class SourceSearch extends Command {
 	 */
 	private static URL resolveUrl(Message msg) {
 		URL url;
-		if(Util.getCommandContents(msg).isEmpty() && msg.getAttachments().isEmpty()) {
-			//System.out.println("Checking for empty sauce");
-			GenericContainer<URL> urlContainer = new GenericContainer<>();
-			msg.getTextChannel().getHistoryAround(msg, 20)
-			.queue(history -> {
-				List<Message> list = history.getRetrievedHistory();
-				for(int i = 0; i < SEARCH; i++) {
-					try {
-						URL localUrl;
-						//System.out.println(list.get(i).getAttachments().isEmpty() + " | " + list.get(i).getContent());
-						if(!list.get(i).getAttachments().isEmpty()) {
-							if(checkMime((localUrl = new URL(list.get(i).getAttachments().get(0).getUrl()))) != null)
-								urlContainer.setVal(localUrl);
-						} else {
-							if(checkMime((localUrl = new URL(list.get(i).getContent()))) != null)
-								urlContainer.setVal(localUrl);
+		if (Util.getCommandContents(msg).isEmpty() && msg.getAttachments().isEmpty()) {
+			MessageHistory history = msg.getTextChannel()
+					.getHistoryAround(msg, 20).complete();
+			List<Message> list = history.getRetrievedHistory();
+			for (int i = 0; i < SEARCH; i++) {
+				try {
+					URL localUrl;
+					//System.out.println(list.get(i).getAttachments().isEmpty() + " | " + list.get(i).getContent());
+					if (!list.get(i).getAttachments().isEmpty()) {
+						if (checkMime((localUrl = new URL(list.get(i).getAttachments().get(0).getUrl()))) != null) {
+							System.out.println(localUrl);
+							return localUrl;
 						}
-					} catch (MalformedURLException e) {	}
-				}
-			});
-			return urlContainer.getVal();
+					} else {
+						if (checkMime((localUrl = new URL(list.get(i).getContent()))) != null) {
+							return localUrl;
+						}
+					}
+				} catch (MalformedURLException e) {	}
+			}
+			return null;
 		} else {
 			try {
-				if(!msg.getAttachments().isEmpty()) {
-					if(checkMime((url = new URL(msg.getAttachments().get(0).getUrl()))) != null)
+				if (!msg.getAttachments().isEmpty()) {
+					if (checkMime((url = new URL(msg.getAttachments().get(0).getUrl()))) != null)
 						return url;
 				} else {
-					if(checkMime((url = new URL(Util.getCommandContents(msg)))) != null)
+					if (checkMime((url = new URL(Util.getCommandContents(msg)))) != null)
 						return url;
 				}
 			} catch (MalformedURLException e) {	}
@@ -210,7 +210,7 @@ public class SourceSearch extends Command {
 
 	private static URL checkMime(URL url) {
 		String mime = Util.getMimeFromUrl(url);
-		if(mime != null && (mime.contains("jpeg") || mime.contains("png") || mime.contains("gif")))
+		if (mime != null && (mime.contains("jpeg") || mime.contains("png") || mime.contains("gif")))
 			return url;
 		return null;
 	}

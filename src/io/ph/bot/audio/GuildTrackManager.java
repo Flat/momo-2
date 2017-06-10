@@ -95,13 +95,15 @@ public class GuildTrackManager extends AudioEventAdapter {
 		if((ch = Bot.getInstance().shards
 				.getTextChannelById(GuildObject.guildMap.get(this.guildId)
 						.getSpecialChannels().getMusic())) != null) {
-			EmbedBuilder em = new EmbedBuilder();
-			em.setTitle("New track: " + track.getInfo().title, track.getInfo().uri)
-			.setColor(Color.MAGENTA)
-			.setDescription(String.format("%s, **%s** is now playing\n"
-					+ "%s", this.currentSong.getQueuer().getAsMention(),
-					track.getInfo().title, track.getInfo().uri));
-			ch.sendMessage(em.build()).queue();
+			if (!track.getInfo().isStream) {
+				EmbedBuilder em = new EmbedBuilder();
+				em.setTitle("New track: " + track.getInfo().title, track.getInfo().uri)
+				.setColor(Color.MAGENTA)
+				.setDescription(String.format("%s, **%s** is now playing\n"
+						+ "%s", this.currentSong.getQueuer().getAsMention(),
+						track.getInfo().title, track.getInfo().uri));
+				ch.sendMessage(em.build()).queue();
+			}
 		}
 	}
 

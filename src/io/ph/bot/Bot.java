@@ -13,6 +13,7 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.ph.bot.audio.stream.listenmoe.ListenMoeSocket;
 import io.ph.bot.events.CustomEventDispatcher;
 import io.ph.bot.exception.NoAPIKeyException;
 import io.ph.bot.feed.TwitterEventListener;
@@ -92,10 +93,16 @@ public class Bot {
 		isReady = true;
 	}
 
+	/**
+	 * Bot initialization after ready state returns
+	 */
 	private static void initialize() {
 		JobScheduler.initializeScheduler();
 		TwitterEventListener.initTwitter();
 		WebsocketServer.getInstance().start();
+		if (!Bot.getInstance().getConfig().isCompanionBot()) {
+			ListenMoeSocket.getInstance().connect();
+		}
 	}
 
 	public boolean loadProperties() {
@@ -107,7 +114,7 @@ public class Bot {
 			botConfig.setBotInviteLink(config.getString("InviteLink"));
 			botConfig.setMaxSongLength(config.getInt("MaxSongLength", 15));
 			botConfig.setCompanionBot(config.getBoolean("MusicCompanion", false));
-			
+
 			Configuration subset = config.subset("apikey");
 			Iterator<String> iter = subset.getKeys();
 			while(iter.hasNext()) {
