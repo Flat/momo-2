@@ -19,6 +19,9 @@ public class ListenMoeData {
 	}
 
 	public String getAnimeName() {
+		if (animeName.isEmpty()) {
+			return "~";
+		}
 		return animeName;
 	}
 
@@ -35,6 +38,9 @@ public class ListenMoeData {
 	}
 
 	public String getArtist() {
+		if (artist.isEmpty()) {
+			return "~";
+		}
 		return artist;
 	}
 
@@ -43,6 +49,9 @@ public class ListenMoeData {
 	}
 
 	public String getSongName() {
+		if (songName.isEmpty()) {
+			return "~";
+		}
 		return songName;
 	}
 
