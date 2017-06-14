@@ -12,6 +12,7 @@ import io.ph.bot.model.Permission;
 import io.ph.util.Util;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 
 /**
@@ -47,10 +48,12 @@ public class Stats extends Command {
 		.addField("Shard ID", msg.getJDA().getShardInfo().getShardString(), true);
 
 		Object[] topMacro = null;
-		if((topMacro = MacroObject.topMacro(msg.getGuild().getId())) != null)
+		if((topMacro = MacroObject.topMacro(msg.getGuild().getId())) != null) {
+			Member m = msg.getGuild().getMemberById((String) topMacro[2]);
+			String name = m == null ? (String) topMacro[3] : m.getEffectiveName();
 			em.addField("Top macro", "**" + topMacro[1] + "** by **"
-					+ msg.getGuild().getMemberById((String) topMacro[2]).getEffectiveName() 
-					+ "**: " + topMacro[0] + " hits", true);
+					+ name + "**: " + topMacro[0] + " hits", true);
+		}
 		em.setColor(Util.resolveColor(msg.getMember(), Color.CYAN))
 		.setFooter("Bot version: " + Bot.BOT_VERSION, null);
 		msg.getChannel().sendMessage(em.build()).queue();
