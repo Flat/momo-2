@@ -11,7 +11,6 @@ public class TrackDetails {
 	private AudioTrack track;
 	private String guildId;
 	private String title;
-	private StreamSource source;
 
 	public TrackDetails(String url, String title, Member queuer, AudioTrack track, String guildId) {
 		this.url = url;

@@ -77,7 +77,7 @@ public class Util {
 	 * @return User if found, null if not found
 	 */
 	public static User resolveBannedUserFromString(String s, Guild guild) {
-		for(User u : guild.getController().getBans().complete()) {
+		for(User u : guild.getBans().complete()) {
 			if(u.getName().toLowerCase().startsWith(s.toLowerCase()))
 				return u;
 		}

@@ -84,7 +84,8 @@ public class Help extends Command {
 				.setColor(Color.CYAN)
 				.addField(prev, sb.toString(), false)
 				.setFooter("PM me a command name to get more information", null);
-				msg.getAuthor().getPrivateChannel().sendMessage(em.build()).queue(success1 -> {
+				msg.getAuthor().openPrivateChannel().complete()
+				.sendMessage(em.build()).queue(success1 -> {
 					em.clearFields();
 					em.setTitle("Success", null)
 					.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
