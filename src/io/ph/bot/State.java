@@ -21,16 +21,14 @@ public class State {
 		Bot.getInstance().getBots().forEach(j -> j.getSelfUser().getManager().setName(newUser).queue());
 	}
 	public static void changeBotAvatar(File image) {
-		Bot.getInstance().getBots().forEach(j -> {
-			try {
-				j.getSelfUser().getManager().setAvatar(Icon.from(image)).queue();
-			} catch (Exception e) {
-				LoggerFactory.getLogger(State.class).error("Error changing avatar");
-			}
-		});
+		try {
+			Bot.getInstance().getBots().get(0).getSelfUser().getManager().setAvatar(Icon.from(image)).queue();
+		} catch (Exception e) {
+			LoggerFactory.getLogger(State.class).error("Error changing avatar");
+		}
 
 	}
 	public static void changeBotPresence(OnlineStatus status) {
-		Bot.getInstance().getBots().forEach(j -> j.getPresence().setStatus(status));
+		Bot.getInstance().getBots().get(0).getPresence().setStatus(status);
 	}
 }
