@@ -13,7 +13,7 @@ import net.dv8tion.jda.core.entities.Message;
 		defaultSyntax = "setvolume",
 		aliases = {"setvol", "volume"},
 		category = CommandCategory.MUSIC,
-		permission = Permission.NONE,
+		permission = Permission.KICK,
 		description = "Set the volume of the player between 0 and 100",
 		example = "50"
 		)

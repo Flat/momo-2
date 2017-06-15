@@ -26,6 +26,7 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 		example = "(no parameters)"
 		)
 public class Summon extends Command {
+	
 	@Override
 	public void executeCommand(Message msg) {
 		EmbedBuilder em = new EmbedBuilder().setTimestamp(Instant.now());
@@ -57,8 +58,6 @@ public class Summon extends Command {
 		.setColor(Util.resolveColor(Util.memberFromMessage(msg), Color.GREEN))
 		.setDescription("Joined your voice channel");
 		msg.getChannel().sendMessage(em.build()).queue();
-		return;
-
 	}
 
 }

@@ -13,7 +13,7 @@ import net.dv8tion.jda.core.entities.Message;
 		defaultSyntax = "stopmusic",
 		aliases = {"stop"},
 		category = CommandCategory.MUSIC,
-		permission = Permission.NONE,
+		permission = Permission.KICK,
 		description = "Stop the music and reset the queue",
 		example = ""
 		)

@@ -13,7 +13,7 @@ import net.dv8tion.jda.core.entities.Message;
 		defaultSyntax = "shuffle",
 		aliases = {},
 		category = CommandCategory.MUSIC,
-		permission = Permission.NONE,
+		permission = Permission.KICK,
 		description = "Shuffle the current playlist",
 		example = ""
 		)
