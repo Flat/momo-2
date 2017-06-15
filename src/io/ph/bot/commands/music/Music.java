@@ -114,6 +114,9 @@ public class Music extends Command {
 		} else if (contents.startsWith("volume")) {
 			volume(msg, Util.getCommandContents(Util.getCommandContents(msg)), djSet);
 			return;
+		} else if (contents.startsWith("remove")) {
+			remove(msg, Util.getCommandContents(Util.getCommandContents(msg)), djSet);
+			return;
 		} else if (contents.startsWith("playlist")) {
 			// Just queue up all the songs I guess
 			if (!g.getSpecialChannels().getMusicVoice().isEmpty() 
@@ -374,7 +377,67 @@ public class Music extends Command {
 		msg.getChannel().sendMessage(em.build()).queue();
 		g.getMusicManager().getAudioPlayer().setVolume(input);
 	}
-	
+
+	public static void remove(Message msg, String index, boolean... bs) {
+		if (!shouldContinueMusic(msg)) {
+			return;
+		}
+		GuildObject g = GuildObject.guildMap.get(msg.getGuild().getId());
+		EmbedBuilder em = new EmbedBuilder();
+		boolean djSet = bs.length > 0 ? bs[0] : false;
+		if (!Util.memberHasPermission(msg.getGuild().getMember(msg.getAuthor()), Permission.KICK)
+				&& !djSet) {
+			em.setTitle("Error", null)
+			.setColor(Color.RED)
+			.setDescription("You need the kick+ permission to edit the queue");
+			msg.getChannel().sendMessage(em.build()).queue();
+			return;
+		}
+		if (g.getMusicManager().getTrackManager().getQueueSize() <= 1) {
+			em.setTitle("Error", null)
+			.setColor(Color.RED)
+			.setDescription("You don't have anything to remove from your queue");
+			msg.getChannel().sendMessage(em.build()).queue();
+			return;
+		}
+		int input;
+		int upperBound = g.getMusicManager().getTrackManager().getQueueSize();
+
+		if (!Util.isInteger(index) 
+				|| (input = Integer.parseInt(index)) > upperBound || input < 1) {
+			em.setTitle("Error", null)
+			.setColor(Color.RED)
+			.setDescription(String.format("Please select a valid number from the queue."
+					+ " Use the `%snext` command to view it.", g.getConfig().getCommandPrefix()));
+			msg.getChannel().sendMessage(em.build()).queue();
+			return;
+		}
+		TrackDetails removed = null;
+		for (int i = 0; i < g.getMusicManager().getTrackManager().getQueue().size(); i++) {
+			TrackDetails track = g.getMusicManager().getTrackManager().getQueue().poll();
+			if (i + 1 == input) {
+				removed = track;
+				continue;
+			}
+			try {
+				g.getMusicManager().getTrackManager().getQueue().put(track);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		if (g.getMusicManager().getTrackManager().getQueueSize() > 1) {
+			try {
+				g.getMusicManager().getTrackManager().getQueue().put(g.getMusicManager().getTrackManager().getQueue().poll());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		em.setTitle("Success")
+		.setColor(Util.resolveColor(msg.getMember(), Color.CYAN))
+		.setDescription(String.format("Removed **%s** from your queue", removed.getTrack().getInfo().title));
+		msg.getChannel().sendMessage(em.build()).queue();
+	}
+
 
 	/**
 	 * Check if a music command should continue and play through this instance of Momo.
