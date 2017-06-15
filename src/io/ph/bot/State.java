@@ -29,6 +29,6 @@ public class State {
 
 	}
 	public static void changeBotPresence(OnlineStatus status) {
-		Bot.getInstance().getBots().get(0).getPresence().setStatus(status);
+		Bot.getInstance().getBots().forEach(j -> j.getPresence().setStatus(status));
 	}
 }
