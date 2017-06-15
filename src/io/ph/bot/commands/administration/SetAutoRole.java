@@ -1,6 +1,7 @@
 package io.ph.bot.commands.administration;
 
 import java.awt.Color;
+import java.util.List;
 
 import io.ph.bot.commands.Command;
 import io.ph.bot.commands.CommandCategory;
@@ -38,15 +39,15 @@ public class SetAutoRole extends Command {
 			return;
 		}
 		
-		Role r = msg.getGuild().getRolesByName(roleName, true).get(0);
-		if (r == null) {
+		List<Role> roles = msg.getGuild().getRolesByName(roleName, true);
+		if (roles.isEmpty()) {
 			em.setTitle("Error", null)
 			.setColor(Color.RED)
 			.setDescription(String.format("No role named %s found", roleName));
 			msg.getChannel().sendMessage(em.build()).queue();
 			return;
 		}
-		
+		Role r = roles.get(0);
 		em.setTitle("Success", null);
 		if (currentRoleId.equals(r.getId())) {
 			em.setColor(Util.resolveColor(msg.getMember(), Color.CYAN))
