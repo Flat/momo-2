@@ -105,7 +105,6 @@ public class Listeners extends ListenerAdapter {
 		checkFiles(e.getGuild());
 		GuildObject g = new GuildObject(e.getGuild());
 		GuildObject.guildMap.put(e.getGuild().getId(), g);
-		log.info("Guild joined: {} on shard: {}", e.getGuild().getName(), e.getJDA().getShardInfo().getShardId());
 		if (g.getConfig().isFirstTime()) {
 			AtomicInteger guildCount = new AtomicInteger();
 			Bot.getInstance().getBots().stream()
