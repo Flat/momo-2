@@ -42,7 +42,7 @@ public class EnableCommand extends Command {
 			g.enableAllCommands();
 			em.setTitle("Success", null)
 			.setColor(Color.GREEN)
-			.setDescription("All commands have been disabled");
+			.setDescription("All commands have been enabled");
 			msg.getChannel().sendMessage(em.build()).queue();
 			return;
 		}
