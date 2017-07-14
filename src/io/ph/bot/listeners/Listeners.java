@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -105,7 +104,11 @@ public class Listeners extends ListenerAdapter {
 		checkFiles(e.getGuild());
 		GuildObject g = new GuildObject(e.getGuild());
 		GuildObject.guildMap.put(e.getGuild().getId(), g);
-		if (g.getConfig().isFirstTime()) {
+		g.getConfig().setFirstTime(false);
+		/*
+		 * If you want a welcome message, set it here!
+		 */
+		/*if (g.getConfig().isFirstTime()) {
 			AtomicInteger guildCount = new AtomicInteger();
 			Bot.getInstance().getBots().stream()
 			.forEach(j -> guildCount.addAndGet(j.getGuilds().size()));
@@ -123,7 +126,7 @@ public class Listeners extends ListenerAdapter {
 				e.getGuild().getPublicChannel().sendMessage("I require permissions to Embed Links for the"
 						+ " vast majority of my functionality. Please enable it!").queue();
 			}
-		}
+		}*/
 	}
 
 	@Override

@@ -138,7 +138,4 @@ public class OutgoingOperations {
 		}
 	}
 
-
-
-	// TODO: Supporter ops
 }

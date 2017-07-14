@@ -14,7 +14,6 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 
-// TODO: change for supporters
 @CommandData (
 		defaultSyntax = "listen.moe",
 		aliases = {"listenmoe"},
@@ -25,7 +24,7 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 		)
 public class ListenMoe extends Command {
 
-	private static final String URL = "https://files.catbox.moe/6s5s0w.m3u";
+	private static final String URL = "http://listen.moe:9999/stream";
 
 	@Override
 	public void executeCommand(Message msg) {
