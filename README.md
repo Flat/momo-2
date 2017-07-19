@@ -1,17 +1,15 @@
-# Momo, your new Discord bot
+# Momo, an open source easy-to-host Discord Bot
 [![license](https://img.shields.io/github/license/paul-io/momo-2.svg)](https://github.com/paul-io/momo-2/blob/master/LICENSE) [![Dependencies](https://app.updateimpact.com/badge/809606116261629952/Momo%20Discord%20Bot.svg?config=test)](https://app.updateimpact.com/latest/809606116261629952/Momo%20Discord%20Bot) [![Dependency Status](https://www.versioneye.com/user/projects/58677499e78d7d00471b7787/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/58677499e78d7d00471b7787) [![GitHub release](https://img.shields.io/github/release/paul-io/momo-2.svg)](https://github.com/paul-io/momo-2/releases) [![join the Momo discord server](https://discordapp.com/api/guilds/259125580744753153/embed.png)](https://discord.gg/uM3pyW8) 
 
-Join the discord server linked above to get support, see upcoming features, or to test the bot! Also, check out the website for a command list & bot status [here](https://momobot.io)
+Join the discord server linked above to get support, see upcoming features, or to test the bot!
 
 **Momo** is a simple-to-use Discord bot based off of [JDA](https://github.com/DV8FromTheWorld/JDA).  From sending Twitch.tv notifications to playing music, and from pulling anime theme songs off of [Themes.moe](https://themes.moe) to temporarily muting troublemakers, Momo can do a lot for your server.
 
 
-## Adding Momo to your server
-Visit [this link](https://discordapp.com/oauth2/authorize?client_id=259137993351102464&scope=bot&permissions=268435518) and select which server you want it to join. The bot will give you a bit of an intro message letting you know everything is a-ok. It's as easy as that!
-#### What commands are available?
-Send the command `$help` or visit the website at [this link](https://momobot.io/commands.html). If you need more information on specific commands, you can try `$help command-name` or just PM the bot the command name.
+## Can I just add Momo to my server?
+After July 15, 2017, you cannot. Server costs were unmanageable (lots of bandwidth and processing power needed for music to 100+ servers at a time), so I made the difficult decision to shut it down. Check the wiki for setup instructions to host it yourself!
 ### Web dashboard
-Introduced in update 1.2, Momo features a [web dashboard](https://momobot.io/dash) to configure various aspects of the bot, such as welcome prefix, enabled commands, and Twitter/Reddit feeds. You don't have to be the server owner, either - configuration starts from moderators with the `kick` permission. Everything that can be done through the dashboard can also be done through commands.
+Introduced in update 1.2, Momo features a [web dashboard](https://momobot.io/dash) to configure various aspects of the bot, such as welcome prefix, enabled commands, and Twitter/Reddit feeds. You don't have to be the server owner, either - configuration starts from moderators with the `kick` permission. Everything that can be done through the dashboard can also be done through commands. This is available to download to host yourself
 ### Features? Gimme some info!
 * Reddit, Twitter, & Twitch.tv feeds - Get updates directly to your channel of choice with image/preview configuration
 * Play music in a music channel. Can play off direct Youtube searches, too!
@@ -26,6 +24,7 @@ Introduced in update 1.2, Momo features a [web dashboard](https://momobot.io/das
 ---
 
 ## Hosting Momo for yourself
+More descriptive details are at the [repository wiki](https://github.com/paul-io/momo-2/wiki)
 `you need java 8 to run this bot`
 
 * If you want to host your own instance of the bot, feel free to take a look at the Releases tab and download the package. Fill out the configuration in the `resources/Bot.properties` file, then run `java -jar momo-x.x.x.jar` where `x.x.x` is the current version. 
