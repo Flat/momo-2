@@ -68,6 +68,15 @@ Probably the #1 reason people will run their own bot, and probably the easiest t
 
 3. The meat of your command goes in the aformentioned `run` method. For brevity, our command ignore package and imports.
 ```java
+package package io.ph.bot.commands.(your package here);
+
+import io.ph.bot.commands.Command;
+import io.ph.bot.commands.CommandCategory;
+import io.ph.bot.commands.CommandData;
+import io.ph.bot.model.Permission;
+import io.ph.util.Util;
+import net.dv8tion.jda.core.entities.Message;
+
 public class Say extends Command {
     @Override
     public void run(Message msg) {
@@ -75,11 +84,12 @@ public class Say extends Command {
     }
 }
 ```
-To then have the command register through the command handler, annotate the class with `io.ph.commands.CommandData`
+To then have the command register through the command handler, annotate the class with `io.ph.commands.CommandData`. For brevity, I removed imports and package declarations
 ```java
 @CommandData (
 		defaultSyntax = "echo",
 		aliases = {"repeat", "ech0"},
+		category = CommandCategory.FUN,
 		permission = Permission.NONE,
 		description = "Have the bot repeat after you",
 		example = "This will be echoed!"
@@ -94,5 +104,7 @@ public class Say extends Command {
 It's as easy as that~ 
 
 note: commands with permission `Permission.NONE` are disableable by admins by using the `disable` command
+
+note2: find the enums for `category` in `io.ph.bot.commands.CommandCategory`
 
 If you're going to delve deeper into developing with JDA, check out the documentation [here](http://home.dv8tion.net:8080/job/JDA/Promoted%20Build/javadoc/) and join up at the [Discord API server](https://discordapp.com/invite/0SBTUU1wZTWPnGdJ).
