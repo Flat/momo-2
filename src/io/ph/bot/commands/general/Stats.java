@@ -44,9 +44,10 @@ public class Stats extends Command {
 		.addField("Creation Date", msg.getGuild().getCreationTime().format(
 				DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 				.toString(), true)
-		.addField("Server ID", msg.getGuild().getId(), true)
-		.addField("Shard ID", msg.getJDA().getShardInfo().getShardString(), true);
-
+		.addField("Server ID", msg.getGuild().getId(), true);
+		if (msg.getJDA().getShardInfo() != null) {
+			em.addField("Shard ID", msg.getJDA().getShardInfo().getShardString(), true);
+		}
 		Object[] topMacro = null;
 		if((topMacro = MacroObject.topMacro(msg.getGuild().getId())) != null) {
 			Member m = msg.getGuild().getMemberById((String) topMacro[2]);
