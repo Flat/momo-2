@@ -68,7 +68,7 @@ Probably the #1 reason people will run their own bot, and probably the easiest t
 
 3. The meat of your command goes in the aformentioned `run` method. For brevity, our command ignore package and imports.
 ```java
-package package io.ph.bot.commands.(your package here);
+package io.ph.bot.commands.(your package here);
 
 import io.ph.bot.commands.Command;
 import io.ph.bot.commands.CommandCategory;
@@ -79,7 +79,7 @@ import net.dv8tion.jda.core.entities.Message;
 
 public class Say extends Command {
     @Override
-    public void run(Message msg) {
+    public void executeCommand(Message msg) {
         msg.getChannel().sendMessage(Util.getCommandContents(msg)).queue();
     }
 }
@@ -96,7 +96,7 @@ To then have the command register through the command handler, annotate the clas
 		)
 public class Say extends Command {
     @Override
-    public void run(Message msg) {
+    public void executeCommand(Message msg) {
 		msg.getChannel().sendMessage(Util.getCommandContents(msg)).queue();
     }
 }
