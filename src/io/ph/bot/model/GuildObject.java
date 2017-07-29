@@ -41,6 +41,8 @@ import net.jodah.expiringmap.ExpiringMap;
  */
 public class GuildObject {
 	public static Map<String, GuildObject> guildMap = new HashMap<>();
+	
+	public static int streamingListenMoe = 0;
 
 	private Map<String, Integer> userTimerMap = ExpiringMap.builder()
 			.expiration(15, TimeUnit.SECONDS)

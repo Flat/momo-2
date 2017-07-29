@@ -46,6 +46,10 @@ public class ListenMoeSocket extends WebSocketClient {
 
 	@Override
 	public void onMessage(String message) {
+		if (GuildObject.streamingListenMoe == 0) {
+			getInstance().close();
+			return;
+		}
 		if (!message.isEmpty()) {
 			JsonObject jo = Json.parse(message).asObject();
 			if (jo.get("song_id") == null) // Simple check to verify valid msg

@@ -15,6 +15,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import io.ph.bot.Bot;
+import io.ph.bot.audio.stream.listenmoe.ListenMoeSocket;
 import io.ph.bot.model.GuildObject;
 import io.ph.util.Util;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -79,6 +80,15 @@ public class GuildMusicManager {
 									? 0 : (musicManager.getAudioPlayer().getPlayingTrack().getDuration()
 											- musicManager.getAudioPlayer().getPlayingTrack().getPosition())))), null);
 					channel.sendMessage(em.build()).queue();
+				}
+				if (track.getInfo().isStream && track.getInfo().uri.contains("listen.moe")) {
+					if (GuildObject.streamingListenMoe++ == 0) {
+						try {
+							ListenMoeSocket.getInstance().connectBlocking();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
 				}
 				play(channel.getGuild(), track, trackUrl, titleOverride, member);
 			}
