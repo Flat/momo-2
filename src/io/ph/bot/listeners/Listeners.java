@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import io.ph.bot.Bot;
 import io.ph.bot.commands.Command;
 import io.ph.bot.commands.CommandHandler;
+import io.ph.bot.jobs.WebSyncJob;
 import io.ph.bot.model.GuildObject;
 import io.ph.bot.model.Permission;
 import io.ph.bot.procedural.ProceduralListener;
@@ -245,6 +246,7 @@ public class Listeners extends ListenerAdapter {
 		// Bot check
 		if (e.getAuthor().isBot())
 			return;
+		WebSyncJob.messageCount++;
 		// Requesting prefix
 		if (!e.getMessage().mentionsEveryone()
 				&& e.getMessage().isMentioned(e.getJDA().getSelfUser())) {
@@ -261,6 +263,7 @@ public class Listeners extends ListenerAdapter {
 			if (!e.getChannel().canTalk()) {
 				return;
 			}
+			WebSyncJob.commandCount++;
 			CommandHandler.processCommand(e.getMessage());
 			return;
 		}
