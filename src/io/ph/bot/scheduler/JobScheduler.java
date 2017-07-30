@@ -17,6 +17,7 @@ import io.ph.bot.feed.TwitchEventListener;
 import io.ph.bot.jobs.ReminderJob;
 import io.ph.bot.jobs.StatusChangeJob;
 import io.ph.bot.jobs.TimedPunishJob;
+import io.ph.bot.jobs.WebSyncJob;
 
 public class JobScheduler {
 
@@ -106,6 +107,19 @@ public class JobScheduler {
 		}
 	}
 	/**
+	 * Sync stats to web info
+	 */
+	private static void webSync() {
+		JobDetail job = JobBuilder.newJob(WebSyncJob.class).withIdentity("webSyncJob", "group1").build();
+		Trigger trigger = TriggerBuilder.newTrigger().withIdentity("webSyncJob", "group1")
+				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(5).repeatForever()).build();
+		try {
+			scheduler.scheduleJob(job, trigger);
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
+	}
+	/**
 	 * Register scheduler
 	 */
 	private static void startJobs() {
@@ -126,6 +140,13 @@ public class JobScheduler {
 		if(StatusChangeJob.statuses != null && StatusChangeJob.statuses.size() > 0
 				&& !StatusChangeJob.statuses.get(0).isEmpty()) {
 			statusChange();
+		}
+		try {
+			Bot.getInstance().getApiKeys().get("dashboardid");
+			webSync();
+		} catch (NoAPIKeyException e1) { 
+			LoggerFactory.getLogger(JobScheduler.class).warn("You do not have a "
+					+ "dashbaord setup - Web sync will not proceed");
 		}
 			
 		remindCheck();
