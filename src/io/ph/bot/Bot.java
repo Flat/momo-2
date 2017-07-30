@@ -22,6 +22,7 @@ import io.ph.bot.listeners.ModerationListeners;
 import io.ph.bot.listeners.VoiceChannelListeners;
 import io.ph.bot.scheduler.JobScheduler;
 import io.ph.bot.ws.WebsocketServer;
+import io.ph.web.WebServer;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -99,6 +100,7 @@ public class Bot {
 		JobScheduler.initializeScheduler();
 		TwitterEventListener.initTwitter();
 		WebsocketServer.getInstance().start();
+		WebServer.launchServer();
 		// ListenMoeSocket.getInstance().connect();
 		
 	}
