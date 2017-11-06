@@ -40,7 +40,7 @@ public class Jisho extends Command {
 			.setColor(Color.CYAN);
 			JishoObject j = jA.get(0);
 			//No guarantee this service will be up in the future, if someone is using this in like 2026
-			em.setThumbnail("http://iriguchi.moe/includes/kanji.php?kanji=" + j.getKanji());
+			em.setThumbnail("https://themes.moe/includes/api/kanji.php?kanji=" + j.getKanji());
 			em.addField("Reading", j.getKana(), true)
 			.addField("Kanji", j.getKanji(), true)
 			.addField("Definition(s)", j.getEnglishDefinitions(), false);
