@@ -70,9 +70,9 @@ public class WebServer {
 		try {
 			Bot.getInstance().getApiKeys().get("sslpw");
 			secure("keystore.jks", Bot.getInstance().getApiKeys().get("sslpw"), null, null);
-			port(8443);
+			port(Bot.getInstance().getConfig().getDefaultSSLPort());
 		} catch(NoAPIKeyException e) {
-			port(8080);
+			port(Bot.getInstance().getConfig().getDefaultInsecurePort());
 			LoggerFactory.getLogger(WebServer.class).warn("No Java Keystore password set for SSL. Running on port 8080");
 		}
 		Spark.staticFileLocation("/public");

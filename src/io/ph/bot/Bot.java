@@ -114,6 +114,8 @@ public class Bot {
 			botConfig.setBotInviteLink(config.getString("InviteLink"));
 			botConfig.setMaxSongLength(config.getInt("MaxSongLength", 15));
 			botConfig.setCompanionBot(config.getBoolean("MusicCompanion", false));
+			botConfig.setDefaultSSLPort(config.getInt("DefaultSSLPort", 8443));
+			botConfig.setDefaultInsecurePort(config.getInt("DefaultInsecurePort", 8080));
 
 			Configuration subset = config.subset("apikey");
 			Iterator<String> iter = subset.getKeys();
@@ -181,6 +183,8 @@ public class Bot {
 		private boolean companionBot;
 		private long botOwnerId;
 		private int maxSongLength; // in minutes
+		private int defaultSSLPort;
+		private int defaultInsecurePort;
 
 		public boolean isCompanionBot() {
 			return this.companionBot;
@@ -196,6 +200,22 @@ public class Bot {
 
 		public void setMaxSongLength(int songLength) {
 			this.maxSongLength = songLength;
+		}
+
+		public int getDefaultSSLPort() {
+			return defaultSSLPort;
+		}
+
+		public void setDefaultSSLPort(int defaultSSLPort) {
+			this.defaultSSLPort = defaultSSLPort;
+		}
+
+		public int getDefaultInsecurePort() {
+			return defaultInsecurePort;
+		}
+
+		public void setDefaultInsecurePort(int defaultInsecurePort) {
+			this.defaultInsecurePort = defaultInsecurePort;
 		}
 
 		public String getToken() {
