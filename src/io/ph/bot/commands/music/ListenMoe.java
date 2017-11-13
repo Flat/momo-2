@@ -24,7 +24,7 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 		)
 public class ListenMoe extends Command {
 
-	private static final String URL = "http://listen.moe:9999/stream";
+	private static final String URL = "https://listen.moe/vorbis";
 
 	@Override
 	public void executeCommand(Message msg) {

@@ -84,8 +84,8 @@ public class GuildTrackManager extends AudioEventAdapter {
 				.setDescription("Your queue is all dried up");
 				ch.sendMessage(em.build()).queue();
 			}
-			guild.getAudioManager().closeAudioConnection();
 			currentSong = null;
+			guild.getAudioManager().closeAudioConnection();
 		}
 	}
 
