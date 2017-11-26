@@ -69,7 +69,7 @@ public class GuildTrackManager extends AudioEventAdapter {
 		if (!queue.isEmpty()) {
 			// Kill queue and leave channel if no one is in
 			if (guild.getAudioManager().getConnectedChannel().getMembers().size() == 1) {
-				guild.getAudioManager().closeAudioConnection();
+				new Thread(() -> guild.getAudioManager().closeAudioConnection()).start();
 				g.getMusicManager().reset();
 				return;
 			}
@@ -85,7 +85,7 @@ public class GuildTrackManager extends AudioEventAdapter {
 				ch.sendMessage(em.build()).queue();
 			}
 			currentSong = null;
-			guild.getAudioManager().closeAudioConnection();
+			new Thread(() -> guild.getAudioManager().closeAudioConnection()).start();
 		}
 	}
 
