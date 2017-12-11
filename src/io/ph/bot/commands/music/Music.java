@@ -9,6 +9,7 @@ import io.ph.bot.audio.GuildMusicManager;
 import io.ph.bot.audio.TrackDetails;
 import io.ph.bot.audio.stream.StreamSource;
 import io.ph.bot.audio.stream.listenmoe.ListenMoeData;
+import io.ph.bot.audio.stream.radio.RadioData;
 import io.ph.bot.commands.Command;
 import io.ph.bot.commands.CommandCategory;
 import io.ph.bot.commands.CommandData;
@@ -250,6 +251,24 @@ public class Music extends Command {
 				.addField("Name", d.getSongName(), true)
 				.addField("Artist", d.getArtist(), true)
 				.addField("Listeners", d.getListeners() + "", true);
+			}
+			// r-a-d.io
+			if(t.getStreamSource().equals(StreamSource.RADIO)) {
+				RadioData d = RadioData.getInstance();
+				d.update();
+				em.setTitle("r/a/dio stream")
+				.setColor(Util.resolveColor(msg.getMember(), Color.RED))
+				.addField("Playing", d.getNowplaying(), true)
+				.addField("Listeners", d.getListeners(), true)
+				.addField("Previous Track", d.getLastplayed(), true)
+				.addField("Next Track", d.getNext(), true);
+				if(!d.getThread().equals("")){
+					em.addField("Thread", d.getThread(), true);
+				}
+				if(!d.getDjname().equals("")){
+					em.addField("DJ", d.getDjname(), true);
+					em.setImage("http://r-a-d.io/api/dj-image/" + d.getDjimg());
+				}
 			}
 		} else {
 			em.setTitle("Current track", null)

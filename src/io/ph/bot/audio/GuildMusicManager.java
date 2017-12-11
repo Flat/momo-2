@@ -56,7 +56,7 @@ public class GuildMusicManager {
 			public void trackLoaded(AudioTrack track) {
 				if(Bot.getInstance().getConfig().getMaxSongLength() > 0
 						&& track.getDuration() / 1000 > (Bot.getInstance().getConfig().getMaxSongLength() * 60)
-						&& announce) {
+						&& announce && !trackUrl.contains("listen.moe") && !trackUrl.contains("r-a-d.io")) {
 					em.setTitle("Error", null)
 					.setColor(Color.RED)
 					.setDescription(String.format("Song duration too long. Please keep length under %d minutes",

@@ -70,6 +70,9 @@ public class TrackDetails {
 		if (track.getInfo().uri.contains("youtube")) {
 			return StreamSource.YOUTUBE;
 		}
+		if (track.getInfo().uri.contains("r-a-d.io")){
+			return StreamSource.RADIO;
+		}
 		return null;
 	}
 
