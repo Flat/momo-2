@@ -4,6 +4,7 @@ import static spark.Spark.get;
 import static spark.Spark.halt;
 import static spark.Spark.port;
 import static spark.Spark.secure;
+import static spark.Spark.redirect;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -90,9 +91,9 @@ public class WebServer {
 			return null;
 		});
 		// These 3 lines are examples of redirections. Feel free to change or whatever you want to do
-		/*redirect.get("/changes", "/changelog.html");
+		redirect.get("/changes", "/changelog.html");
 		redirect.get("/join", "https://discord.gg/uM3pyW8");
-		redirect.get("/github", "https://github.com/paul-io/momo-2");*/
+		redirect.get("/github", "https://github.com/paul-io/momo-2");
 		
 	}
 
