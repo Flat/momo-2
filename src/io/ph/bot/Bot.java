@@ -1,6 +1,7 @@
 package io.ph.bot;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -106,8 +107,10 @@ public class Bot {
 	}
 
 	public boolean loadProperties() {
-		try {
-			PropertiesConfiguration config = new PropertiesConfiguration("resources/Bot.properties");
+		try (FileInputStream finput = new FileInputStream("resources/Bot.properties")) {
+			PropertiesConfiguration config = new PropertiesConfiguration();
+			config.load(finput, "UTF-8");
+			config.setEncoding("UTF-8");
 			botConfig.setToken(config.getString("BotToken"));
 			botConfig.setAvatar(config.getString("Avatar"));
 			botConfig.setBotOwnerId(config.getLong("BotOwnerId", 0));
