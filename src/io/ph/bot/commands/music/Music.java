@@ -118,6 +118,9 @@ public class Music extends Command {
 		} else if (contents.startsWith("remove")) {
 			remove(msg, Util.getCommandContents(Util.getCommandContents(msg)), djSet);
 			return;
+		} else if (contents.startsWith("seek")) {
+			seek(msg, djSet);
+			return;
 		} else if (contents.startsWith("playlist")) {
 			// Just queue up all the songs I guess
 			if (!g.getSpecialChannels().getMusicVoice().isEmpty() 
@@ -340,6 +343,47 @@ public class Music extends Command {
 		em.setTitle("Music stopped", null)
 		.setColor(Util.resolveColor(msg.getMember(), Color.GREEN))
 		.setDescription("Queue cleared");
+		msg.getChannel().sendMessage(em.build()).queue();
+	}
+	
+	public static void seek(Message msg, boolean...bs) {
+		if (!shouldContinueMusic(msg)) {
+			return;
+		}
+		GuildObject g = GuildObject.guildMap.get(msg.getGuild().getId());
+		GuildMusicManager m = g.getMusicManager();
+		EmbedBuilder em = new EmbedBuilder();
+		boolean djSet = bs.length > 0 ? bs[0] : false;
+		if (!Util.memberHasPermission(msg.getGuild().getMember(msg.getAuthor()), Permission.KICK)
+				&& !djSet) {
+			em.setTitle("Error", null)
+			.setColor(Color.RED)
+			.setDescription("You need the kick+ permission to seek the track");
+			msg.getChannel().sendMessage(em.build()).queue();
+			return;
+		}
+
+		String[] split = Util.getCommandContents(msg).split(":");
+		if (split.length != 2 || !Util.isInteger(split[0]) || !Util.isInteger(split[1])) {
+			em.setTitle("Error", null)
+			.setColor(Color.RED)
+			.setDescription("Incorrect format: ##:## mm:ss");
+			msg.getChannel().sendMessage(em.build()).queue();
+			return;
+		}
+		long min = Integer.parseInt(split[0]) * 60000L;
+		long sec = Integer.parseInt(split[1]) * 1000L;
+		if (min + sec > m.getTrackManager().getCurrentSong().getTrack().getDuration()) {
+			em.setTitle("Error", null)
+			.setColor(Color.RED)
+			.setDescription("Seek goes beyond end of track");
+			msg.getChannel().sendMessage(em.build()).queue();
+			return;
+		}
+		m.getTrackManager().getCurrentSong().getTrack().setPosition(min + sec);
+		em.setTitle("Music seeked", null)
+		.setColor(Util.resolveColor(msg.getMember(), Color.GREEN))
+		.setDescription("");
 		msg.getChannel().sendMessage(em.build()).queue();
 	}
 
