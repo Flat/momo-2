@@ -73,8 +73,9 @@ public class TwitchFeedObserver implements Serializable {
 						.header("Client-ID", Bot.getInstance().getApiKeys().get("twitch"))
 						.asJson();
 				String username = userJson.getBody().getObject().getString("display_name");
-				em.setTitle(username + " has gone offline on Twitch.tv", "https://twitch.tv/" + username)
-				.setColor(Color.MAGENTA);
+				String canonicalURLName = userJson.getBody().getObject().getString("name");
+				em.setTitle(username + " has gone offline on Twitch.tv", "https://twitch.tv/" + canonicalURLName)
+					.setColor(Color.MAGENTA);
 			} catch (UnirestException e) {
 				e.printStackTrace();
 			} catch (NoAPIKeyException e) {
@@ -88,11 +89,12 @@ public class TwitchFeedObserver implements Serializable {
 			String status = json.getJSONObject("stream")
 					.getJSONObject("channel").getString("status");
 			String imageUrl = json.getJSONObject("stream").getJSONObject("preview").getString("large");
-
+			String canonicalURLName = json.getJSONObject("stream")
+					.getJSONObject("channel").getString("name");
 			em.setTitle(String.format("%s is now playing %s on Twitch.tv", username, gameName), imageUrl)
-			.setColor(Color.MAGENTA)
-			.setDescription(String.format("%s\nhttps://twitch.tv/%s", status, username))
-			.setImage(imageUrl);
+				.setColor(Color.MAGENTA)
+				.setDescription(String.format("%s\nhttps://twitch.tv/%s", status, canonicalURLName))
+				.setImage(imageUrl);
 		}
 		this.getDiscoChannel().sendMessage(em.build()).queue();
 	}
