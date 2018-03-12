@@ -99,10 +99,7 @@ public class TwitchFeedObserver implements Serializable {
 		this.getDiscoChannel().sendMessage(em.build()).queue();
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
+	
 	/**
 	 * Get the TextChannel this feed is going to
 	 * @return TextChannel

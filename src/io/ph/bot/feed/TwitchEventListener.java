@@ -26,6 +26,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 import io.ph.bot.Bot;
 import io.ph.bot.exception.NoAPIKeyException;
+import io.ph.util.Util;
 import net.dean.jraw.http.NetworkException;
 import net.dv8tion.jda.core.entities.Guild;
 
@@ -38,9 +39,12 @@ public class TwitchEventListener implements Job {
 	private static File serializedFile = new File("resources/feeds/Twitch.bin");
 	private static Logger log = LoggerFactory.getLogger(TwitchEventListener.class);
 
+	// Map user ID to a list of discord observers
 	private static Map<String, List<TwitchFeedObserver>> twitchFeed = new HashMap<>();
 	// Holds status of twitch users, a change will fire updates
 	private static Map<String, Boolean> twitchOnlineStatus = new HashMap<>();
+	// Map twitch ID to username
+	public static Map<String, String> twitchIdToUsername = new HashMap<>();
 
 	private static boolean firstStartup = true;
 
@@ -160,9 +164,7 @@ public class TwitchEventListener implements Job {
 				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(serializedFile));
 				twitchFeed = (Map<String, List<TwitchFeedObserver>>) ois.readObject();
 				ois.close();
-				for (String userId : twitchFeed.keySet()) {
-					twitchOnlineStatus.put(userId, false);
-				}
+				Util.setTimeout(() -> startupChecks(), 0, true);
 			} else {
 				saveFeed();
 			}
@@ -179,9 +181,43 @@ public class TwitchEventListener implements Job {
 			e.printStackTrace();
 		}
 	}
+	
+	private static void startupChecks() {
+		log.debug("Performing Twitch.tv startup checks");
+		for (String userId : twitchFeed.keySet()) {
+			try {
+				String username = resolveUsernameFromUserId(userId);
+				twitchIdToUsername.put(userId, username);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			twitchOnlineStatus.put(userId, false);
+		}
+		log.debug("Finished Twitch.tv startup checks");
+	}
 
 	public static Map<String, List<TwitchFeedObserver>> getRedditFeed() {
 		return twitchFeed;
+	}
+
+	/**
+	 * Resolve a Twitch.tv Username from a User ID
+	 * @param userID User ID to check for
+	 * @return Twitch.tv username
+	 * @throws UnirestException Unirest exception
+	 * @throws NoAPIKeyException No API keys set
+	 * @throws IllegalArgumentException Bad ID
+	 */
+	public static String resolveUsernameFromUserId(String userID) throws UnirestException, NoAPIKeyException,
+	IllegalArgumentException {
+		HttpResponse<JsonNode> json = Unirest.get(TwitchEventListener.ENDPOINT + "users/" + userID)
+				.header("Accept", "application/vnd.twitchtv.v5+json")
+				.header("Client-ID", Bot.getInstance().getApiKeys().get("twitch"))
+				.asJson();
+		if (json.getBody().getObject().has("error")) {
+			throw new IllegalArgumentException("The user ID " + userID + " is not a valid Twitch.tv account");
+		}
+		return json.getBody().getObject().getString("name");
 	}
 
 	/**

@@ -49,6 +49,7 @@ public class RemoveTwitchFeed extends Command {
 				.setDescription("**" + contents + "** is not a current Twitch.tv feed...");
 			}
 		} catch (IllegalArgumentException e) {
+			// TODO: Maybe it is and they changed their username. Work from here
 			e.printStackTrace();
 			em.setTitle("Error", null)
 			.setColor(Color.RED)
