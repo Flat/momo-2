@@ -17,6 +17,7 @@ import net.dv8tion.jda.core.entities.TextChannel;
 
 /**
  * Observer class for twitch feed
+ * 
  * @author Paul
  */
 public class TwitchFeedObserver implements Serializable {
@@ -26,8 +27,11 @@ public class TwitchFeedObserver implements Serializable {
 
 	/**
 	 * Initialize and register a TwitterFeedObserver
-	 * @param discoChannel The channel ID to register to
-	 * @param twitchUser Twitch username
+	 * 
+	 * @param discoChannel
+	 *            The channel ID to register to
+	 * @param twitchUser
+	 *            Twitch username
 	 */
 	public TwitchFeedObserver(String discoChannel, String username, String userId) {
 		this.discoChannel = discoChannel;
@@ -37,7 +41,9 @@ public class TwitchFeedObserver implements Serializable {
 
 	/**
 	 * Register a twitch userID
-	 * @param userId Twitch User ID to register
+	 * 
+	 * @param userId
+	 *            Twitch User ID to register
 	 */
 	public void register(String userId) {
 		TwitchEventListener.addTwitchFeed(userId, this);
@@ -46,12 +52,15 @@ public class TwitchFeedObserver implements Serializable {
 
 	/**
 	 * Trigger this twitch observer
-	 * @param userId User ID to trigger
-	 * @param json The details given by Twitch API
+	 * 
+	 * @param userId
+	 *            User ID to trigger
+	 * @param json
+	 *            The details given by Twitch API
 	 * @return True if could process, false if not
 	 */
 	public boolean trigger(String userId, JSONObject json) {
-		if(getDiscoChannel() == null || !getDiscoChannel().canTalk()) {
+		if (getDiscoChannel() == null || !getDiscoChannel().canTalk()) {
 			return false;
 		}
 		process(userId, json);
@@ -59,9 +68,21 @@ public class TwitchFeedObserver implements Serializable {
 	}
 
 	/**
+	 * Return the username of this observer
+	 * 
+	 * @return the username of this observer
+	 */
+	public String getUsername() {
+		return this.username;
+	}
+
+	/**
 	 * Process the twitch status change
-	 * @param userId Twitch User ID that is changing status
-	 * @param json The details given by Twitch API
+	 * 
+	 * @param userId
+	 *            Twitch User ID that is changing status
+	 * @param json
+	 *            The details given by Twitch API
 	 */
 	private void process(String userId, JSONObject json) {
 		EmbedBuilder em = new EmbedBuilder();
@@ -70,12 +91,11 @@ public class TwitchFeedObserver implements Serializable {
 			try {
 				HttpResponse<JsonNode> userJson = Unirest.get(TwitchEventListener.ENDPOINT + "users/" + userId)
 						.header("Accept", "application/vnd.twitchtv.v5+json")
-						.header("Client-ID", Bot.getInstance().getApiKeys().get("twitch"))
-						.asJson();
+						.header("Client-ID", Bot.getInstance().getApiKeys().get("twitch")).asJson();
 				String username = userJson.getBody().getObject().getString("display_name");
 				String canonicalURLName = userJson.getBody().getObject().getString("name");
 				em.setTitle(username + " has gone offline on Twitch.tv", "https://twitch.tv/" + canonicalURLName)
-					.setColor(Color.MAGENTA);
+						.setColor(Color.MAGENTA);
 			} catch (UnirestException e) {
 				e.printStackTrace();
 			} catch (NoAPIKeyException e) {
@@ -83,25 +103,22 @@ public class TwitchFeedObserver implements Serializable {
 			}
 		} else {
 			// User came back online
-			String username = json.getJSONObject("stream")
-					.getJSONObject("channel").getString("display_name");
+			String username = json.getJSONObject("stream").getJSONObject("channel").getString("display_name");
 			String gameName = json.getJSONObject("stream").getString("game");
-			String status = json.getJSONObject("stream")
-					.getJSONObject("channel").getString("status");
+			String status = json.getJSONObject("stream").getJSONObject("channel").getString("status");
 			String imageUrl = json.getJSONObject("stream").getJSONObject("preview").getString("large");
-			String canonicalURLName = json.getJSONObject("stream")
-					.getJSONObject("channel").getString("name");
+			String canonicalURLName = json.getJSONObject("stream").getJSONObject("channel").getString("name");
 			em.setTitle(String.format("%s is now playing %s on Twitch.tv", username, gameName), imageUrl)
-				.setColor(Color.MAGENTA)
-				.setDescription(String.format("%s\nhttps://twitch.tv/%s", status, canonicalURLName))
-				.setImage(imageUrl);
+					.setColor(Color.MAGENTA)
+					.setDescription(String.format("%s\nhttps://twitch.tv/%s", status, canonicalURLName))
+					.setImage(imageUrl);
 		}
 		this.getDiscoChannel().sendMessage(em.build()).queue();
 	}
 
-	
 	/**
 	 * Get the TextChannel this feed is going to
+	 * 
 	 * @return TextChannel
 	 */
 	public TextChannel getDiscoChannel() {
@@ -110,6 +127,7 @@ public class TwitchFeedObserver implements Serializable {
 
 	/**
 	 * Get the channel ID of the TextChannel this feed is going to
+	 * 
 	 * @return String of channel ID
 	 */
 	public String getDiscoChannelId() {
@@ -117,4 +135,3 @@ public class TwitchFeedObserver implements Serializable {
 	}
 
 }
-

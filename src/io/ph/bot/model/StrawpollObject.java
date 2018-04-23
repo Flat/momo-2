@@ -16,6 +16,7 @@ import io.ph.util.Util;
 
 /**
  * Strawpoll object to create and view polls
+ * 
  * @author Paul
  *
  */
@@ -45,22 +46,25 @@ public class StrawpollObject {
 
 	/**
 	 * Create the poll as represented by this object
+	 * 
 	 * @return ID of the created poll
-	 * @throws IOException Something bad happened when accessing the resource
+	 * @throws IOException
+	 *             Something bad happened when accessing the resource
 	 */
 	public int createPoll() throws UnirestException {
-		HttpResponse<JsonNode> jsonResponse = Unirest.post(BASE_API)
-				.header("Content-Type", "application/json")
-				.body((new Gson()).toJson(this))
-				.asJson();
+		HttpResponse<JsonNode> jsonResponse = Unirest.post(BASE_API).header("Content-Type", "application/json")
+				.body((new Gson()).toJson(this)).asJson();
 		return jsonResponse.getBody().getObject().getInt("id");
 	}
-	
+
 	/**
 	 * Get strawpoll from its ID
-	 * @param id ID to lookup
+	 * 
+	 * @param id
+	 *            ID to lookup
 	 * @return Strawpoll Object
-	 * @throws IOException Strawpoll.me is down or denied our API access
+	 * @throws IOException
+	 *             Strawpoll.me is down or denied our API access
 	 */
 	public static StrawpollObject fromId(int id) throws IOException {
 		JsonValue jv = Util.jsonFromUrl(BASE_API + "/" + id);
@@ -72,7 +76,7 @@ public class StrawpollObject {
 		String[] options = new String[jOptions.size()];
 		JsonArray jVotes = jo.get("votes").asArray();
 		int[] votes = new int[jVotes.size()];
-		for(int i = 0; i < options.length; i++) {
+		for (int i = 0; i < options.length; i++) {
 			options[i] = jOptions.get(i).asString();
 			votes[i] = jVotes.get(i).asInt();
 		}
