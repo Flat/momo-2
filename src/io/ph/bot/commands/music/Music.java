@@ -369,7 +369,7 @@ public class Music extends Command {
 			.setColor(Color.RED)
 			.setDescription("Incorrect format: ##:## mm:ss");
 			msg.getChannel().sendMessage(em.build()).queue();
-			return;
+			return; 
 		}
 		long min = Integer.parseInt(split[0]) * 60000L;
 		long sec = Integer.parseInt(split[1]) * 1000L;
@@ -377,6 +377,13 @@ public class Music extends Command {
 			em.setTitle("Error", null)
 			.setColor(Color.RED)
 			.setDescription("Seek goes beyond end of track");
+			msg.getChannel().sendMessage(em.build()).queue();
+			return;
+		}
+		if (min + sec < 0) {
+			em.setTitle("Error", null)
+			.setColor(Color.RED)
+			.setDescription("Seek goes before start of the track");
 			msg.getChannel().sendMessage(em.build()).queue();
 			return;
 		}
