@@ -85,9 +85,9 @@ public class CommandHandler {
 	 */
 	public static void processCommand(Message msg) {
 		GuildObject g = GuildObject.guildMap.get(msg.getGuild().getId());
-		if(msg.getContent().contains(" ")) {
-			String cmd = aliasToDefaultMap.get(msg.getContent().substring(g.getConfig().getCommandPrefix().length(),
-					msg.getContent().indexOf(" ")));
+		if(msg.getContentDisplay().contains(" ")) {
+			String cmd = aliasToDefaultMap.get(msg.getContentDisplay().substring(g.getConfig().getCommandPrefix().length(),
+					msg.getContentDisplay().indexOf(" ")));
 			if(cmd == null)
 				return;
 			if(getCommand(cmd).hasPermissions(msg)) {
@@ -99,8 +99,8 @@ public class CommandHandler {
 				}
 			}
 		} else {
-			String cmd = aliasToDefaultMap.get(msg.getContent().substring(g.getConfig().getCommandPrefix().length(),
-					msg.getContent().length()));
+			String cmd = aliasToDefaultMap.get(msg.getContentDisplay().substring(g.getConfig().getCommandPrefix().length(),
+					msg.getContentDisplay().length()));
 			if(cmd == null)
 				return;
 			if(getCommand(cmd).hasPermissions(msg)) {

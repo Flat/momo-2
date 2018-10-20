@@ -65,11 +65,11 @@ public abstract class ProceduralCommand extends Command implements ProceduralInt
 	 * @param msg {@link Message} that triggered this
 	 */
 	public void step(Message msg) {
-		if (msg.getContent().equalsIgnoreCase("exit")) {
+		if (msg.getContentDisplay().equalsIgnoreCase("exit")) {
 			exit();
 			return;
 		}
-		if (msg.getContent().equalsIgnoreCase(this.getBreakOut()) 
+		if (msg.getContentDisplay().equalsIgnoreCase(this.getBreakOut())
 				&& getTypes()[getCurrentStep()].equals(StepType.REPEATER)) {
 			incrementStep();
 			if (getCurrentStep() >= getSteps().length) {
@@ -79,30 +79,30 @@ public abstract class ProceduralCommand extends Command implements ProceduralInt
 		}
 		switch(getTypes()[getCurrentStep()]) {
 		case STRING:
-			addResponse(msg.getContent());
+			addResponse(msg.getContentDisplay());
 			break;
 		case INTEGER:
-			if (Util.isInteger(msg.getContent())) {
-				addResponse(Integer.parseInt(msg.getContent()));
+			if (Util.isInteger(msg.getContentDisplay())) {
+				addResponse(Integer.parseInt(msg.getContentDisplay()));
 			} else {
 				sendMessage("Error: Not a valid numerical input\n" + getSteps()[getCurrentStep()]);
 				return;
 			}
 			break;
 		case DOUBLE:
-			if (Util.isDouble(msg.getContent())) {
-				addResponse(Double.parseDouble(msg.getContent()));
+			if (Util.isDouble(msg.getContentDisplay())) {
+				addResponse(Double.parseDouble(msg.getContentDisplay()));
 			} else {
 				sendMessage("Error: Not a valid decimal input\n" + getSteps()[getCurrentStep()]);
 				return;
 			}
 			break;
 		case REPEATER:
-			addResponse(msg.getContent());
+			addResponse(msg.getContentDisplay());
 			sendMessage(getSteps()[getCurrentStep()] + " (to finish, respond with \"" + getBreakOut() + "\")");
 			return;
 		case YES_NO:
-			String s = msg.getContent();
+			String s = msg.getContentDisplay();
 			if (s.equalsIgnoreCase("y") || s.equalsIgnoreCase("yes")) {
 				addResponse(true);
 			} else if (s.equalsIgnoreCase("n") || s.equalsIgnoreCase("no")) {

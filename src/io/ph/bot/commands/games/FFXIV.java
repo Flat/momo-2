@@ -36,7 +36,7 @@ public class FFXIV extends Command {
 
 	@Override
 	public void executeCommand(Message msg) {
-		String[] split = Util.removeFirstArrayEntry(msg.getContent().split(" "));
+		String[] split = Util.removeFirstArrayEntry(msg.getContentDisplay().split(" "));
 		if(split.length != 3) {
 			MessageUtils.sendIncorrectCommandUsage(msg, this);
 			return;

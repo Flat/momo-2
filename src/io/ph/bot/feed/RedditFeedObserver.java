@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,26 +72,26 @@ public class RedditFeedObserver implements Serializable {
 	 * @param postId Post ID to recheck for certain flags
 	 */
 	private void processPost(String postId) {
-		Submission post = RedditEventListener.redditClient.getSubmission(postId);
-		if(post == null || post.isHidden() || post.getAuthor().equals("[deleted]")
-				|| (post.isSelfPost() && post.getSelftext().equals("[removed]")))
+		Submission post = RedditEventListener.redditClient.submission(postId).inspect();
+		if(post.isHidden() || post.getAuthor().equals("[deleted]")
+				|| (post.isSelfPost() && post.getSelfText().equals("[removed]")))
 			return;
 		EmbedBuilder em = new EmbedBuilder();
 		String descriptionText = null;
 		int imagesInAlbum = 0;
-		Flair submissionFlair = post.getSubmissionFlair();
+		String submissionFlair = post.getLinkFlairText();
 		boolean spoilerFlair;
-		if(submissionFlair.getText() == null)
+		if(submissionFlair == null || submissionFlair.isEmpty())
 			spoilerFlair = false;
 		else
-			spoilerFlair = submissionFlair.getText().toLowerCase().contains("spoiler");
+			spoilerFlair = submissionFlair.toLowerCase().contains("spoiler");
 		if(!post.getTitle().toLowerCase().contains("spoiler") && !spoilerFlair) {
-			if(post.isSelfPost() && this.showPreview && !RedditEventListener.redditClient.getSubmission(post.getId()).isNsfw()) {
-				descriptionText = post.getSelftext();
+			if(post.isSelfPost() && this.showPreview && !RedditEventListener.redditClient.submission(post.getId()).inspect().isNsfw()) {
+				descriptionText = post.getSelfText();
 				if(descriptionText.length() > 500)
 					descriptionText = descriptionText.substring(0, 500) + "...";
 			} else if(!post.isSelfPost()
-					&& (this.showNsfw || (this.showImages && !RedditEventListener.redditClient.getSubmission(post.getId()).isNsfw()))) {
+					&& (this.showNsfw || (this.showImages && !RedditEventListener.redditClient.submission(post.getId()).inspect().isNsfw()))) {
 				if(post.getUrl().contains("reddituploads")) {
 					em.setImage(post.getUrl().replaceAll("amp;", ""));
 				} else {
@@ -131,11 +132,11 @@ public class RedditFeedObserver implements Serializable {
 				}
 			}
 		}
-		em.setTitle("New post on /r/" + post.getSubredditName(), post.getShortURL());
+		em.setTitle("New post on /r/" + post.getSubreddit(), post.getUrl());
 		em.addField("Title", post.getTitle(), true);
 		em.addField("Author", String.format("/u/**%s**", post.getAuthor()), true);
 		em.setColor(Color.MAGENTA);
-		em.addField("Reddit Link", post.getShortURL(), true);
+		em.addField("Reddit Link", post.getUrl(), true);
 		if(imagesInAlbum > 1) {
 			em.addField("Album Link (" + imagesInAlbum + " images)", post.getUrl(), true);
 		}
@@ -149,7 +150,7 @@ public class RedditFeedObserver implements Serializable {
 	}
 
 	static boolean isNsfw(Submission post) {
-		return RedditEventListener.redditClient.getSubmission(post.getId()).isNsfw();
+		return RedditEventListener.redditClient.submission(post.getId()).inspect().isNsfw();
 	}
 
 	public TextChannel getDiscoChannel() {

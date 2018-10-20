@@ -73,7 +73,7 @@ public class Bot {
 				jdaClients.add(new JDABuilder(AccountType.BOT)
 						.setToken(botConfig.getToken())
 						.setStatus(OnlineStatus.DO_NOT_DISTURB)
-						.setGame(Game.of("launching..."))
+						.setGame(Game.playing("launching..."))
 						.addEventListener(new Listeners(), new ModerationListeners(), new VoiceChannelListeners())
 						.useSharding(i, SHARD_COUNT)
 						.buildBlocking());
@@ -82,7 +82,7 @@ public class Bot {
 			jdaClients.add(new JDABuilder(AccountType.BOT)
 					.setToken(botConfig.getToken())
 					.setStatus(OnlineStatus.DO_NOT_DISTURB)
-					.setGame(Game.of("launching..."))
+					.setGame(Game.playing("launching..."))
 					.addEventListener(new Listeners(), new ModerationListeners(), new VoiceChannelListeners())
 					.buildBlocking());
 		}

@@ -32,7 +32,7 @@ public class JoinableRole extends Command {
 	@Override
 	public void executeCommand(Message msg) {
 		EmbedBuilder em = new EmbedBuilder();
-		String roleName = Util.combineStringArray(Util.removeFirstArrayEntry(msg.getContent().split(" ")));
+		String roleName = Util.combineStringArray(Util.removeFirstArrayEntry(msg.getContentDisplay().split(" ")));
 		for(Role r : msg.getGuild().getRoles()) {
 			if(r.getName().equalsIgnoreCase(roleName)) {
 				if(GuildObject.guildMap.get(msg.getGuild().getId()).addJoinableRole(r.getId())) {

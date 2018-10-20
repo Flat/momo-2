@@ -25,7 +25,7 @@ public class ChangeAvatar extends Command {
 
 	@Override
 	public void executeCommand(Message msg) {
-		if(msg.getContent().contains("reset")) {
+		if(msg.getContentDisplay().contains("reset")) {
 			State.changeBotAvatar(new File("resources/avatar/" + Bot.getInstance().getConfig().getAvatar()));
 			return;
 		}

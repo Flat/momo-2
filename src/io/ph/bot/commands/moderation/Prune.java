@@ -146,7 +146,7 @@ public class Prune extends Command {
 				msg.getChannel().sendMessage(MessageUtils.handleFailure(failure)).queue();;
 			});
 			
-		} else if (Util.isInteger(msg.getContent().split(" ")[msg.getContent().split(" ").length - 1])) {
+		} else if (Util.isInteger(msg.getContentDisplay().split(" ")[msg.getContentDisplay().split(" ").length - 1])) {
 			// There's a possibility they did $prune username #
 			String targ = Util.combineStringArray(Util.removeLastArrayEntry(Util.getCommandContents(msg).split(" ")));
 			if (!msg.getMentionedUsers().isEmpty()) {
@@ -155,8 +155,8 @@ public class Prune extends Command {
 				target = Util.resolveMemberFromMessage(targ, msg.getGuild());
 			}
 			if (target != null) {
-				int num = Integer.parseInt(msg.getContent().split(" ")[msg.getContent().split(" ").length - 1]) > MAX_PRUNE ? 
-						MAX_PRUNE : Integer.parseInt(msg.getContent().split(" ")[msg.getContent().split(" ").length - 1]);
+				int num = Integer.parseInt(msg.getContentDisplay().split(" ")[msg.getContentDisplay().split(" ").length - 1]) > MAX_PRUNE ?
+						MAX_PRUNE : Integer.parseInt(msg.getContentDisplay().split(" ")[msg.getContentDisplay().split(" ").length - 1]);
 				num = num < 1 ? 1 : num;
 				int targetCounter = 0;
 				List<Message> toPrune = new ArrayList<>();

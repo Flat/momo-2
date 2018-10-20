@@ -14,6 +14,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.dean.jraw.http.NetworkAdapter;
+import net.dean.jraw.http.OkHttpNetworkAdapter;
+import net.dean.jraw.models.*;
+import net.dean.jraw.oauth.Credentials;
+import net.dean.jraw.oauth.OAuthHelper;
+import net.dean.jraw.pagination.DefaultPaginator;
+import net.dv8tion.jda.core.entities.User;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -25,13 +32,6 @@ import io.ph.bot.exception.NoAPIKeyException;
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.http.NetworkException;
 import net.dean.jraw.http.UserAgent;
-import net.dean.jraw.http.oauth.Credentials;
-import net.dean.jraw.http.oauth.OAuthData;
-import net.dean.jraw.http.oauth.OAuthException;
-import net.dean.jraw.models.Listing;
-import net.dean.jraw.models.Submission;
-import net.dean.jraw.paginators.Sorting;
-import net.dean.jraw.paginators.SubredditPaginator;
 import net.dv8tion.jda.core.entities.Guild;
 
 /**
@@ -109,11 +109,11 @@ public class RedditEventListener implements Job {
 	private static final int BUFFER_SIZE = 4;
 	public static void update() {
 		try {
-			SubredditPaginator allNew = new SubredditPaginator(redditClient);
-			allNew.setLimit(42);
-			allNew.setSorting(Sorting.NEW);
-			allNew.setSubreddit("all");
-			Listing<Submission> posts = allNew.next();
+            DefaultPaginator<Submission> paginator = redditClient.frontPage()
+                    .limit(42)
+                    .sorting(SubredditSort.NEW)
+                    .build();
+			Listing<Submission> posts = paginator.next();
 			postSearch: {
 				for (Submission post : posts) {
 					for (String cutoff : cutoffIds) {
@@ -121,13 +121,13 @@ public class RedditEventListener implements Job {
 							break postSearch;
 						}
 					}
-					if (redditFeed.containsKey(post.getSubredditName().toLowerCase())) {
-						if (redditFeed.get(post.getSubredditName().toLowerCase()).isEmpty()) {
-							redditFeed.remove(post.getSubredditName().toLowerCase());
+					if (redditFeed.containsKey(post.getSubreddit().toLowerCase())) {
+						if (redditFeed.get(post.getSubreddit().toLowerCase()).isEmpty()) {
+							redditFeed.remove(post.getSubreddit().toLowerCase());
 							saveFeed();
 							continue;
 						}
-						redditFeed.get(post.getSubredditName().toLowerCase()).removeIf(observer -> !observer.trigger(post));
+						redditFeed.get(post.getSubreddit().toLowerCase()).removeIf(observer -> !observer.trigger(post));
 					}
 				}
 			}
@@ -137,7 +137,6 @@ public class RedditEventListener implements Job {
 			}
 		} catch(NetworkException e) {
 			try {
-				reAuthenticate();
 				update();
 			} catch (NetworkException e1) {
 				e1.printStackTrace();
@@ -157,8 +156,6 @@ public class RedditEventListener implements Job {
 			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(serializedFile));
 			oos.writeObject(redditFeed);
 			oos.close();
-		} catch(FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -170,14 +167,13 @@ public class RedditEventListener implements Job {
 	static Credentials credentials;
 	static {
 		try {
-			UserAgent userAgent = UserAgent.of("discord bot", "io.ph.bot", Bot.BOT_VERSION, Bot.getInstance().getApiKeys().get("redditusername"));
-			redditClient = new RedditClient(userAgent);
+			UserAgent userAgent = new UserAgent("discord bot", "io.ph.bot", Bot.BOT_VERSION, Bot.getInstance().getApiKeys().get("redditusername"));
 			credentials = Credentials.script(Bot.getInstance().getApiKeys().get("redditusername"),
 					Bot.getInstance().getApiKeys().get("redditpassword"),
 					Bot.getInstance().getApiKeys().get("redditkey"),
 					Bot.getInstance().getApiKeys().get("redditsecret"));
-			OAuthData authData = authenticate();
-			redditClient.authenticate(authData);
+			NetworkAdapter adapter = new OkHttpNetworkAdapter(userAgent);
+			redditClient = OAuthHelper.automatic(adapter, credentials);
 
 			if (!serializedFile.createNewFile()) {
 				serializedFile.getParentFile().mkdirs();
@@ -190,36 +186,16 @@ public class RedditEventListener implements Job {
 		} catch (NoAPIKeyException e) {
 			e.printStackTrace();
 			log.warn("Reddit API keys not set. Cannot perform live Reddit updates");
-		} catch (NetworkException e) {
-			e.printStackTrace();
-		} catch (OAuthException e) {
+		} catch (NetworkException | ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
 			log.warn("Reddit API keys not set. Cannot do live Reddit updates");
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		}
-	}
-	public static void reAuthenticate() {
-		redditClient.getOAuthHelper().revokeAccessToken(credentials);
-		redditClient.deauthenticate();
-		try {
-			OAuthData authData = authenticate();
-			redditClient.authenticate(authData);
-			LoggerFactory.getLogger(RedditEventListener.class).info("Reauthenticating Reddit credentials");
-		} catch (NetworkException e) {
-			e.printStackTrace();
-		} catch (OAuthException e) {
-			e.printStackTrace();
-		}
-	}
+    }
 
-	private static OAuthData authenticate() throws NetworkException, OAuthException {
-		return redditClient.getOAuthHelper().easyAuth(credentials);
-	}
 
 	public static Map<String, List<RedditFeedObserver>> getRedditFeed() {
 		return redditFeed;

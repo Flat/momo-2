@@ -180,14 +180,14 @@ public class SourceSearch extends Command {
 			for (int i = 0; i < SEARCH; i++) {
 				try {
 					URL localUrl;
-					//System.out.println(list.get(i).getAttachments().isEmpty() + " | " + list.get(i).getContent());
+					//System.out.println(list.get(i).getAttachments().isEmpty() + " | " + list.get(i).getContentDisplay());
 					if (!list.get(i).getAttachments().isEmpty()) {
 						if (checkMime((localUrl = new URL(list.get(i).getAttachments().get(0).getUrl()))) != null) {
 							System.out.println(localUrl);
 							return localUrl;
 						}
 					} else {
-						if (checkMime((localUrl = new URL(list.get(i).getContent()))) != null) {
+						if (checkMime((localUrl = new URL(list.get(i).getContentDisplay()))) != null) {
 							return localUrl;
 						}
 					}

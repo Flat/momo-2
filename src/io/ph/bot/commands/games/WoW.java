@@ -39,7 +39,7 @@ public class WoW extends Command {
 	@Override
 	public void executeCommand(Message msg) {
 		EmbedBuilder em = new EmbedBuilder();
-		String[] split = Util.removeFirstArrayEntry(msg.getContent().split(" "));
+		String[] split = Util.removeFirstArrayEntry(msg.getContentDisplay().split(" "));
 		if(split.length < 3) {
 			MessageUtils.sendIncorrectCommandUsage(msg, this);
 			return;

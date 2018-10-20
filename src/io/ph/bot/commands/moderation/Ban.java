@@ -15,6 +15,7 @@ import io.ph.db.SQLUtils;
 import io.ph.util.MessageUtils;
 import io.ph.util.Util;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
@@ -79,7 +80,12 @@ public class Ban extends Command {
 			em.setDescription(target.getEffectiveName() + " has been banned");
 		}
 		try {
-			if (msg.getGuild().getBans().complete(true).contains(target)) {
+			boolean found = false;
+            for (Guild.Ban ban : msg.getGuild().getBanList().complete(true)) {
+                if (ban.getUser() == target.getUser()) {
+                    found = true; }
+            }
+			if (found) {
 				em.setTitle("Error", null)
 				.setColor(Color.RED)
 				.setDescription(target.getEffectiveName() + " is already banned");

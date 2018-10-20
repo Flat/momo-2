@@ -55,7 +55,7 @@ public class Strawpoll extends ProceduralCommand {
 
 	@Override
 	public void step(Message msg) {
-		if(msg.getContent().equalsIgnoreCase(this.getBreakOut()) 
+		if(msg.getContentDisplay().equalsIgnoreCase(this.getBreakOut())
 				&& getTypes()[super.getCurrentStep()].equals(StepType.REPEATER)) {
 			finish();
 			return;

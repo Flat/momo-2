@@ -45,7 +45,7 @@ public class Overwatch extends Command {
 
 	@Override
 	public void executeCommand(Message msg) {
-		if(msg.getContent().split(" ").length != 3 || !msg.getContent().contains("#")) {
+		if(msg.getContentDisplay().split(" ").length != 3 || !msg.getContentDisplay().contains("#")) {
 			MessageUtils.sendIncorrectCommandUsage(msg, this);
 			return;
 		}

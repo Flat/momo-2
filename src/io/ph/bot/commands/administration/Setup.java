@@ -41,13 +41,13 @@ public class Setup extends Command {
 			}
 		}
 		msg.getGuild().getController().createRole().queue(role -> {
-			role.getManagerUpdatable()
-			.getNameField().setValue("muted")
-			.getMentionableField().setValue(false)
-			.getColorField().setValue(new Color(217, 0, 90))
-			.getPermissionField().revokePermissions(Permission.MESSAGE_WRITE, 
+			role.getManager()
+			.setName("muted")
+			.setMentionable(false)
+			.setColor(new Color(217, 0, 90))
+			.revokePermissions(Permission.MESSAGE_WRITE,
 					Permission.VOICE_SPEAK, Permission.MESSAGE_ADD_REACTION)
-			.update().queue(success -> {
+			.queue(success -> {
 				g.getConfig().setMutedRoleId(role.getId());
 				for (Channel channel : msg.getGuild().getTextChannels()) {
 					channel.createPermissionOverride(role).queue(or -> {

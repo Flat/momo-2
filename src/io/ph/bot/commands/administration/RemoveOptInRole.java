@@ -31,7 +31,7 @@ public class RemoveOptInRole extends Command {
 	@Override
 	public void executeCommand(Message msg) {
 		EmbedBuilder em = new EmbedBuilder();
-		String role = Util.combineStringArray(Util.removeFirstArrayEntry(msg.getContent().split(" ")));
+		String role = Util.combineStringArray(Util.removeFirstArrayEntry(msg.getContentDisplay().split(" ")));
 		em.setTitle("Error", null)
 		.setColor(Color.RED)
 		.setDescription("**" + role + " is not a joinable role");

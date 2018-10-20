@@ -231,13 +231,13 @@ public class Listeners extends ListenerAdapter {
 	public void onGuildMessageReceived(GuildMessageReceivedEvent e) {
 		if (!Bot.isReady)
 			return;
-		//log.info("{}: {}", e.getAuthor().getName(), e.getMessage().getContent());
+		//log.info("{}: {}", e.getAuthor().getName(), e.getMessage().getContentDisplay());
 		GuildObject g = GuildObject.guildMap.get(e.getGuild().getId());
 
 		// Delete invites
 		if (g.getConfig().isDisableInvites()
 				&& !Util.memberHasPermission(e.getMember(), Permission.KICK)) {
-			if (e.getMessage().getContent().toLowerCase().contains("discord.gg/")) {
+			if (e.getMessage().getContentDisplay().toLowerCase().contains("discord.gg/")) {
 				e.getMessage().delete().queue(success -> {
 					e.getChannel().sendMessage("No advertising, " + e.getAuthor().getAsMention()).queue();
 				});
@@ -250,7 +250,7 @@ public class Listeners extends ListenerAdapter {
 		// Requesting prefix
 		if (!e.getMessage().mentionsEveryone()
 				&& e.getMessage().isMentioned(e.getJDA().getSelfUser())) {
-			if (e.getMessage().getContent().contains("prefix")) {
+			if (e.getMessage().getContentDisplay().contains("prefix")) {
 				e.getAuthor().openPrivateChannel().queue(ch -> {
 					ch.sendMessage(GuildObject
 							.guildMap.get(e.getGuild().getId()).getConfig().getCommandPrefix()).queue();
@@ -259,7 +259,7 @@ public class Listeners extends ListenerAdapter {
 			}
 		}
 		// Jump to command
-		if (e.getMessage().getContent().startsWith(g.getConfig().getCommandPrefix())) {
+		if (e.getMessage().getContentDisplay().startsWith(g.getConfig().getCommandPrefix())) {
 			if (!e.getChannel().canTalk()) {
 				return;
 			}
@@ -301,14 +301,14 @@ public class Listeners extends ListenerAdapter {
 
 		EmbedBuilder em = new EmbedBuilder();
 		Command c;
-		if((c = CommandHandler.getCommand(e.getMessage().getContent().toLowerCase())) == null) {
+		if((c = CommandHandler.getCommand(e.getMessage().getContentDisplay().toLowerCase())) == null) {
 			em.setTitle("Invalid command", null)
 			.setColor(Color.RED)
-			.setDescription(e.getMessage().getContent() + " is not a valid command");
+			.setDescription(e.getMessage().getContentDisplay() + " is not a valid command");
 			e.getChannel().sendMessage(em.build()).queue();
 			return;
 		}
-		em.setTitle(e.getMessage().getContent(), null)
+		em.setTitle(e.getMessage().getContentDisplay(), null)
 		.setColor(Color.CYAN)
 		.addField("Primary Command", c.getDefaultCommand(), true);
 		String[] aliases = c.getAliases();

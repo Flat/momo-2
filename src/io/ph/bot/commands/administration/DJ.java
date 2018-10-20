@@ -53,8 +53,7 @@ public class DJ extends Command {
 			msg.getChannel().sendMessage(em.build()).queue();
 		} else {
 			msg.getGuild().getController().createRole().queue(role -> {
-				role.getManagerUpdatable()
-				.getNameField().setValue(roleName).update().queue(success -> {
+				role.getManager().setName(roleName).queue(success -> {
 					g.getConfig().setDjRoleId(role.getId());
 					em.setTitle("Success", null)
 					.setColor(Color.GREEN)

@@ -41,7 +41,7 @@ public class RemindMe extends Command {
 	@Override
 	public void executeCommand(Message msg) {
 		EmbedBuilder em = new EmbedBuilder();
-		if(msg.getContent().split(" ").length < 3) {
+		if(msg.getContentDisplay().split(" ").length < 3) {
 			MessageUtils.sendIncorrectCommandUsage(msg, this);
 			return;
 		}

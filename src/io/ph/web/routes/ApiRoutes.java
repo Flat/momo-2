@@ -144,7 +144,7 @@ public class ApiRoutes {
 				halt(500, "Feed already exists for this server in #" + ob.getDiscoChannel().getName());
 			} else {
 				try {
-					RedditEventListener.redditClient.getSubreddit(subreddit);
+					RedditEventListener.redditClient.subreddit(subreddit);
 				} catch(NetworkException | IllegalArgumentException e) {
 					halt(500, "Subreddit /r/" + subreddit + " does not exist");
 				}

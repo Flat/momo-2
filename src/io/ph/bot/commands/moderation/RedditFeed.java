@@ -72,7 +72,7 @@ public class RedditFeed extends ProceduralCommand {
 			}
 		}
 		try {
-			RedditEventListener.redditClient.getSubreddit(contents);
+			RedditEventListener.redditClient.subreddit(contents);
 		} catch(NetworkException | IllegalArgumentException e) {
 			em.setTitle("Error", null)
 			.setColor(Color.RED)

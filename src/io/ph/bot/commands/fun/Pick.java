@@ -30,7 +30,7 @@ public class Pick extends Command {
 	@Override
 	public void executeCommand(Message msg) {
 		EmbedBuilder em = new EmbedBuilder();
-		String[] splitMessage = Util.combineStringArray(Util.removeFirstArrayEntry(msg.getContent().split(" "))).split(" or ");
+		String[] splitMessage = Util.combineStringArray(Util.removeFirstArrayEntry(msg.getContentDisplay().split(" "))).split(" or ");
 		if(splitMessage.length < 2) {
 			MessageUtils.sendIncorrectCommandUsage(msg, this);
 		} else {

@@ -31,7 +31,7 @@ public class LeaveRole extends Command {
 	@Override
 	public void executeCommand(Message msg) {
 		EmbedBuilder em = new EmbedBuilder();
-		String role = Util.combineStringArray(Util.removeFirstArrayEntry(msg.getContent().split(" ")));
+		String role = Util.combineStringArray(Util.removeFirstArrayEntry(msg.getContentDisplay().split(" ")));
 		if(role.equals("")) {
 			MessageUtils.sendIncorrectCommandUsage(msg, this);
 			return;

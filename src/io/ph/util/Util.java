@@ -49,7 +49,7 @@ public class Util {
 	public static Member resolveMemberFromMessage(Message msg) {
 		if (msg.getMentionedUsers().size() > 0)
 			return msg.getGuild().getMember(msg.getMentionedUsers().get(0));
-		return resolveMemberFromMessage(getCommandContents(msg.getContent()), msg.getGuild());
+		return resolveMemberFromMessage(getCommandContents(msg.getContentDisplay()), msg.getGuild());
 	}
 
 	/**
@@ -77,9 +77,9 @@ public class Util {
 	 * @return User if found, null if not found
 	 */
 	public static User resolveBannedUserFromString(String s, Guild guild) {
-		for(User u : guild.getBans().complete()) {
-			if(u.getName().toLowerCase().startsWith(s.toLowerCase()))
-				return u;
+		for(Guild.Ban u : guild.getBanList().complete()) {
+			if(u.getUser().getName().toLowerCase().startsWith(s.toLowerCase()))
+				return u.getUser();
 		}
 		return null;
 	}
@@ -91,7 +91,7 @@ public class Util {
 	 * @return String. Empty if there are no arguments
 	 */
 	public static String getCommandContents(Message msg) {
-		return getCommandContents(msg.getContent());
+		return getCommandContents(msg.getContentDisplay());
 	}
 	/**
 	 * Get the contents of a command, if it has arguments
@@ -164,7 +164,7 @@ public class Util {
 	 * @return String of first parameter based on a space split
 	 */
 	public static String getParam(Message msg) {
-		return getParam(msg.getContent());
+		return getParam(msg.getContentDisplay());
 	}
 
 	/**
@@ -243,7 +243,7 @@ public class Util {
 		}
 	}
 	/**
-	 * Check if String input is a valid double through {@link Double#parseInt(String)}
+	 * Check if String input is a valid double through
 	 * @param input String input
 	 * @return True if double, false if not
 	 */

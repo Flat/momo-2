@@ -35,7 +35,7 @@ public class Playlist extends Command {
 	private static final int MAX_SIZE = 100;
 	@Override
 	public void executeCommand(Message msg) {
-		String[] split = Util.removeFirstArrayEntry(msg.getContent().split(" "));
+		String[] split = Util.removeFirstArrayEntry(msg.getContentDisplay().split(" "));
 		EmbedBuilder em = new EmbedBuilder();
 		String param = split[0];
 		GuildObject g = GuildObject.guildMap.get(msg.getGuild().getId());

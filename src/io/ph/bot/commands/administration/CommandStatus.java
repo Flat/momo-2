@@ -33,7 +33,7 @@ public class CommandStatus extends Command {
 		String contents = Util.getCommandContents(msg);
 		EmbedBuilder em = new EmbedBuilder();
 		if(contents.length() > 0) {
-			if(GuildObject.guildMap.get(msg.getGuild().getId()).validCommandToEdit(msg.getContent())) {
+			if(GuildObject.guildMap.get(msg.getGuild().getId()).validCommandToEdit(msg.getContentDisplay())) {
 				em.setTitle(contents + " is not a valid command", null)
 				.setColor(Color.RED);
 			} else {
